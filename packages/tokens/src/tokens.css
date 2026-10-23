@@ -1,0 +1,286 @@
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Aback UI theme
+ * --------------
+ * Import after Tailwind:
+ *
+ *   @import "tailwindcss";
+ *   @import "./styles/aback.css";
+ *
+ * Light is the base theme. Dark is the `dark` class on <html>.
+ * Every value here is a semantic role, not a one-off swatch. See DESIGN.md.
+ */
+
+@font-face {
+  font-family: "GeistSansFallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Helvetica"), local("sans-serif");
+  ascent-override: 95%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+  size-adjust: 105%;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), "GeistSansFallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Surface and text */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  /* Action: neutral ink, never brand blue by default */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  /* Structure */
+  --color-border: var(--border);
+  --color-separator: var(--separator);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-focus-ring: var(--focus-ring);
+
+  /* Brand roles: read the theme variable so light and dark stay correct */
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
+  --color-brand-icon: var(--brand-icon);
+  --color-brand-chip: var(--brand-chip);
+  --color-brand-wash: var(--brand-wash);
+  --color-brand-fill: var(--brand-fill);
+  --color-on-brand-fill: var(--on-brand-fill);
+
+  /* Status */
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-strong: var(--success-strong);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-strong: var(--warning-strong);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-strong: var(--danger-strong);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+
+  /* Aback Blue ramp. Static by design: 500 is the brand anchor in both themes. */
+  --color-primary-50: #e6f6ff;
+  --color-primary-100: #ccedff;
+  --color-primary-200: #99dbff;
+  --color-primary-300: #66c9ff;
+  --color-primary-400: #33b7ff;
+  --color-primary-500: #009bf9;
+  --color-primary-600: #007cc7;
+  --color-primary-700: #005d95;
+  --color-primary-800: #003e63;
+  --color-primary-900: #001f32;
+  --color-primary-950: #000f19;
+
+  /* Square geometry: every radius token resolves to zero. */
+  --radius: 0px;
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+}
+
+:root {
+  color-scheme: light;
+
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+
+  --primary: #171717;
+  --primary-foreground: #fafafa;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #171717;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --accent: #f5f5f5;
+  --accent-foreground: #171717;
+
+  --destructive: #e7000b;
+  --destructive-foreground: #ffffff;
+  --border: #e5e5e5;
+  --separator: #d7d7d7;
+  --input: #e5e5e5;
+  --ring: #a1a1a1;
+  --focus-ring: #007cc7;
+
+  --link: #005d95;
+  --link-hover: #003e63;
+  --brand-icon: #007cc7;
+  --brand-chip: #ccedff;
+  --brand-wash: #e6f6ff;
+  --brand-fill: #005d95;
+  --on-brand-fill: #ffffff;
+
+  --success: #008236;
+  --success-soft: #dcfce7;
+  --success-strong: #016630;
+  --warning: #bb4d00;
+  --warning-soft: #fffbeb;
+  --warning-strong: #973c00;
+  --danger: #c10007;
+  --danger-soft: #fef2f2;
+  --danger-strong: #9f0712;
+  --info: #005d95;
+  --info-soft: #e6f6ff;
+
+  --overlay: rgb(0 0 0 / 0.4);
+  --scrollbar-thumb: #b4b4b4;
+  --scrollbar-thumb-hover: #949494;
+  --scrollbar-track: #f1f1f1;
+
+  --radius: 0px;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #171717;
+  --card-foreground: #fafafa;
+  --popover: #171717;
+  --popover-foreground: #fafafa;
+
+  --primary: #e5e5e5;
+  --primary-foreground: #171717;
+  --secondary: #262626;
+  --secondary-foreground: #fafafa;
+  --muted: #262626;
+  --muted-foreground: #a1a1a1;
+  --accent: #262626;
+  --accent-foreground: #fafafa;
+
+  --destructive: #ff6467;
+  --destructive-foreground: #170000;
+  --border: rgb(255 255 255 / 0.1);
+  --separator: rgb(255 255 255 / 0.15);
+  --input: rgb(255 255 255 / 0.15);
+  --ring: #737373;
+  --focus-ring: #33b7ff;
+
+  --link: #33b7ff;
+  --link-hover: #66c9ff;
+  --brand-icon: #33b7ff;
+  --brand-chip: #001f32;
+  --brand-wash: rgb(0 31 50 / 0.3);
+  --brand-fill: #33b7ff;
+  --on-brand-fill: #000f19;
+
+  --success: #05df72;
+  --success-soft: #052e16;
+  --success-strong: #7bf1a8;
+  --warning: #fbbf24;
+  --warning-soft: #2b1a00;
+  --warning-strong: #fcd34d;
+  --danger: #ff6467;
+  --danger-soft: #2b0a0a;
+  --danger-strong: #ffa2a2;
+  --info: #66c9ff;
+  --info-soft: rgb(0 31 50 / 0.3);
+
+  --overlay: rgb(0 0 0 / 0.6);
+  --scrollbar-thumb: #3d3d3d;
+  --scrollbar-thumb-hover: #525252;
+  --scrollbar-track: #1a1a1a;
+
+  --radius: 0px;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--brand-chip);
+    color: var(--foreground);
+  }
+
+  :-webkit-any(button, a, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+  }
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

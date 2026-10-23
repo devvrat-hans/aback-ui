@@ -1,0 +1,38 @@
+# Aback UI
+
+> Aback UI is an open-source React component library and design system from Aback Group. It installs by copying source through a shadcn-compatible registry. Components use a neutral square-corner design language, the Aback Blue brand ramp, and semantic CSS tokens with light and dark themes.
+
+- Website: https://abackui.com
+- Registry: https://abackui.com/r/{name}.json
+- License: MIT
+- Status: pre-1.0; APIs may change before the first stable release
+
+## Documentation
+
+- [Introduction](https://abackui.com/docs): what Aback UI is and how it is built
+- [Installation](https://abackui.com/docs/installation): add the theme and install a component
+- [Components](https://abackui.com/docs/components): the component catalogue
+- [Theming](https://abackui.com/docs/theming): semantic tokens, light and dark, brand overrides
+- [Design tokens](https://abackui.com/docs/tokens): color roles, type, spacing, geometry
+- [Registry](https://abackui.com/docs/registry): source-copy format and commands
+- [Accessibility](https://abackui.com/docs/accessibility): keyboard model and verification status
+- [Built with Aback UI](https://abackui.com/built-with): the Aback products that shaped the components
+
+## Install
+
+```
+npx shadcn@latest add https://abackui.com/r/button.json
+```
+
+Then import the theme once in your global stylesheet:
+
+```css
+@import "tailwindcss";
+@import "./styles/aback.css";
+```
+
+## Component index
+
+Accordion, Alert, Badge, Breadcrumbs, Button, Card, Checkbox, Dialog, Dropdown Menu, Empty State, Field, Input, Kbd, Label, Page Header, Select, Separator, Skeleton, Spinner, Switch, Table, Tabs, Textarea, Tooltip.
+
+Each component page documents its API, keyboard behavior, and accessibility notes.

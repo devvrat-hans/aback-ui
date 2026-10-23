@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Aback UI social card</title>
+    <style>
+      @font-face {
+        font-family: "Geist";
+        src: url("file:///Users/devvrathans/aback-ui/node_modules/.bun/geist@1.8.2+964c31581c292b97/node_modules/geist/dist/fonts/geist-sans/Geist-Variable.woff2")
+          format("woff2");
+        font-weight: 100 900;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+
+      body {
+        position: relative;
+        background: #05080f;
+        color: #fafafa;
+        font-family: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      }
+
+      .glow-blue,
+      .glow-cyan {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+      }
+
+      .glow-blue {
+        width: 620px;
+        height: 620px;
+        left: 40px;
+        top: -120px;
+        background: #0073e6;
+        opacity: 0.34;
+      }
+
+      .glow-cyan {
+        width: 460px;
+        height: 460px;
+        left: -160px;
+        bottom: -220px;
+        background: #06b6d4;
+        opacity: 0.22;
+      }
+
+      .grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+
+      .frame {
+        position: absolute;
+        inset: 28px;
+        border: 2px solid rgba(255, 255, 255, 0.18);
+        padding: 30px 38px 26px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: rgba(5, 8, 15, 0.28);
+      }
+
+      .crosshair {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        color: #009bf9;
+      }
+
+      .crosshair::before,
+      .crosshair::after {
+        content: "";
+        position: absolute;
+        background: currentColor;
+      }
+
+      .crosshair::before {
+        left: 6px;
+        top: 0;
+        width: 2px;
+        height: 14px;
+      }
+
+      .crosshair::after {
+        top: 6px;
+        left: 0;
+        height: 2px;
+        width: 14px;
+      }
+
+      .crosshair.tl {
+        left: -8px;
+        top: -8px;
+      }
+
+      .crosshair.br {
+        right: -8px;
+        bottom: -8px;
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .mark {
+        width: 42px;
+        height: 42px;
+        display: block;
+        flex-shrink: 0;
+      }
+
+      .meta {
+        font-family: "Geist Mono", ui-monospace, monospace;
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(250, 250, 250, 0.62);
+      }
+
+      .body {
+        max-width: 790px;
+      }
+
+      .eyebrow {
+        margin: 0 0 16px;
+        font-family: "Geist Mono", ui-monospace, monospace;
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #33b7ff;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 64px;
+        line-height: 1.02;
+        letter-spacing: -0.045em;
+        font-weight: 700;
+      }
+
+      h1 em {
+        font-style: normal;
+        color: #33b7ff;
+      }
+
+      .sub {
+        margin: 22px 0 0;
+        font-size: 19px;
+        line-height: 1.5;
+        color: rgba(250, 250, 250, 0.68);
+        letter-spacing: -0.01em;
+      }
+
+      .bottom {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .stats {
+        display: flex;
+        gap: 10px;
+      }
+
+      .stat {
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: rgba(255, 255, 255, 0.06);
+        padding: 10px 14px;
+        min-width: 118px;
+      }
+
+      .stat b {
+        display: block;
+        font-size: 22px;
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 6px;
+        font-family: "Geist Mono", ui-monospace, monospace;
+        font-size: 9px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(250, 250, 250, 0.55);
+      }
+
+      .url {
+        font-family: "Geist Mono", ui-monospace, monospace;
+        font-size: 13px;
+        letter-spacing: 0.06em;
+        color: rgba(250, 250, 250, 0.8);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glow-blue"></div>
+    <div class="glow-cyan"></div>
+    <div class="grid"></div>
+    <div class="frame">
+      <span class="crosshair tl"></span>
+      <span class="crosshair br"></span>
+
+      <div class="top">
+        <div class="brand">
+          <img class="mark" src="aback-mark-white.svg" alt="" aria-hidden="true" />
+          <span>Aback UI</span>
+        </div>
+        <div class="meta">Open source · MIT · shadcn registry</div>
+      </div>
+
+      <div class="body">
+        <p class="eyebrow">The Aback design system</p>
+        <h1>The building blocks<br />behind <em>better applications.</em></h1>
+        <p class="sub">
+          Accessible React components, semantic tokens,<br />
+          and source you own.
+        </p>
+      </div>
+
+      <div class="bottom">
+        <div class="stats">
+          <div class="stat"><b>24</b><span>Components</span></div>
+          <div class="stat"><b>2</b><span>Aback products</span></div>
+          <div class="stat"><b>MIT</b><span>License</span></div>
+        </div>
+        <div class="url">abackui.com</div>
+      </div>
+    </div>
+  </body>
+</html>

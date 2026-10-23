@@ -1,0 +1,723 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "aback-ui",
+  "homepage": "https://abackui.com",
+  "items": [
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "Class utility",
+      "description": "The cn() helper used by every Aback UI component.",
+      "files": [
+        {
+          "path": "packages/ui/src/lib/utils.ts",
+          "target": "lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ]
+    },
+    {
+      "name": "theme",
+      "type": "registry:file",
+      "title": "Aback theme",
+      "description": "Semantic tokens, the Aback Blue ramp, square geometry, and light and dark values.",
+      "docs": "https://abackui.com/docs/theming",
+      "files": [
+        {
+          "path": "packages/tokens/src/tokens.css",
+          "target": "~/styles/aback.css",
+          "type": "registry:file"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "The primary action, with ink, brand, outline, ghost, and destructive variants.",
+      "categories": [
+        "Foundation"
+      ],
+      "docs": "https://abackui.com/docs/components/button",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/button.tsx",
+          "target": "components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "A single-line text control aligned to the 36px control grid.",
+      "categories": [
+        "Forms"
+      ],
+      "docs": "https://abackui.com/docs/components/input",
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/input.tsx",
+          "target": "components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "A multi-line text control for longer input.",
+      "categories": [
+        "Forms"
+      ],
+      "docs": "https://abackui.com/docs/components/textarea",
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/textarea.tsx",
+          "target": "components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "An accessible form label with peer-disabled styling.",
+      "categories": [
+        "Forms"
+      ],
+      "docs": "https://abackui.com/docs/components/label",
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/label.tsx",
+          "target": "components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "A form field frame that wires labels, help text, and errors.",
+      "categories": [
+        "Forms"
+      ],
+      "docs": "https://abackui.com/docs/components/field",
+      "dependencies": [
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": []
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/field.tsx",
+          "target": "components/ui/field.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "A tri-state checkbox with label support and visible focus.",
+      "categories": [
+        "Forms"
+      ],
+      "docs": "https://abackui.com/docs/components/checkbox",
+      "dependencies": [
+        "radix-ui",
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/checkbox.tsx",
+          "target": "components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "A binary toggle with switch semantics.",
+      "categories": [
+        "Forms"
+      ],
+      "docs": "https://abackui.com/docs/components/switch",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/switch.tsx",
+          "target": "components/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "A native select with a themed chevron and 36px height.",
+      "categories": [
+        "Forms"
+      ],
+      "docs": "https://abackui.com/docs/components/select",
+      "dependencies": [
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/select.tsx",
+          "target": "components/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Compact labels for status, counts, and categories.",
+      "categories": [
+        "Foundation"
+      ],
+      "docs": "https://abackui.com/docs/components/badge",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/badge.tsx",
+          "target": "components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "A bordered surface for grouping related content and actions.",
+      "categories": [
+        "Foundation"
+      ],
+      "docs": "https://abackui.com/docs/components/card",
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/card.tsx",
+          "target": "components/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Inline status messages for information, success, warning, and destructive feedback.",
+      "categories": [
+        "Feedback"
+      ],
+      "docs": "https://abackui.com/docs/components/alert",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/alert.tsx",
+          "target": "components/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "A one-pixel rule for page chrome and grouped content.",
+      "categories": [
+        "Foundation"
+      ],
+      "docs": "https://abackui.com/docs/components/separator",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/separator.tsx",
+          "target": "components/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "A loading placeholder that preserves layout.",
+      "categories": [
+        "Feedback"
+      ],
+      "docs": "https://abackui.com/docs/components/skeleton",
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/skeleton.tsx",
+          "target": "components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "A loading indicator with a screen-reader label.",
+      "categories": [
+        "Feedback"
+      ],
+      "docs": "https://abackui.com/docs/components/spinner",
+      "dependencies": [
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/spinner.tsx",
+          "target": "components/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "A keycap for documenting shortcuts.",
+      "categories": [
+        "Foundation"
+      ],
+      "docs": "https://abackui.com/docs/components/kbd",
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/kbd.tsx",
+          "target": "components/ui/kbd.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "A short label for icon-only or ambiguous controls.",
+      "categories": [
+        "Overlays"
+      ],
+      "docs": "https://abackui.com/docs/components/tooltip",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": []
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/tooltip.tsx",
+          "target": "components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "A modal dialog with focus trapping, Escape dismissal, and focus return.",
+      "categories": [
+        "Overlays"
+      ],
+      "docs": "https://abackui.com/docs/components/dialog",
+      "dependencies": [
+        "radix-ui",
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/dialog.tsx",
+          "target": "components/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "A keyboard-navigable action menu with checkbox and radio items.",
+      "categories": [
+        "Overlays"
+      ],
+      "docs": "https://abackui.com/docs/components/dropdown-menu",
+      "dependencies": [
+        "radix-ui",
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/dropdown-menu.tsx",
+          "target": "components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Switch between related panels with arrow-key navigation.",
+      "categories": [
+        "Navigation"
+      ],
+      "docs": "https://abackui.com/docs/components/tabs",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": []
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/tabs.tsx",
+          "target": "components/ui/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "Disclosure sections for FAQs and grouped settings, with full keyboard support.",
+      "categories": [
+        "Navigation"
+      ],
+      "docs": "https://abackui.com/docs/components/accordion",
+      "dependencies": [
+        "radix-ui",
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/accordion.tsx",
+          "target": "components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "Semantic table primitives for dense data.",
+      "categories": [
+        "Data Display"
+      ],
+      "docs": "https://abackui.com/docs/components/table",
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/table.tsx",
+          "target": "components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumbs",
+      "type": "registry:ui",
+      "title": "Breadcrumbs",
+      "description": "A hierarchical trail back to parent pages with current-page semantics.",
+      "categories": [
+        "Navigation"
+      ],
+      "docs": "https://abackui.com/docs/components/breadcrumbs",
+      "dependencies": [
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/breadcrumbs.tsx",
+          "target": "components/ui/breadcrumbs.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "page-header",
+      "type": "registry:ui",
+      "title": "Page Header",
+      "description": "The page title block with one H1, a description, and actions.",
+      "categories": [
+        "Application"
+      ],
+      "docs": "https://abackui.com/docs/components/page-header",
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/page-header.tsx",
+          "target": "components/ui/page-header.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "Empty State",
+      "description": "A clear zero-data state with an optional action.",
+      "categories": [
+        "Application"
+      ],
+      "docs": "https://abackui.com/docs/components/empty-state",
+      "dependencies": [
+        "@tabler/icons-react"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "stable",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      },
+      "files": [
+        {
+          "path": "packages/ui/src/components/empty-state.tsx",
+          "target": "components/ui/empty-state.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    }
+  ]
+}

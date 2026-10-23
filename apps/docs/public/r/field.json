@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "field",
+  "type": "registry:ui",
+  "title": "Field",
+  "description": "A form field frame that wires labels, help text, and errors.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Forms"
+  ],
+  "docs": "https://abackui.com/docs/components/field",
+  "meta": {
+    "status": "stable",
+    "usedIn": []
+  },
+  "files": [
+    {
+      "path": "components/ui/field.tsx",
+      "content": "import * as React from \"react\";\nimport { IconAlertCircle } from \"@tabler/icons-react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport interface FieldProps extends React.ComponentProps<\"div\"> {\n  /** The control id this field labels. */\n  htmlFor: string;\n  label: React.ReactNode;\n  description?: React.ReactNode;\n  error?: React.ReactNode;\n  required?: boolean;\n}\n\n/**\n * Layout and labeling for a single form control. It does not inject props into\n * the control; pass `id`, `aria-describedby`, and `aria-invalid` explicitly so\n * the relationship stays visible in the consuming code.\n */\nfunction Field({\n  htmlFor,\n  label,\n  description,\n  error,\n  required,\n  className,\n  children,\n  ...props\n}: FieldProps) {\n  return (\n    <div data-slot=\"field\" className={cn(\"flex flex-col gap-1.5\", className)} {...props}>\n      <label\n        htmlFor={htmlFor}\n        className=\"flex items-center gap-1 text-sm font-medium leading-none text-foreground\"\n      >\n        {label}\n        {required ? (\n          <span aria-hidden=\"true\" className=\"text-destructive\">\n            *\n          </span>\n        ) : null}\n      </label>\n      {children}\n      {description ? (\n        <p id={`${htmlFor}-description`} className=\"text-xs leading-relaxed text-muted-foreground\">\n          {description}\n        </p>\n      ) : null}\n      {error ? (\n        <p\n          id={`${htmlFor}-error`}\n          role=\"alert\"\n          className=\"flex items-start gap-1.5 text-xs font-medium leading-relaxed text-danger\"\n        >\n          <IconAlertCircle aria-hidden=\"true\" className=\"mt-0.5 size-3.5 shrink-0\" />\n          {error}\n        </p>\n      ) : null}\n    </div>\n  );\n}\n\nexport { Field };\n",
+      "type": "registry:ui",
+      "target": "components/ui/field.tsx"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "../../../../packages/tokens/src/tokens.css";
+
+@source "../../../../packages/ui/src";
+
+@layer utilities {
+  .docs-grid-lines {
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--foreground) 4%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 4%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .prose-docs {
+    max-width: 72ch;
+  }
+
+  .prose-docs > * + * {
+    margin-top: 1rem;
+  }
+
+  .prose-docs h2 {
+    margin-top: 2.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--foreground);
+  }
+
+  .prose-docs h3 {
+    margin-top: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  .prose-docs p,
+  .prose-docs li {
+    color: var(--muted-foreground);
+    line-height: 1.75;
+  }
+
+  .prose-docs ul,
+  .prose-docs ol {
+    padding-left: 1.25rem;
+  }
+
+  .prose-docs ul {
+    list-style: disc;
+  }
+
+  .prose-docs ol {
+    list-style: decimal;
+  }
+
+  .prose-docs li + li {
+    margin-top: 0.5rem;
+  }
+
+  .prose-docs a {
+    color: var(--link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose-docs a:hover {
+    color: var(--link-hover);
+  }
+
+  .prose-docs code {
+    background: var(--muted);
+    padding: 0.1em 0.35em;
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    color: var(--foreground);
+  }
+
+  .prose-docs strong {
+    color: var(--foreground);
+    font-weight: 600;
+  }
+}

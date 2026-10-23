@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tooltip",
+  "type": "registry:ui",
+  "title": "Tooltip",
+  "description": "A short label for icon-only or ambiguous controls.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Overlays"
+  ],
+  "docs": "https://abackui.com/docs/components/tooltip",
+  "meta": {
+    "status": "stable",
+    "usedIn": []
+  },
+  "files": [
+    {
+      "path": "components/ui/tooltip.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Tooltip as TooltipPrimitive } from \"radix-ui\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst TooltipProvider = TooltipPrimitive.Provider;\nconst TooltipTrigger = TooltipPrimitive.Trigger;\n\nfunction Tooltip({\n  delayDuration = 200,\n  ...props\n}: React.ComponentProps<typeof TooltipPrimitive.Root> & {\n  delayDuration?: number;\n}) {\n  return (\n    <TooltipPrimitive.Provider delayDuration={delayDuration}>\n      <TooltipPrimitive.Root data-slot=\"tooltip\" {...props} />\n    </TooltipPrimitive.Provider>\n  );\n}\n\nfunction TooltipContent({\n  className,\n  sideOffset = 6,\n  ...props\n}: React.ComponentProps<typeof TooltipPrimitive.Content>) {\n  return (\n    <TooltipPrimitive.Portal>\n      <TooltipPrimitive.Content\n        data-slot=\"tooltip-content\"\n        sideOffset={sideOffset}\n        className={cn(\n          \"z-[70] max-w-xs border border-border bg-popover px-2.5 py-1.5\",\n          \"text-xs leading-relaxed text-popover-foreground shadow-md\",\n          \"animate-in fade-in-0 zoom-in-95 duration-150\",\n          \"data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95\",\n          className,\n        )}\n        {...props}\n      />\n    </TooltipPrimitive.Portal>\n  );\n}\n\nexport { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };\n",
+      "type": "registry:ui",
+      "target": "components/ui/tooltip.tsx"
+    }
+  ]
+}

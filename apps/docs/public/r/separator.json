@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "type": "registry:ui",
+  "title": "Separator",
+  "description": "A one-pixel rule for page chrome and grouped content.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Foundation"
+  ],
+  "docs": "https://abackui.com/docs/components/separator",
+  "meta": {
+    "status": "stable",
+    "usedIn": [
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/separator.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Separator as SeparatorPrimitive } from \"radix-ui\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Separator({\n  className,\n  orientation = \"horizontal\",\n  decorative = true,\n  ...props\n}: React.ComponentProps<typeof SeparatorPrimitive.Root>) {\n  return (\n    <SeparatorPrimitive.Root\n      data-slot=\"separator\"\n      decorative={decorative}\n      orientation={orientation}\n      className={cn(\n        \"shrink-0 bg-separator\",\n        \"data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full\",\n        \"data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Separator };\n",
+      "type": "registry:ui",
+      "target": "components/ui/separator.tsx"
+    }
+  ]
+}
