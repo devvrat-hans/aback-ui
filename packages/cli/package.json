@@ -1,6 +1,6 @@
 {
   "name": "aback-ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The Aback UI command line: add accessible React components and blocks to your project as source you own.",
   "license": "MIT",
   "author": "Aback Group",
@@ -21,7 +21,7 @@
     "access": "public"
   },
   "bin": {
-    "aback-ui": "./dist/index.js"
+    "aback-ui": "dist/index.js"
   },
   "exports": {
     ".": {

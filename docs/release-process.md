@@ -32,32 +32,27 @@ Do not publish packages, deploy the public site, or push tags without explicit o
 
 `bun run build` runs `scripts/verify-publishable.mjs` through each package's `prepublishOnly`. The guard refuses to publish if an entry point in `exports` is missing, a `files` entry does not exist, the tarball is empty, the MIT LICENSE is absent, test source or build caches would ship, or the built output contains a localhost URL, a monorepo path, or an absolute developer path.
 
-Tagged pushes run `.github/workflows/release.yml`. It re-runs every check, then verifies the tag matches both package versions before publishing to npm. Publish order is tokens first, then UI, because UI depends on the theme contract.
+Tagged pushes run `.github/workflows/release.yml`. It re-runs every check, then verifies the tag matches the three package versions before publishing to npm. Publish order is tokens, then UI, then the CLI, because UI depends on the theme contract and the CLI carries the registry built from the same source.
 
-The workflow needs one repository secret:
+The workflow uses npm trusted publishing (OIDC): it declares `id-token: write`, runs Node 24 with npm 11, and stores no npm token. Each package needs a trusted publisher on npmjs.com (package Settings, Trusted Publisher, GitHub Actions) with owner `devvrat-hans`, repository `aback-ui`, and workflow `release.yml`. npm only allows this for packages that already exist, so the first release is published by hand.
 
-| Secret | Purpose |
-| --- | --- |
-| `NPM_TOKEN` | Automation token with publish rights for the `aback-ui` npm scope. Use a granular token limited to that scope. |
+## First release
 
-The workflow authenticates to npm with `NODE_AUTH_TOKEN` and declares `id-token: write`, so it also supports trusted publishing if the npm package is configured for it.
+These steps need the owner's npm account; none of them can be done from the repository alone.
 
-## First release prerequisites
-
-These are owner actions; none of them can be done from the repository alone.
-
-1. Create the free `aback-ui` organization on npmjs.com, so the `@aback-ui/*` scope exists, and claim the unscoped `aback-ui` name for the CLI. As of October 2026, `@aback-ui/ui`, `@aback-ui/tokens`, and `aback-ui` were all unclaimed on npm.
-2. Add the `NPM_TOKEN` repository secret described above.
-3. Make the GitHub repository public, so the package `repository` links and the docs' source links resolve.
-4. Done: `abackui.com` is attached to the `aback-ui` Worker as a custom domain through the `routes` entry in `website/wrangler.jsonc`.
-5. Push a `v0.2.0` tag (after bumping the three package versions and `CLI_VERSION` in `packages/cli/src/help.ts`) to run the release workflow. It publishes `@aback-ui/tokens`, `@aback-ui/ui`, and `aback-ui`, in that order.
-6. Set `npmPublished: true` in `website/src/data/site.ts`, so the install pages stop showing the "Not on npm yet" notice.
+1. Create the free `aback-ui` organization on npmjs.com, so the `@aback-ui/*` scope exists. The unscoped `aback-ui` name is for the CLI.
+2. Run `npm login` and keep two-factor authentication on for publishing.
+3. Run `bun run check` and `bun run build`.
+4. Publish `packages/tokens`, then `packages/ui`, then `packages/cli` with `npm publish --access public` from each directory. Use npm, not `bun publish`, so `prepublishOnly` runs the checks and the publish guard.
+5. Add a trusted publisher to each of the three packages, as described above, before the next tagged release. An unused trusted publisher configuration expires after two days.
+6. Set `npmPublished: true` in `website/src/data/site.ts` and redeploy the website, so the install pages stop showing the "Not on npm yet" notice.
+7. Make the GitHub repository public, so the package `repository` links and the docs' source links resolve and npm can attach provenance.
 
 ## Current distribution status
 
 - CLI: builds with the registry bundled, passes the publish guard, and installs components from its packed tarball with the network blocked in `bun run test:consumer`. Not published yet.
 - Registry: implemented and validated locally. The hosted copy depends on deploying `website`.
-- Package: builds, passes the publish guard, and is verified against packed tarballs by `bun run test:consumer`. Not published to a registry yet; the release workflow is ready and waits on an `NPM_TOKEN` secret.
+- Package: builds, passes the publish guard, and is verified against packed tarballs by `bun run test:consumer`. Not published to a registry yet.
 - Site: live at https://abackui.com (also https://aback-ui.aback-projects.workers.dev).
 
 ## Deploying the website

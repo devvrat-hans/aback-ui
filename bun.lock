@@ -15,7 +15,7 @@
     },
     "packages/cli": {
       "name": "aback-ui",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "bin": {
         "aback-ui": "./dist/index.js",
       },
@@ -27,11 +27,11 @@
     },
     "packages/tokens": {
       "name": "@aback-ui/tokens",
-      "version": "0.1.0",
+      "version": "0.2.0",
     },
     "packages/ui": {
       "name": "@aback-ui/ui",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "dependencies": {
         "@tabler/icons-react": "^3.49.0",
         "class-variance-authority": "^0.7.1",

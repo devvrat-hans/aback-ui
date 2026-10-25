@@ -2,7 +2,9 @@
 
 All notable changes are recorded here. The project is pre-1.0; minor versions may include API changes with migration notes.
 
-## Unreleased
+## 0.2.0 - October 2026
+
+The first release published to npm: `@aback-ui/tokens`, `@aback-ui/ui`, and the `aback-ui` CLI.
 
 ### Added
 
@@ -19,12 +21,12 @@ All notable changes are recorded here. The project is pre-1.0; minor versions ma
 
 - `Calendar`, `DatePicker`, and `DateRangePicker`, built on react-day-picker with Aback token styling: single, multiple, and range selection, bounded dates, locale-aware labels via `Intl.DateTimeFormat`, a hidden ISO input for native forms, and and a range flow that stays open until the two ends are chosen. Includes behaviour tests, axe checks, live examples, API/accessibility notes, and registry items.
 - `Combobox`, a searchable single-select built from the library's own Popover and Command: filtering by label or hidden keywords, disabled options, check-marked selection, hidden form input, and full keyboard operation. Includes tests, axe checks, an example, documentation, and a registry item.
-- `aback-ui doctor`, a read-only project diagnosis with human and `--json` output: Node, framework, Tailwind v4, components.json, style, path aliases, `cn()` utility, theme import, `styles/aback.css`, registry template, installed components, and lockfile conflicts. Errors exit non-zero; warnings do not.
+- `aback-ui doctor`, a read-only project diagnosis with human and `--json` output: Node, framework, Tailwind v4, aback-ui.json, style, path aliases, `cn()` utility, theme import, `styles/aback.css`, registry template, installed components, and lockfile conflicts. Errors exit non-zero; warnings do not.
 - `Toast` and `Toaster`, an Aback-themed sonner surface: token-driven status colours, square geometry, tabler icons, a themed close button, and light/dark following. `toast` is re-exported so consumers do not depend on sonner directly. Includes four behaviour tests, the docs example, API/accessibility notes, and a registry item.
 - `Dashboard shell` block: persistent sidebar, mobile sheet navigation, top bar, optional search/sign-out, and page header. Navigation is real anchors with `aria-current`; optional controls are omitted rather than rendered dead.
 - The documentation search now uses the library's own `Command` component instead of a hand-rolled listbox, giving it cmdk's combobox semantics, filtering, and roving selection.
 - `CommandDialog` gained `showCloseButton`, so a search palette can omit the corner close control without hiding the dialog title from assistive technology.
-- `aback-ui`, the Aback UI CLI (`npx aback-ui@latest add button`): `init`, `add`, `diff`, `list`, and `view`, with project detection, dependency-graph resolution, dry runs, a guarded overwrite policy, and path-traversal protection. The package is built and tested but not published to npm yet.
+- `aback-ui`, the Aback UI CLI (`npx aback-ui@latest add button`): `init`, `add`, `diff`, `list`, and `view`, with project detection, dependency-graph resolution, dry runs, a guarded overwrite policy, and path-traversal protection.
 - Seven components: Alert Dialog, Avatar, Popover, Progress, Radio Group, Sheet, and Toggle Group, each with behavior tests, an axe structural check, a live documentation example, API and accessibility notes, and a validated registry item.
 - A CLI documentation page at `/docs/cli`, CLI entries in the docs navigation, sitemap, and the component installation section, plus a component status update for the seven beta items.
 - `packages/cli` tests for argument parsing, target safety, registry ordering and cycles, init/add behavior, overwrite protection, dry runs, block installs, and command dispatch.
