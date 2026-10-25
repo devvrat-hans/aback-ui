@@ -3,7 +3,7 @@
   "name": "badge",
   "type": "registry:ui",
   "title": "Badge",
-  "description": "Compact labels for status, counts, and categories.",
+  "description": "Compact labels for status, counts, and categories, with soft status variants and an optional dot.",
   "dependencies": [
     "class-variance-authority"
   ],
@@ -18,13 +18,14 @@
     "status": "stable",
     "usedIn": [
       "aback-tools",
-      "aback-launch"
+      "aback-launch",
+      "aback-group"
     ]
   },
   "files": [
     {
       "path": "components/ui/badge.tsx",
-      "content": "import * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst badgeVariants = cva(\n  \"inline-flex shrink-0 items-center gap-1 border px-2.5 py-0.5 text-xs font-semibold leading-4 [&_svg]:size-3 [&_svg]:shrink-0\",\n  {\n    variants: {\n      variant: {\n        default: \"border-transparent bg-primary text-primary-foreground\",\n        secondary: \"border-transparent bg-secondary text-secondary-foreground\",\n        outline: \"border-border text-foreground\",\n        brand:\n          \"border-primary-200 bg-brand-chip text-primary-700 dark:border-primary-800/40 dark:text-primary-300\",\n        success: \"border-success/20 bg-success-soft text-success-strong\",\n        warning: \"border-warning/20 bg-warning-soft text-warning-strong\",\n        destructive: \"border-transparent bg-destructive text-destructive-foreground\",\n        muted: \"border-transparent bg-muted/60 text-muted-foreground\",\n      },\n    },\n    defaultVariants: {\n      variant: \"secondary\",\n    },\n  },\n);\n\nexport interface BadgeProps\n  extends React.ComponentProps<\"span\">,\n    VariantProps<typeof badgeVariants> {}\n\nfunction Badge({ className, variant = \"secondary\", ...props }: BadgeProps) {\n  return (\n    <span\n      data-slot=\"badge\"\n      data-variant={variant}\n      className={cn(badgeVariants({ variant }), className)}\n      {...props}\n    />\n  );\n}\n\nexport { Badge, badgeVariants };\n",
+      "content": "import * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst badgeVariants = cva(\n  \"inline-flex shrink-0 items-center gap-1 border px-2.5 py-0.5 text-xs font-semibold leading-4 [&_svg]:size-3 [&_svg]:shrink-0\",\n  {\n    variants: {\n      variant: {\n        default: \"border-transparent bg-primary text-primary-foreground\",\n        secondary: \"border-transparent bg-secondary text-secondary-foreground\",\n        outline: \"border-border text-foreground\",\n        brand:\n          \"border-primary-200 bg-brand-chip text-primary-700 dark:border-primary-800/40 dark:text-primary-300\",\n        success: \"border-success/20 bg-success-soft text-success-strong\",\n        warning: \"border-warning/20 bg-warning-soft text-warning-strong\",\n        danger: \"border-danger/20 bg-danger-soft text-danger-strong\",\n        info: \"border-info/20 bg-info-soft text-info\",\n        destructive: \"border-transparent bg-destructive text-destructive-foreground\",\n        muted: \"border-transparent bg-muted/60 text-muted-foreground\",\n      },\n    },\n    defaultVariants: {\n      variant: \"secondary\",\n    },\n  },\n);\n\nexport interface BadgeProps\n  extends React.ComponentProps<\"span\">,\n    VariantProps<typeof badgeVariants> {\n  /**\n   * Leads with a small square status dot in the badge's text colour. The dot\n   * is decorative; the badge text still has to say what the status is.\n   */\n  dot?: boolean;\n}\n\nfunction Badge({ className, variant = \"secondary\", dot = false, children, ...props }: BadgeProps) {\n  return (\n    <span\n      data-slot=\"badge\"\n      data-variant={variant}\n      className={cn(badgeVariants({ variant }), dot && \"gap-1.5\", className)}\n      {...props}\n    >\n      {dot ? (\n        <span aria-hidden=\"true\" data-slot=\"badge-dot\" className=\"size-1.5 shrink-0 bg-current\" />\n      ) : null}\n      {children}\n    </span>\n  );\n}\n\nexport { Badge, badgeVariants };\n",
       "type": "registry:ui",
       "target": "components/ui/badge.tsx"
     }

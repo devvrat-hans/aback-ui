@@ -3,15 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { ThemeToggle } from "@aback-ui/ui";
+
 import { Logo } from "@/components/logo";
 import { MobileNav } from "@/components/mobile-nav";
 import { SearchDialog } from "@/components/search-dialog";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { searchItems } from "@/data/search";
 
 const links = [
   { title: "Docs", href: "/docs", exact: true },
   { title: "Components", href: "/docs/components", exact: false },
+  { title: "Blocks", href: "/docs/blocks", exact: false },
   { title: "Tokens", href: "/docs/tokens", exact: true },
   { title: "Built with", href: "/built-with", exact: true },
 ];

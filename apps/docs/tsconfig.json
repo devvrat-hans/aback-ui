@@ -9,6 +9,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/components/ui/*": ["../../packages/ui/src/components/*"],
+      "@/lib/utils": ["../../packages/ui/src/lib/utils.ts"],
       "@aback-ui/ui": ["../../packages/ui/src/index.ts"],
       "@aback-ui/ui/*": ["../../packages/ui/src/*"],
       "@aback-ui/tokens/*": ["../../packages/tokens/src/*"]

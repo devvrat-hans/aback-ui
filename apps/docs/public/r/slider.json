@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "slider",
+  "type": "registry:ui",
+  "title": "Slider",
+  "description": "A single-value range control with keyboard support and a square thumb.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Forms"
+  ],
+  "docs": "https://abackui.com/docs/components/slider",
+  "meta": {
+    "status": "beta"
+  },
+  "files": [
+    {
+      "path": "components/ui/slider.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Slider as SliderPrimitive } from \"radix-ui\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport interface SliderProps extends React.ComponentProps<typeof SliderPrimitive.Root> {\n  /** Accessible name for the thumb. Required unless aria-labelledby is used. */\n  label?: string;\n}\n\nfunction Slider({\n  className,\n  label,\n  \"aria-labelledby\": ariaLabelledBy,\n  ...props\n}: SliderProps) {\n  return (\n    <SliderPrimitive.Root\n      data-slot=\"slider\"\n      className={cn(\n        \"relative flex w-full touch-none select-none items-center\",\n        \"data-[orientation=vertical]:h-44 data-[orientation=vertical]:w-4 data-[orientation=vertical]:flex-col\",\n        \"data-[disabled]:opacity-50\",\n        className,\n      )}\n      {...props}\n    >\n      <SliderPrimitive.Track\n        data-slot=\"slider-track\"\n        className={cn(\n          \"relative grow overflow-hidden bg-secondary\",\n          \"data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full\",\n          \"data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5\",\n        )}\n      >\n        <SliderPrimitive.Range\n          data-slot=\"slider-range\"\n          className=\"absolute bg-primary data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full\"\n        />\n      </SliderPrimitive.Track>\n      <SliderPrimitive.Thumb\n        data-slot=\"slider-thumb\"\n        aria-label={label}\n        aria-labelledby={ariaLabelledBy}\n        className={cn(\n          \"block size-4 shrink-0 border-2 border-background bg-primary shadow-sm\",\n          \"outline-none transition-colors\",\n          \"focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n          \"disabled:pointer-events-none\",\n        )}\n      />\n    </SliderPrimitive.Root>\n  );\n}\n\nexport { Slider };\n",
+      "type": "registry:ui",
+      "target": "components/ui/slider.tsx"
+    }
+  ]
+}

@@ -24,6 +24,7 @@ The docs site imports `@aback-ui/ui` through a workspace path alias, so a previe
 | --- | --- | --- |
 | `@aback-ui/tokens` | Nothing | Components, docs |
 | `@aback-ui/ui` | Tokens (CSS contract), Radix, Tabler, utility libraries | Docs, registry, product apps |
+| `@aback-ui/cli` | Node.js built-ins, the registry JSON contract | UI runtime, docs runtime, private services |
 | `apps/docs` | UI, tokens, examples | Product apps, private services |
 | Registry build | UI source, item metadata | Docs runtime, a live Aback service |
 
@@ -34,15 +35,31 @@ Components contain no Aback product routing, auth, billing, tenant, or data-mode
 `registry/registry.json` is the source of truth for installable items. Each item declares:
 
 - `name`: public identifier, used in `https://abackui.com/r/{name}.json`
-- `type`: `registry:ui`, `registry:lib`, `registry:file`, or `registry:style`
+- `type`: `registry:ui`, `registry:block`, `registry:lib`, `registry:file`, or `registry:style`
 - `files`: `path` relative to the repository root, plus the consumer `target`
 - `dependencies`: npm packages the copied file imports
 - `registryDependencies`: other registry items required first
 - `docs`: documentation URL shown by the CLI
 
-`scripts/build-registry.mjs` inlines file contents and writes the shadcn-compatible JSON to `apps/docs/public/r`. It also validates the registry while building: every file path must exist, every import must have a declared dependency, identifiers and targets must be unique, and the source is scanned for committed secrets. `--check` fails if committed output is stale.
+`scripts/build-registry.mjs` inlines file contents and writes the shadcn-compatible JSON to `apps/docs/public/r`. It also validates the registry while building: every file path must exist, every import must have a declared npm or registry dependency, identifiers and targets must be unique, and the source is scanned for committed secrets. `--check` fails if committed output is stale.
+
+Blocks live at `apps/docs/src/blocks` so the documentation preview and the registry copy are the same file. A block imports installed aliases (`@/components/ui/*`), declares each one as a registry dependency, and installs into `components/blocks`. A composed component that needs a sibling imports it relatively in canonical source; the registry build rewrites that import to the consumer alias and requires the matching registry dependency.
 
 The registry is intentionally independent of the docs app. A copied component works after installation because it imports `@/lib/utils` and declared npm packages, never a monorepo alias or private endpoint.
+
+## Documentation app
+
+| Path | Purpose |
+| --- | --- |
+| `src/app/layout.tsx` | The document only: fonts, `ThemeScript`, metadata. No site chrome. |
+| `src/app/(site)/` | Every documentation page, wrapped in the header, footer, and skip link by `(site)/layout.tsx`. |
+| `src/app/view/blocks/[slug]` | A chrome-free page per block, loaded in the block page's preview frame. It reports its height to the parent with `postMessage` (same origin only) and is disallowed in `robots.txt`. |
+| `src/app/llms.txt`, `src/app/llms-full.txt` | Plain-text indexes generated from the registry summary and the component docs at build time. |
+| `src/blocks/` | Block source (installed as-is) and `previews.tsx` (docs-only example content). |
+| `src/examples/` | One live example per component; the Usage tab shows this file's source. |
+| `src/data/` | Catalogue data. `registry.generated.ts` is written by the registry build. |
+
+The site imports the library through workspace path aliases, including `@/components/ui/*` and `@/lib/utils`, so the docs, the block previews, and the installed copies run the same files. The site has no private copies of library components.
 
 ## Theme distribution
 
@@ -50,7 +67,7 @@ The theme ships as `styles/aback.css`, installed by the `theme` registry item. I
 
 ## Why a monorepo
 
-The tokens, components, registry build, and documentation share one release cadence and one source of truth. A monorepo keeps those boundaries explicit without adding an application framework dependency to the component package. There are only two packages because only two have a real independent consumer: the theme and the components.
+The tokens, components, CLI, registry build, and documentation share one release cadence and one source of truth. A monorepo keeps those boundaries explicit without adding an application framework dependency to the component package. There are three packages because each has a real independent consumer: the theme, the components, and the command line.
 
 ## Deliberate constraints
 

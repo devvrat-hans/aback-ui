@@ -3,15 +3,36 @@
   "version": "0.1.0",
   "description": "The Aback semantic design tokens: color roles, Aback Blue ramp, geometry, and theme CSS.",
   "license": "MIT",
+  "author": "Aback Group",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devvrat-hans/aback-ui.git",
+    "directory": "packages/tokens"
+  },
+  "homepage": "https://abackui.com/docs/tokens",
+  "bugs": {
+    "url": "https://github.com/devvrat-hans/aback-ui/issues"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "publishConfig": {
     "access": "public"
   },
+  "sideEffects": true,
   "exports": {
-    "./tokens.css": "./src/tokens.css"
+    "./tokens.css": "./src/tokens.css",
+    "./package.json": "./package.json"
   },
   "files": [
-    "src/tokens.css"
+    "src/tokens.css",
+    "LICENSE",
+    "README.md"
   ],
+  "scripts": {
+    "prepublishOnly": "bun ../../scripts/verify-publishable.mjs"
+  },
   "keywords": [
     "aback",
     "design-tokens",

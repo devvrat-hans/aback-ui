@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { blocks } from "@/data/blocks";
 import { componentGroups } from "@/data/component-catalog";
 import { gettingStartedNav } from "@/data/site";
 import { cn } from "@aback-ui/ui";
@@ -78,6 +79,38 @@ export function DocsSidebar() {
               </ul>
             </div>
           ))}
+        </div>
+
+        <div className="mt-8">
+          <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Blocks
+          </p>
+          <Link
+            href="/docs/blocks"
+            aria-current={pathname === "/docs/blocks" ? "page" : undefined}
+            className={rowClass(pathname === "/docs/blocks")}
+          >
+            All blocks
+            <span className="text-xs font-normal tabular-nums text-muted-foreground">
+              {blocks.length}
+            </span>
+          </Link>
+          <ul className="mt-1 space-y-0.5">
+            {blocks.map((block) => {
+              const href = `/docs/blocks/${block.name}`;
+              return (
+                <li key={block.name}>
+                  <Link
+                    href={href}
+                    aria-current={pathname === href ? "page" : undefined}
+                    className={rowClass(pathname === href)}
+                  >
+                    {block.title}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </div>
 
         <div className="mt-8 border-t border-separator pt-4">

@@ -28,10 +28,28 @@ function resolveRegistryDependencies(dependencies) {
   );
 }
 
-const ITEM_TYPES = new Set(["registry:ui", "registry:lib", "registry:file", "registry:style"]);
-const TARGET_PREFIXES = ["components/ui/", "lib/", "styles/"];
+const ITEM_TYPES = new Set([
+  "registry:ui",
+  "registry:lib",
+  "registry:file",
+  "registry:style",
+  "registry:block",
+]);
+const TARGET_PREFIXES = ["components/ui/", "components/blocks/", "lib/", "styles/"];
 const PEER_PACKAGES = new Set(["react", "react-dom"]);
 const NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+// Must match CATEGORY_ORDER in apps/docs/src/data/component-catalog.ts. A
+// component outside these is silently left out of the catalogue and search.
+const UI_CATEGORIES = new Set([
+  "Foundation",
+  "Layout",
+  "Forms",
+  "Feedback",
+  "Overlays",
+  "Navigation",
+  "Data Display",
+  "Application",
+]);
 
 const errors = [];
 
@@ -59,6 +77,17 @@ function transformForConsumer(content, itemName) {
   output = output.replaceAll('from "../lib/utils"', 'from "@/lib/utils"');
   output = output.replaceAll("from '../lib/utils.js'", 'from "@/lib/utils"');
   output = output.replaceAll("from '../lib/utils'", 'from "@/lib/utils"');
+
+  // Composed components import siblings with a relative path so the package
+  // build resolves them. The installed copy must use the consumer alias and
+  // declare the sibling as a registry dependency instead.
+  output = output.replace(
+    /(from\s+["'])(\.\/([a-z0-9-]+))(["'])/g,
+    (match, prefix, relative, name, closing) => {
+      const sibling = path.join(root, "packages", "ui", "src", "components", `${name}.tsx`);
+      return existsSync(sibling) ? `${prefix}@/components/ui/${name}${closing}` : match;
+    },
+  );
 
   if (output.includes("../lib/utils")) {
     fail(`${itemName}: could not rewrite the lib/utils import`);
@@ -91,6 +120,19 @@ function validateImports(content, item, filePath) {
     if (specifier === "@/lib/utils") {
       if (!hasUtilsDependency) {
         fail(`${filePath}: imports @/lib/utils but the item does not depend on the utils item`);
+      }
+      continue;
+    }
+
+    if (specifier.startsWith("@/components/ui/")) {
+      const sibling = specifier.slice("@/components/ui/".length);
+      const declared = [...registryDependencies].some(
+        (dependency) => dependency === sibling || dependency.endsWith(`/r/${sibling}.json`),
+      );
+      if (!declared) {
+        fail(
+          `${filePath}: imports ${specifier} but the item does not declare the "${sibling}" registry dependency`,
+        );
       }
       continue;
     }
@@ -162,6 +204,12 @@ async function main() {
     }
     if (!item.title || !item.description) {
       fail(`${item.name}: title and description are required`);
+    }
+    if (item.type === "registry:ui") {
+      const category = item.categories?.[0];
+      if (!category || !UI_CATEGORIES.has(category)) {
+        fail(`${item.name}: category "${category}" is not one of ${[...UI_CATEGORIES].join(", ")}`);
+      }
     }
     if (!Array.isArray(item.files) || item.files.length === 0) {
       fail(`${item.name}: at least one file is required`);

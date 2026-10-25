@@ -29,6 +29,26 @@ describe("Badge", () => {
     expect(screen.getByText("Beta")).toHaveAttribute("data-variant", "outline");
   });
 
+  it("supports the soft danger and info status variants", () => {
+    render(
+      <>
+        <Badge variant="danger">Archived</Badge>
+        <Badge variant="info">Beta</Badge>
+      </>,
+    );
+
+    expect(screen.getByText("Archived")).toHaveAttribute("data-variant", "danger");
+    expect(screen.getByText("Beta")).toHaveAttribute("data-variant", "info");
+  });
+
+  it("leads with a decorative dot when asked", () => {
+    const { container } = render(<Badge variant="success" dot>Live</Badge>);
+
+    const dot = container.querySelector("[data-slot='badge-dot']");
+    expect(dot).toHaveAttribute("aria-hidden", "true");
+    expect(screen.getByText("Live")).toHaveTextContent(/^Live$/);
+  });
+
   it("renders as a span so it can sit inside text and buttons", () => {
     const { container } = render(<Badge>v0.1</Badge>);
 

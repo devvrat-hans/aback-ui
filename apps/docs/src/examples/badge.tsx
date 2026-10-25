@@ -31,6 +31,24 @@ export function BadgeExample() {
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
+        <Badge variant="success" dot>
+          Live
+        </Badge>
+        <Badge variant="info" dot>
+          Beta
+        </Badge>
+        <Badge variant="warning" dot>
+          Building
+        </Badge>
+        <Badge variant="muted" dot>
+          Planned
+        </Badge>
+        <Badge variant="danger" dot>
+          Archived
+        </Badge>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
         <Badge variant="outline" className="font-mono text-[11px] font-normal">
           registry:ui
         </Badge>

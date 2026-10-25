@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toast",
+  "type": "registry:ui",
+  "title": "Toast",
+  "description": "Transient status messages with actions, themed by the Aback tokens.",
+  "dependencies": [
+    "@tabler/icons-react",
+    "sonner"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Feedback"
+  ],
+  "docs": "https://abackui.com/docs/components/toast",
+  "meta": {
+    "status": "beta"
+  },
+  "files": [
+    {
+      "path": "components/ui/toaster.tsx",
+      "content": "\"use client\";\n\nimport {\n  IconAlertTriangle,\n  IconCircleCheck,\n  IconCircleX,\n  IconInfoCircle,\n  IconX,\n} from \"@tabler/icons-react\";\nimport {\n  Toaster as SonnerToaster,\n  toast,\n  type ToasterProps as SonnerToasterProps,\n} from \"sonner\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * The toast surface.\n *\n * `Toaster` is the Aback presentation of sonner: the same toast API the rest of\n * the ecosystem uses, drawn with the design tokens instead of sonner's own\n * palette. Mount it once near the root of the app, then call `toast()` from\n * anywhere — including event handlers and non-React modules.\n *\n * The status colours are read from the token layer, so a toast, an `Alert`, and\n * a `Badge` in the same viewport are the same green or red. The normal toast is\n * a popover surface, not a signal. The shape is square, like every other Aback\n * surface.\n *\n * Toasts are supplementary: a message that must be seen belongs inline, next to\n * the thing it is about. Use a toast when the failure has no natural home on the\n * page (an optimistic background mutation) or to confirm an action whose result\n * is no longer visible.\n */\nexport interface ToasterProps\n  extends Omit<SonnerToasterProps, \"className\" | \"style\" | \"theme\"> {\n  /** Force a theme. Defaults to `system`; pass the app's resolved theme when it is class-based. */\n  theme?: \"light\" | \"dark\" | \"system\";\n  className?: string;\n}\n\nconst iconProps = { size: 16, stroke: 2, \"aria-hidden\": true } as const;\n\nconst tokenVariables = {\n  // Neutral toast: a popover surface, so it follows the theme.\n  \"--normal-bg\": \"var(--popover)\",\n  \"--normal-bg-hover\": \"var(--muted)\",\n  \"--normal-border\": \"var(--border)\",\n  \"--normal-border-hover\": \"var(--separator)\",\n  \"--normal-text\": \"var(--popover-foreground)\",\n\n  // Status toasts: the same soft/strong pairs the Alert uses.\n  \"--success-bg\": \"var(--success-soft)\",\n  \"--success-border\": \"color-mix(in oklab, var(--success) 30%, transparent)\",\n  \"--success-text\": \"var(--success-strong)\",\n  \"--error-bg\": \"var(--danger-soft)\",\n  \"--error-border\": \"color-mix(in oklab, var(--danger) 30%, transparent)\",\n  \"--error-text\": \"var(--danger-strong)\",\n  \"--warning-bg\": \"var(--warning-soft)\",\n  \"--warning-border\": \"color-mix(in oklab, var(--warning) 30%, transparent)\",\n  \"--warning-text\": \"var(--warning-strong)\",\n  \"--info-bg\": \"var(--info-soft)\",\n  \"--info-border\": \"color-mix(in oklab, var(--info) 30%, transparent)\",\n  \"--info-text\": \"var(--info)\",\n\n  // Square everywhere, like the rest of the system.\n  \"--border-radius\": \"0px\",\n  \"--width\": \"22.5rem\",\n} as React.CSSProperties;\n\nfunction Toaster({\n  theme = \"system\",\n  position = \"top-right\",\n  closeButton = true,\n  richColors = true,\n  className,\n  toastOptions,\n  ...props\n}: ToasterProps) {\n  return (\n    <SonnerToaster\n      theme={theme}\n      position={position}\n      closeButton={closeButton}\n      richColors={richColors}\n      className={cn(\"font-sans\", className)}\n      style={{ ...tokenVariables, fontFamily: \"var(--font-sans)\" }}\n      icons={{\n        success: <IconCircleCheck {...iconProps} />,\n        error: <IconCircleX {...iconProps} />,\n        warning: <IconAlertTriangle {...iconProps} />,\n        info: <IconInfoCircle {...iconProps} />,\n        close: <IconX size={13} stroke={2} aria-hidden=\"true\" />,\n      }}\n      toastOptions={{\n        ...toastOptions,\n        classNames: {\n          toast: \"!rounded-none !p-3.5 !gap-2.5\",\n          title: \"!text-sm !font-semibold\",\n          description: \"!text-xs !leading-relaxed\",\n          actionButton:\n            \"!rounded-none !bg-primary !text-primary-foreground !text-xs !font-semibold\",\n          cancelButton:\n            \"!rounded-none !bg-muted !text-foreground !text-xs !font-semibold\",\n          closeButton:\n            \"!rounded-none !border-border !bg-popover !text-muted-foreground hover:!text-foreground\",\n          ...toastOptions?.classNames,\n        },\n      }}\n      {...props}\n    />\n  );\n}\n\nexport { Toaster, toast };\n",
+      "type": "registry:ui",
+      "target": "components/ui/toaster.tsx"
+    }
+  ]
+}

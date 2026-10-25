@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "share-buttons",
+  "type": "registry:ui",
+  "title": "Share Buttons",
+  "description": "Share links for X, LinkedIn, and more, with copy link and the native share sheet.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json",
+    "https://abackui.com/r/button.json",
+    "https://abackui.com/r/copy-button.json"
+  ],
+  "categories": [
+    "Application"
+  ],
+  "docs": "https://abackui.com/docs/components/share-buttons",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/share-buttons.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport {\n  IconBrandFacebook,\n  IconBrandLinkedin,\n  IconBrandReddit,\n  IconBrandWhatsapp,\n  IconBrandX,\n  IconMail,\n  IconShare,\n  type Icon,\n} from \"@tabler/icons-react\";\n\nimport { cn } from \"@/lib/utils\";\nimport { buttonVariants } from \"@/components/ui/button\";\nimport { CopyButton } from \"@/components/ui/copy-button\";\n\nexport type ShareNetwork = \"x\" | \"linkedin\" | \"facebook\" | \"whatsapp\" | \"reddit\" | \"email\";\n\ninterface NetworkConfig {\n  name: string;\n  icon: Icon;\n  href: (url: string, title: string) => string;\n}\n\nconst networks: Record<ShareNetwork, NetworkConfig> = {\n  x: {\n    name: \"X\",\n    icon: IconBrandX,\n    href: (url, title) =>\n      `https://x.com/intent/post?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,\n  },\n  linkedin: {\n    name: \"LinkedIn\",\n    icon: IconBrandLinkedin,\n    href: (url) => `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,\n  },\n  facebook: {\n    name: \"Facebook\",\n    icon: IconBrandFacebook,\n    href: (url) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,\n  },\n  whatsapp: {\n    name: \"WhatsApp\",\n    icon: IconBrandWhatsapp,\n    href: (url, title) => `https://wa.me/?text=${encodeURIComponent(title ? `${title} ${url}` : url)}`,\n  },\n  reddit: {\n    name: \"Reddit\",\n    icon: IconBrandReddit,\n    href: (url, title) =>\n      `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`,\n  },\n  email: {\n    name: \"email\",\n    icon: IconMail,\n    href: (url, title) =>\n      `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`,\n  },\n};\n\n/** Builds the share URL for one network. Exported for custom layouts. */\nfunction shareUrl(network: ShareNetwork, url: string, title = \"\") {\n  return networks[network].href(url, title);\n}\n\nfunction subscribeNothing() {\n  return () => {};\n}\n\nexport interface ShareButtonsProps extends Omit<React.ComponentProps<\"div\">, \"title\"> {\n  /** The absolute URL being shared. */\n  url: string;\n  /** Used as the post text or email subject where the network supports it. */\n  title?: string;\n  networks?: ShareNetwork[];\n  /** Add a copy-link button. */\n  copyLink?: boolean;\n  /** Add a native share button where the browser offers the Web Share API. */\n  nativeShare?: boolean;\n  /** Show network names next to the icons. */\n  showLabels?: boolean;\n}\n\n/**\n * Share links for a page. Each network is a plain link that opens in a new\n * tab with `noopener`, so nothing loads from a third party until someone\n * chooses to share. Every control has an accessible name.\n */\nfunction ShareButtons({\n  url,\n  title = \"\",\n  networks: selected = [\"x\", \"linkedin\"],\n  copyLink = true,\n  nativeShare = false,\n  showLabels = false,\n  className,\n  \"aria-label\": ariaLabel = \"Share\",\n  ...props\n}: ShareButtonsProps) {\n  const canShare = React.useSyncExternalStore(\n    subscribeNothing,\n    () => typeof navigator !== \"undefined\" && typeof navigator.share === \"function\",\n    () => false,\n  );\n  const size = showLabels ? \"sm\" : \"icon-sm\";\n\n  return (\n    <div\n      role=\"group\"\n      aria-label={ariaLabel}\n      data-slot=\"share-buttons\"\n      className={cn(\"flex flex-wrap items-center gap-1.5\", className)}\n      {...props}\n    >\n      {nativeShare && canShare ? (\n        <button\n          type=\"button\"\n          className={buttonVariants({ variant: \"outline\", size })}\n          aria-label={showLabels ? undefined : \"Share\"}\n          onClick={() => {\n            navigator.share({ url, title: title || undefined }).catch(() => {\n              // The visitor closed the share sheet; nothing to report.\n            });\n          }}\n        >\n          <IconShare aria-hidden=\"true\" />\n          {showLabels ? \"Share\" : null}\n        </button>\n      ) : null}\n      {selected.map((network) => {\n        const config = networks[network];\n        const Icon = config.icon;\n        const label = network === \"email\" ? \"Share by email\" : `Share on ${config.name}`;\n        return (\n          <a\n            key={network}\n            href={shareUrl(network, url, title)}\n            target={network === \"email\" ? undefined : \"_blank\"}\n            rel={network === \"email\" ? undefined : \"noopener noreferrer\"}\n            aria-label={showLabels ? undefined : label}\n            title={showLabels ? undefined : label}\n            className={cn(buttonVariants({ variant: \"outline\", size }), \"text-muted-foreground hover:text-foreground\")}\n          >\n            <Icon aria-hidden=\"true\" />\n            {showLabels ? <span>{network === \"email\" ? \"Email\" : config.name}</span> : null}\n          </a>\n        );\n      })}\n      {copyLink ? (\n        <CopyButton\n          value={url}\n          variant=\"outline\"\n          label=\"Copy link\"\n          copiedLabel=\"Link copied\"\n          showLabel={showLabels}\n          className=\"text-muted-foreground hover:text-foreground\"\n        />\n      ) : null}\n    </div>\n  );\n}\n\nexport { ShareButtons, shareUrl };\n",
+      "type": "registry:ui",
+      "target": "components/ui/share-buttons.tsx"
+    }
+  ]
+}

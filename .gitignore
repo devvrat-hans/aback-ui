@@ -11,3 +11,7 @@ coverage/
 .eslintcache
 .vercel
 .work/
+tests/consumer/tarballs/
+tests/consumer/node_modules/
+tests/consumer/bun.lock
+tests/consumer/.tailwind-check/

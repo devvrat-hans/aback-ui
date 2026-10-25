@@ -18,7 +18,8 @@
   "meta": {
     "status": "stable",
     "usedIn": [
-      "aback-launch"
+      "aback-launch",
+      "aback-group"
     ]
   },
   "files": [

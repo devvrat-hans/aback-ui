@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "stat",
+  "type": "registry:ui",
+  "title": "Stat",
+  "description": "A labelled number with unit, trend, hint, and tone, plus a responsive grid.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Data Display"
+  ],
+  "docs": "https://abackui.com/docs/components/stat",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/stat.tsx",
+      "content": "import * as React from \"react\";\nimport { IconArrowDownRight, IconArrowRight, IconArrowUpRight } from \"@tabler/icons-react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport type StatTone = \"neutral\" | \"success\" | \"warning\" | \"danger\" | \"info\";\n\nconst toneText: Record<StatTone, string> = {\n  neutral: \"text-foreground\",\n  success: \"text-success\",\n  warning: \"text-warning\",\n  danger: \"text-danger\",\n  info: \"text-info\",\n};\n\nconst toneBorder: Record<StatTone, string> = {\n  neutral: \"border-border\",\n  success: \"border-success/30\",\n  warning: \"border-warning/30\",\n  danger: \"border-danger/30\",\n  info: \"border-info/30\",\n};\n\nconst toneSurface: Record<StatTone, string> = {\n  neutral: \"border-border bg-muted/40\",\n  success: \"border-success/30 bg-success-soft\",\n  warning: \"border-warning/30 bg-warning-soft\",\n  danger: \"border-danger/30 bg-danger-soft\",\n  info: \"border-info/30 bg-info-soft\",\n};\n\nconst valueSize = {\n  sm: \"text-sm\",\n  default: \"text-xl leading-tight\",\n  lg: \"text-3xl leading-none tracking-tight\",\n} as const;\n\nexport interface StatTrend {\n  direction: \"up\" | \"down\" | \"flat\";\n  /** Words that carry the change on their own, such as \"+12% vs last week\". */\n  label: string;\n  /** Defaults to success for up, danger for down, neutral for flat. */\n  tone?: StatTone;\n}\n\nconst defaultTrendTone: Record<StatTrend[\"direction\"], StatTone> = {\n  up: \"success\",\n  down: \"danger\",\n  flat: \"neutral\",\n};\n\nconst trendIcon = {\n  up: IconArrowUpRight,\n  down: IconArrowDownRight,\n  flat: IconArrowRight,\n} as const;\n\nexport interface StatProps extends Omit<React.ComponentProps<\"div\">, \"children\"> {\n  label: React.ReactNode;\n  /** The formatted value: \"$1,234\", \"42%\", \"3 h 20 min\". */\n  value: React.ReactNode;\n  /** A unit after the value, in muted text. */\n  unit?: React.ReactNode;\n  /** A sub-line under the value. */\n  hint?: React.ReactNode;\n  /** A 16px icon, shown in a brand chip. Decorative. */\n  icon?: React.ReactNode;\n  /** Colours the value. Pair it with words in the label, hint, or a badge. */\n  tone?: StatTone;\n  /** Tints the whole tile with the tone, for a recommended or alert tile. */\n  emphasis?: boolean;\n  /** A badge after the label. */\n  badge?: React.ReactNode;\n  trend?: StatTrend;\n  size?: keyof typeof valueSize;\n}\n\n/**\n * One labelled number. The label and value are a real description list, so\n * the label is announced with the value. Change the value freely; it is not a\n * live region, so a ticking number does not interrupt a screen reader.\n */\nfunction Stat({\n  label,\n  value,\n  unit,\n  hint,\n  icon,\n  tone = \"neutral\",\n  emphasis = false,\n  badge,\n  trend,\n  size = \"default\",\n  className,\n  ...props\n}: StatProps) {\n  const TrendIcon = trend ? trendIcon[trend.direction] : null;\n  const trendTone = trend ? (trend.tone ?? defaultTrendTone[trend.direction]) : \"neutral\";\n\n  return (\n    <div\n      data-slot=\"stat\"\n      data-tone={tone}\n      className={cn(\n        \"flex min-w-0 items-start gap-3 border p-4\",\n        emphasis ? toneSurface[tone] : cn(\"bg-card\", toneBorder[tone]),\n        className,\n      )}\n      {...props}\n    >\n      {icon ? (\n        <span\n          aria-hidden=\"true\"\n          className=\"flex size-9 shrink-0 items-center justify-center bg-brand-chip text-brand-icon [&_svg:not([class*='size-'])]:size-4\"\n        >\n          {icon}\n        </span>\n      ) : null}\n      <dl className=\"flex min-w-0 flex-1 flex-col gap-1\">\n        <dt className=\"flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium text-muted-foreground\">\n          {label}\n          {badge}\n        </dt>\n        <dd\n          data-slot=\"stat-value\"\n          className={cn(\"font-semibold tabular-nums break-words\", valueSize[size], toneText[tone])}\n        >\n          {value}\n          {unit ? (\n            <span className=\"ml-1 text-xs font-normal tracking-normal text-muted-foreground\">\n              {unit}\n            </span>\n          ) : null}\n        </dd>\n        {trend && TrendIcon ? (\n          <dd\n            data-slot=\"stat-trend\"\n            data-direction={trend.direction}\n            className={cn(\"flex items-center gap-1 text-xs font-medium\", toneText[trendTone])}\n          >\n            <TrendIcon aria-hidden=\"true\" className=\"size-3.5 shrink-0\" />\n            {trend.label}\n          </dd>\n        ) : null}\n        {hint ? <dd className=\"text-xs text-muted-foreground\">{hint}</dd> : null}\n      </dl>\n    </div>\n  );\n}\n\nconst gridColumns = {\n  2: \"grid-cols-1 sm:grid-cols-2\",\n  3: \"grid-cols-1 sm:grid-cols-2 xl:grid-cols-3\",\n  4: \"grid-cols-1 sm:grid-cols-2 xl:grid-cols-4\",\n} as const;\n\nexport interface StatGridProps extends React.ComponentProps<\"div\"> {\n  /** Columns at the widest breakpoint. Always one column on phones. */\n  columns?: keyof typeof gridColumns;\n  /** Draws the stats as one joined panel with hairline dividers. */\n  joined?: boolean;\n}\n\n/** A responsive grid of Stat tiles. */\nfunction StatGrid({ columns = 3, joined = false, className, ...props }: StatGridProps) {\n  return (\n    <div\n      data-slot=\"stat-grid\"\n      className={cn(\n        \"grid\",\n        gridColumns[columns],\n        joined\n          ? \"gap-px border border-border bg-border [&>[data-slot=stat]]:border-0\"\n          : \"gap-3\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Stat, StatGrid };\n",
+      "type": "registry:ui",
+      "target": "components/ui/stat.tsx"
+    }
+  ]
+}

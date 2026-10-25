@@ -1,5 +1,5 @@
 export interface Product {
-  slug: "aback-tools" | "aback-launch";
+  slug: "aback-tools" | "aback-launch" | "aback-group";
   name: string;
   url: string;
   tagline: string;
@@ -25,6 +25,15 @@ export const products: Product[] = [
     description:
       "A launch and discovery platform for products. Its forms, dialogs, data tables, and status surfaces shaped the overlay and feedback components.",
     detail: "Overlay, form, and data patterns from a production product.",
+  },
+  {
+    slug: "aback-group",
+    name: "Aback Group",
+    url: "https://aback.group",
+    tagline: "Software, tools, and technology products.",
+    description:
+      "The umbrella site and product directory for the Aback ecosystem. Its header, command menu, section headings, and status badges shaped the application patterns.",
+    detail: "Directory, navigation, and status patterns from the group site.",
   },
 ];
 

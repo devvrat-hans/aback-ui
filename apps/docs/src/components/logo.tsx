@@ -4,6 +4,11 @@ import { cn } from "@aback-ui/ui";
 
 import { site } from "@/data/site";
 
+/**
+ * The Aback mark and the Aback UI wordmark. The mark is the same 128px PNG
+ * Aback Tools and Aback Group ship, so the brand renders identically across
+ * the products and in every browser.
+ */
 export function Logo({
   className,
   showText = true,
@@ -13,41 +18,31 @@ export function Logo({
   showText?: boolean;
   size?: "sm" | "md";
 }) {
-  const markSize = size === "sm" ? "size-6" : "size-8";
+  const markSize = size === "sm" ? 24 : 32;
   const textSize = size === "sm" ? "text-base" : "text-lg";
 
   return (
     <Link
       href="/"
-      aria-label={showText ? undefined : site.name}
+      aria-label={showText ? undefined : `${site.name} home`}
       className={cn(
-        "group flex items-center gap-2.5 font-bold tracking-tight text-primary-700 outline-none",
+        "group flex items-center gap-2 font-bold tracking-tight text-foreground outline-none",
         "focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-        "dark:text-primary-400",
         className,
       )}
     >
-      <span
-        aria-hidden="true"
-        className={cn(
-          "block shrink-0 bg-current transition-transform duration-200 group-hover:scale-105",
-          "motion-reduce:transition-none motion-reduce:group-hover:scale-100",
-          markSize,
-        )}
-        style={{
-          maskImage: "url(/aback-mark.svg)",
-          WebkitMaskImage: "url(/aback-mark.svg)",
-          maskSize: "contain",
-          WebkitMaskSize: "contain",
-          maskRepeat: "no-repeat",
-          WebkitMaskRepeat: "no-repeat",
-          maskPosition: "center",
-          WebkitMaskPosition: "center",
-        }}
+      <img
+        src="/aback-logo-128.png"
+        alt=""
+        width={markSize}
+        height={markSize}
+        decoding="async"
+        fetchPriority="high"
+        className="shrink-0 object-contain transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
       />
       {showText ? (
-        <span className={cn(textSize, "transition-colors group-hover:text-primary-800 dark:group-hover:text-primary-300")}>
-          {site.name}
+        <span className={cn(textSize, "whitespace-nowrap")}>
+          Aback <span className="text-link transition-colors group-hover:text-link-hover">UI</span>
         </span>
       ) : null}
     </Link>

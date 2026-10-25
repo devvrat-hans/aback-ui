@@ -26,10 +26,16 @@ Accessibility is part of correctness, not a polish phase. This document states w
 | Accordion | Enter/Space toggles the focused header; arrows move between headers |
 | Tooltip | Focus or hover reveals; Escape dismisses |
 | Select | Native browser behavior (the component renders a real `select`) |
+| Rating | Native radio group: Tab enters, arrows change the rating, Space selects or clears |
+| Dropzone | Tab focuses the hidden file input (the frame shows the ring); Enter or Space opens the picker |
+| Copy Button | Enter or Space copies; the result is announced in a polite live region |
+| Skip Link | First Tab stop on the page; Enter moves focus to `#main-content` |
+| Table of Contents | Ordinary links; the section in view carries `aria-current="location"` |
+| Block preview width | Toggle group: arrows move between Desktop, Tablet, and Mobile |
 
 ## Automated checks
 
-- `bun run test` runs component behavior tests and axe checks on representative renders.
+- `bun run test` runs component behavior tests and axe checks on representative renders, plus an axe check on every block preview (`apps/docs/src/blocks/blocks.test.tsx`). Those checks have already caught duplicate heading ids, indistinguishable landmarks, and a skipped heading level in block previews.
 - axe runs in jsdom. It cannot evaluate computed color contrast, so contrast is verified from measured token pairs in `DESIGN.md` and reviewed visually.
 - The docs site is checked for one H1 per page, landmarks, skip link, and keyboard-operable navigation.
 

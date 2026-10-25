@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { components } from "@/data/component-catalog";
+import { blocks } from "@/data/blocks";
 import { site } from "@/data/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -11,7 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       { url: "/", priority: 1, changeFrequency: "weekly" },
       { url: "/docs", priority: 0.9, changeFrequency: "weekly" },
       { url: "/docs/installation", priority: 0.9, changeFrequency: "weekly" },
+      { url: "/docs/cli", priority: 0.8, changeFrequency: "weekly" },
       { url: "/docs/components", priority: 0.9, changeFrequency: "weekly" },
+      { url: "/docs/blocks", priority: 0.9, changeFrequency: "weekly" },
       { url: "/docs/theming", priority: 0.8, changeFrequency: "monthly" },
       { url: "/docs/tokens", priority: 0.8, changeFrequency: "monthly" },
       { url: "/docs/registry", priority: 0.8, changeFrequency: "monthly" },
@@ -31,5 +34,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...componentRoutes];
+  const blockRoutes: MetadataRoute.Sitemap = blocks.map((block) => ({
+    url: `${site.url}/docs/blocks/${block.name}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...componentRoutes, ...blockRoutes];
 }

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "newsletter",
+  "type": "registry:block",
+  "title": "Newsletter signup",
+  "description": "An email signup with real submitting, success, and error states driven by your subscribe call.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json",
+    "https://abackui.com/r/button.json",
+    "https://abackui.com/r/input-group.json",
+    "https://abackui.com/r/spinner.json"
+  ],
+  "categories": [
+    "Marketing"
+  ],
+  "docs": "https://abackui.com/docs/blocks/newsletter",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/blocks/newsletter.tsx",
+      "content": "\"use client\";\n\nimport { useId, useState, type FormEvent, type ReactNode } from \"react\";\nimport { IconAlertCircle, IconCircleCheck, IconMail } from \"@tabler/icons-react\";\n\nimport { Button } from \"@/components/ui/button\";\nimport { InputGroup, InputGroupAddon, InputGroupInput } from \"@/components/ui/input-group\";\nimport { Spinner } from \"@/components/ui/spinner\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface NewsletterResult {\n  ok: boolean;\n  /** Shown to the visitor. Say what happens next, such as \"Check your inbox to confirm.\" */\n  message: string;\n}\n\nexport interface NewsletterBlockProps {\n  title?: ReactNode;\n  description?: ReactNode;\n  /** Your subscribe call. The block shows its result and never claims success on its own. */\n  onSubscribe: (email: string) => Promise<NewsletterResult>;\n  buttonLabel?: string;\n  /** What you send and how to leave, shown under the form. */\n  consent?: ReactNode;\n  /** \"card\" is a bordered panel; \"inline\" sits in a sidebar or footer. */\n  variant?: \"card\" | \"inline\";\n}\n\ntype Status = { state: \"idle\" } | { state: \"submitting\" } | { state: \"done\"; result: NewsletterResult };\n\n/**\n * An email signup with real submission states. It validates with the\n * browser's email type, disables itself while submitting, and announces the\n * result your `onSubscribe` returns.\n */\nexport function NewsletterBlock({\n  title = \"Get product updates\",\n  description = \"One email when something ships. No tracking pixels.\",\n  onSubscribe,\n  buttonLabel = \"Subscribe\",\n  consent,\n  variant = \"card\",\n}: NewsletterBlockProps) {\n  const id = useId();\n  const [email, setEmail] = useState(\"\");\n  const [status, setStatus] = useState<Status>({ state: \"idle\" });\n  const submitting = status.state === \"submitting\";\n  const result = status.state === \"done\" ? status.result : null;\n\n  async function handleSubmit(event: FormEvent<HTMLFormElement>) {\n    event.preventDefault();\n    setStatus({ state: \"submitting\" });\n    try {\n      const outcome = await onSubscribe(email.trim());\n      setStatus({ state: \"done\", result: outcome });\n      if (outcome.ok) setEmail(\"\");\n    } catch {\n      setStatus({\n        state: \"done\",\n        result: { ok: false, message: \"Something went wrong. Try again in a moment.\" },\n      });\n    }\n  }\n\n  return (\n    <section\n      aria-labelledby={`${id}-title`}\n      className={cn(\n        \"flex flex-col gap-4\",\n        variant === \"card\" && \"border border-border bg-card p-6 sm:p-8\",\n      )}\n    >\n      <div className=\"flex flex-col gap-1.5\">\n        <h2 id={`${id}-title`} className={cn(\"font-semibold text-foreground\", variant === \"card\" ? \"text-xl\" : \"text-sm\")}>\n          {title}\n        </h2>\n        {description ? (\n          <p className={cn(\"text-muted-foreground\", variant === \"card\" ? \"text-sm\" : \"text-xs\")}>{description}</p>\n        ) : null}\n      </div>\n\n      <form onSubmit={handleSubmit} className=\"flex flex-col gap-2 sm:flex-row\">\n        <label htmlFor={`${id}-email`} className=\"sr-only\">\n          Email address\n        </label>\n        <InputGroup className=\"flex-1\">\n          <InputGroupAddon variant=\"inline\">\n            <IconMail aria-hidden=\"true\" />\n          </InputGroupAddon>\n          <InputGroupInput\n            id={`${id}-email`}\n            name=\"email\"\n            type=\"email\"\n            autoComplete=\"email\"\n            inputMode=\"email\"\n            required\n            placeholder=\"you@company.com\"\n            value={email}\n            onChange={(event) => setEmail(event.target.value)}\n            disabled={submitting}\n            aria-invalid={result && !result.ok ? true : undefined}\n            aria-describedby={result ? `${id}-result` : undefined}\n          />\n        </InputGroup>\n        <Button type=\"submit\" disabled={submitting} className=\"sm:w-auto\">\n          {submitting ? <Spinner aria-hidden=\"true\" size=\"sm\" className=\"text-current\" /> : null}\n          {submitting ? \"Subscribing\" : buttonLabel}\n        </Button>\n      </form>\n\n      <div role=\"status\" id={`${id}-result`}>\n        {result ? (\n          <p\n            className={cn(\n              \"flex items-start gap-2 border p-3 text-sm\",\n              result.ok\n                ? \"border-success/30 bg-success-soft text-success-strong\"\n                : \"border-danger/30 bg-danger-soft text-danger-strong\",\n            )}\n          >\n            {result.ok ? (\n              <IconCircleCheck aria-hidden=\"true\" className=\"mt-0.5 size-4 shrink-0\" />\n            ) : (\n              <IconAlertCircle aria-hidden=\"true\" className=\"mt-0.5 size-4 shrink-0\" />\n            )}\n            {result.message}\n          </p>\n        ) : null}\n      </div>\n\n      {consent ? <p className=\"text-xs leading-relaxed text-muted-foreground\">{consent}</p> : null}\n    </section>\n  );\n}\n",
+      "type": "registry:block",
+      "target": "components/blocks/newsletter.tsx"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "calendar",
+  "type": "registry:ui",
+  "title": "Calendar",
+  "description": "A square-cornered month grid with single, multiple, and range selection.",
+  "dependencies": [
+    "@tabler/icons-react",
+    "react-day-picker"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Data Display"
+  ],
+  "docs": "https://abackui.com/docs/components/calendar",
+  "meta": {
+    "status": "beta"
+  },
+  "files": [
+    {
+      "path": "components/ui/calendar.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport {\n  DayPicker,\n  type ClassNames,\n  type CustomComponents,\n  type DayPickerProps,\n} from \"react-day-picker\";\nimport { IconChevronDown, IconChevronLeft, IconChevronRight, IconChevronUp } from \"@tabler/icons-react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/** The `{ from, to }` shape used by range mode, re-exported so consumers do not need a direct dependency. */\nexport type { DateRange } from \"react-day-picker\";\n\nexport type CalendarProps = DayPickerProps & {\n  className?: string;\n  /**\n   * Override individual slots. Slots you omit keep the Aback styling, so a\n   * consumer can adjust one element without restyling the whole calendar.\n   */\n  classNames?: Partial<ClassNames>;\n};\n\nconst DEFAULT_FORMAT: Intl.DateTimeFormatOptions = {\n  month: \"short\",\n  day: \"numeric\",\n  year: \"numeric\",\n};\n\n/** Format a date in the visitor's locale, without pulling in a date library. */\nexport function formatCalendarDate(\n  date: Date,\n  locale?: string,\n  options: Intl.DateTimeFormatOptions = DEFAULT_FORMAT,\n): string {\n  return new Intl.DateTimeFormat(locale, options).format(date);\n}\n\nconst navButton =\n  \"absolute top-0 z-10 inline-flex size-8 items-center justify-center border border-transparent text-muted-foreground transition-colors \" +\n  \"hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring \" +\n  \"disabled:pointer-events-none disabled:opacity-40\";\n\nconst defaultClassNames: Partial<ClassNames> = {\n  root: \"relative w-fit\",\n  months: \"flex flex-col gap-4 sm:flex-row sm:gap-6\",\n  month: \"relative flex flex-col gap-3\",\n  month_caption: \"flex h-8 items-center justify-center px-9\",\n  caption_label: \"text-sm font-semibold text-foreground\",\n  nav: \"contents\",\n  button_previous: cn(navButton, \"left-0\"),\n  button_next: cn(navButton, \"right-0\"),\n  chevron: \"size-4\",\n  month_grid: \"w-full border-collapse\",\n  weekdays: \"\",\n  weekday:\n    \"h-8 w-9 p-0 text-[11px] font-medium uppercase tracking-wide text-muted-foreground\",\n  week: \"\",\n  day: \"p-0 text-center align-middle\",\n  day_button:\n    \"mx-auto flex size-9 items-center justify-center text-sm font-normal text-foreground transition-colors \" +\n    \"hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus-ring \" +\n    \"disabled:pointer-events-none disabled:opacity-40\",\n  selected:\n    \"[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:font-medium\",\n  today: \"[&:not([data-selected=true])>button]:font-semibold [&:not([data-selected=true])>button]:text-brand\",\n  outside: \"[&>button]:text-muted-foreground/60 [&>button]:hover:text-foreground\",\n  disabled: \"[&>button]:text-muted-foreground/40 [&>button]:line-through\",\n  hidden: \"invisible\",\n  range_middle:\n    \"[&[data-selected=true].rdp-range_middle>button]:bg-muted \" +\n    \"[&[data-selected=true].rdp-range_middle>button]:text-foreground \" +\n    \"[&[data-selected=true].rdp-range_middle>button]:hover:bg-muted\",\n  dropdowns: \"flex items-center justify-center gap-2 px-9\",\n  dropdown_root: \"relative inline-flex items-center\",\n  dropdown:\n    \"h-8 appearance-none border border-input bg-background px-2 pr-6 text-sm text-foreground outline-none \" +\n    \"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-focus-ring\",\n  footer: \"border-t border-border px-2 pt-3 text-xs text-muted-foreground\",\n};\n\nconst defaultComponents: Partial<CustomComponents> = {\n  Chevron: ({ orientation = \"left\", className, size = 16 }) => {\n    const Icon =\n      orientation === \"left\"\n        ? IconChevronLeft\n        : orientation === \"right\"\n          ? IconChevronRight\n          : orientation === \"up\"\n            ? IconChevronUp\n            : IconChevronDown;\n    return <Icon aria-hidden=\"true\" className={cn(\"size-4\", className)} size={size} />;\n  },\n};\n\n/**\n * A month calendar with single, multiple, and range selection.\n *\n * The calendar is a composed control: use it on its own, inside a `Popover`\n * (see `DatePicker`), or inside a dialog. Every date is a real button inside a\n * `grid`, so arrow-key navigation, Home/End, Page Up/Page Down, and the\n * announced selected state come from react-day-picker's accessible grid.\n */\nfunction Calendar({\n  className,\n  classNames,\n  components,\n  showOutsideDays = true,\n  navLayout = \"around\",\n  ...props\n}: CalendarProps) {\n  return (\n    <DayPicker\n      showOutsideDays={showOutsideDays}\n      navLayout={navLayout}\n      className={cn(\"w-fit bg-background p-3 text-foreground\", className)}\n      classNames={{ ...defaultClassNames, ...classNames }}\n      components={{ ...defaultComponents, ...components }}\n      {...props}\n    />\n  );\n}\n\nexport { Calendar };\n",
+      "type": "registry:ui",
+      "target": "components/ui/calendar.tsx"
+    }
+  ]
+}

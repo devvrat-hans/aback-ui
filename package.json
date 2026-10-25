@@ -11,17 +11,21 @@
   ],
   "scripts": {
     "dev": "bun --filter @aback-ui/docs dev",
-    "build": "bun run build:ui && bun run build:registry && bun run --filter @aback-ui/docs build",
+    "build": "bun run build:ui && bun run build:cli && bun run build:registry && bun run --filter @aback-ui/docs build",
     "build:ui": "bun --filter @aback-ui/ui build",
+    "build:cli": "bun --filter @aback-ui/cli build",
     "build:registry": "bun scripts/build-registry.mjs",
     "check:registry": "bun scripts/build-registry.mjs --check",
-    "test": "bun --filter @aback-ui/ui test",
+    "test": "bun --filter @aback-ui/ui test && bun --filter @aback-ui/cli test && bun --filter @aback-ui/docs test",
+    "test:cli": "bun --filter @aback-ui/cli test",
     "test:watch": "bun --filter @aback-ui/ui test:watch",
-    "typecheck": "bun --filter @aback-ui/ui typecheck && bun --filter @aback-ui/docs typecheck",
+    "typecheck": "bun --filter @aback-ui/cli typecheck && bun --filter @aback-ui/ui typecheck && bun --filter @aback-ui/docs typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "check": "bun run typecheck && bun run lint && bun run test && bun run check:registry",
-    "smoke:package": "bun scripts/check-package.mjs"
+    "check": "bun run typecheck && bun run lint && bun run test && bun run check:registry && bun run test:consumer",
+    "smoke:package": "bun scripts/check-package.mjs",
+    "test:consumer": "bun scripts/check-consumer.mjs",
+    "test:blocks": "bun --filter @aback-ui/docs test"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

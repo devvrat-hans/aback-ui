@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "table-of-contents",
+  "type": "registry:ui",
+  "title": "Table of Contents",
+  "description": "An \"On this page\" list of anchors that tracks the section in view.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Navigation"
+  ],
+  "docs": "https://abackui.com/docs/components/table-of-contents",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/table-of-contents.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { IconList } from \"@tabler/icons-react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport interface TableOfContentsItem {\n  /** The id of the heading on the page, without the hash. */\n  id: string;\n  title: React.ReactNode;\n  /** Heading depth relative to the first level. 1 is a top-level section. */\n  depth?: 1 | 2 | 3;\n}\n\nexport interface TableOfContentsProps extends Omit<React.ComponentProps<\"nav\">, \"children\" | \"title\"> {\n  items: TableOfContentsItem[];\n  /** Visible heading of the list. Also names the navigation landmark. */\n  title?: React.ReactNode;\n  /**\n   * Distance from the top of the viewport, in pixels, where a heading counts\n   * as reached. Set it to the height of a sticky header.\n   */\n  offset?: number;\n  /** Disable scroll tracking, for a static list. */\n  trackActive?: boolean;\n}\n\nconst depthIndent = {\n  1: \"pl-3\",\n  2: \"pl-6\",\n  3: \"pl-9\",\n} as const;\n\n/**\n * An \"On this page\" list that follows the reader. Links are real anchors, so\n * they work without JavaScript and update the URL hash; the active section is\n * tracked with an IntersectionObserver and marked with `aria-current`.\n */\nfunction TableOfContents({\n  items,\n  title = \"On this page\",\n  offset = 96,\n  trackActive = true,\n  className,\n  \"aria-label\": ariaLabel,\n  ...props\n}: TableOfContentsProps) {\n  const headingId = React.useId();\n  const [active, setActive] = React.useState<string | null>(null);\n  const ids = items.map((item) => item.id).join(\"|\");\n\n  React.useEffect(() => {\n    if (!trackActive || typeof IntersectionObserver === \"undefined\") return;\n    const targets = ids\n      .split(\"|\")\n      .map((id) => document.getElementById(id))\n      .filter((element): element is HTMLElement => element !== null);\n    if (targets.length === 0) return;\n\n    const visible = new Set<string>();\n    const observer = new IntersectionObserver(\n      (entries) => {\n        for (const entry of entries) {\n          if (entry.isIntersecting) visible.add(entry.target.id);\n          else visible.delete(entry.target.id);\n        }\n        const first = targets.find((target) => visible.has(target.id));\n        if (first) setActive(first.id);\n      },\n      { rootMargin: `-${offset}px 0px -55% 0px`, threshold: 0 },\n    );\n    targets.forEach((target) => observer.observe(target));\n    return () => observer.disconnect();\n  }, [ids, offset, trackActive]);\n\n  if (items.length === 0) return null;\n\n  return (\n    <nav\n      data-slot=\"table-of-contents\"\n      aria-label={ariaLabel}\n      aria-labelledby={ariaLabel ? undefined : headingId}\n      className={cn(\"flex flex-col gap-2\", className)}\n      {...props}\n    >\n      <p\n        id={headingId}\n        className=\"flex items-center gap-2 border-b border-border pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground\"\n      >\n        <IconList aria-hidden=\"true\" className=\"size-4 text-brand-icon\" />\n        {title}\n      </p>\n      <ul className=\"flex flex-col\">\n        {items.map((item) => {\n          const current = active === item.id;\n          return (\n            <li key={item.id}>\n              <a\n                href={`#${item.id}`}\n                aria-current={current ? \"location\" : undefined}\n                onClick={() => setActive(item.id)}\n                className={cn(\n                  \"block border-l-2 py-1.5 pr-2 text-xs leading-snug outline-none transition-colors duration-150\",\n                  \"focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus-ring\",\n                  depthIndent[item.depth ?? 1],\n                  current\n                    ? \"border-primary-500 bg-brand-wash font-semibold text-link\"\n                    : \"border-transparent text-muted-foreground hover:border-border hover:text-foreground\",\n                )}\n              >\n                {item.title}\n              </a>\n            </li>\n          );\n        })}\n      </ul>\n    </nav>\n  );\n}\n\nexport { TableOfContents };\n",
+      "type": "registry:ui",
+      "target": "components/ui/table-of-contents.tsx"
+    }
+  ]
+}

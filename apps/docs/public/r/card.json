@@ -15,7 +15,8 @@
     "status": "stable",
     "usedIn": [
       "aback-tools",
-      "aback-launch"
+      "aback-launch",
+      "aback-group"
     ]
   },
   "files": [

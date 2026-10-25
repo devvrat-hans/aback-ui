@@ -9,3 +9,12 @@ export async function readExampleSource(slug: string) {
     return null;
   }
 }
+
+export async function readBlockSource(slug: string) {
+  const file = path.join(process.cwd(), "src", "blocks", `${slug}.tsx`);
+  try {
+    return await readFile(file, "utf8");
+  } catch {
+    return null;
+  }
+}

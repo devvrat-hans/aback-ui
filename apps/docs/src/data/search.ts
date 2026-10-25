@@ -1,3 +1,4 @@
+import { blocks } from "./blocks";
 import { components } from "./component-catalog";
 import { gettingStartedNav } from "./site";
 
@@ -36,4 +37,11 @@ const componentItems: SearchItem[] = components.map((item) => ({
   group: item.categories?.[0] ?? "Components",
 }));
 
-export const searchItems: SearchItem[] = [...docItems, ...componentItems];
+const blockItems: SearchItem[] = blocks.map((block) => ({
+  title: block.title,
+  description: block.description,
+  href: `/docs/blocks/${block.name}`,
+  group: "Blocks",
+}));
+
+export const searchItems: SearchItem[] = [...docItems, ...blockItems, ...componentItems];

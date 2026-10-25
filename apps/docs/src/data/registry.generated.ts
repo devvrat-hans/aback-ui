@@ -60,7 +60,8 @@ export const registryItems: RegistryItemSummary[] = [
       "status": "stable",
       "usedIn": [
         "aback-tools",
-        "aback-launch"
+        "aback-launch",
+        "aback-group"
       ]
     },
     "files": [
@@ -242,7 +243,7 @@ export const registryItems: RegistryItemSummary[] = [
     "name": "badge",
     "type": "registry:ui",
     "title": "Badge",
-    "description": "Compact labels for status, counts, and categories.",
+    "description": "Compact labels for status, counts, and categories, with soft status variants and an optional dot.",
     "categories": [
       "Foundation"
     ],
@@ -257,7 +258,8 @@ export const registryItems: RegistryItemSummary[] = [
       "status": "stable",
       "usedIn": [
         "aback-tools",
-        "aback-launch"
+        "aback-launch",
+        "aback-group"
       ]
     },
     "files": [
@@ -280,7 +282,8 @@ export const registryItems: RegistryItemSummary[] = [
       "status": "stable",
       "usedIn": [
         "aback-tools",
-        "aback-launch"
+        "aback-launch",
+        "aback-group"
       ]
     },
     "files": [
@@ -330,7 +333,8 @@ export const registryItems: RegistryItemSummary[] = [
     "meta": {
       "status": "stable",
       "usedIn": [
-        "aback-launch"
+        "aback-launch",
+        "aback-group"
       ]
     },
     "files": [
@@ -450,7 +454,8 @@ export const registryItems: RegistryItemSummary[] = [
     "meta": {
       "status": "stable",
       "usedIn": [
-        "aback-launch"
+        "aback-launch",
+        "aback-group"
       ]
     },
     "files": [
@@ -476,7 +481,8 @@ export const registryItems: RegistryItemSummary[] = [
     "meta": {
       "status": "stable",
       "usedIn": [
-        "aback-launch"
+        "aback-launch",
+        "aback-group"
       ]
     },
     "files": [
@@ -627,6 +633,1239 @@ export const registryItems: RegistryItemSummary[] = [
     },
     "files": [
       "components/ui/empty-state.tsx"
+    ]
+  },
+  {
+    "name": "alert-dialog",
+    "type": "registry:ui",
+    "title": "Alert Dialog",
+    "description": "A modal that requires an explicit response before an irreversible action runs.",
+    "categories": [
+      "Overlays"
+    ],
+    "docs": "https://abackui.com/docs/components/alert-dialog",
+    "dependencies": [
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/alert-dialog.tsx"
+    ]
+  },
+  {
+    "name": "avatar",
+    "type": "registry:ui",
+    "title": "Avatar",
+    "description": "A square identity chip with an initials fallback, and an overlapping group with a counted overflow.",
+    "categories": [
+      "Data Display"
+    ],
+    "docs": "https://abackui.com/docs/components/avatar",
+    "dependencies": [
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/ui/avatar.tsx"
+    ]
+  },
+  {
+    "name": "popover",
+    "type": "registry:ui",
+    "title": "Popover",
+    "description": "A floating panel anchored to a trigger, for filters and compact detail.",
+    "categories": [
+      "Overlays"
+    ],
+    "docs": "https://abackui.com/docs/components/popover",
+    "dependencies": [
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/popover.tsx"
+    ]
+  },
+  {
+    "name": "progress",
+    "type": "registry:ui",
+    "title": "Progress",
+    "description": "A determinate or indeterminate bar for work that takes time.",
+    "categories": [
+      "Feedback"
+    ],
+    "docs": "https://abackui.com/docs/components/progress",
+    "dependencies": [
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/progress.tsx"
+    ]
+  },
+  {
+    "name": "radio-group",
+    "type": "registry:ui",
+    "title": "Radio Group",
+    "description": "Mutually exclusive choices with arrow-key selection and a visible label.",
+    "categories": [
+      "Forms"
+    ],
+    "docs": "https://abackui.com/docs/components/radio-group",
+    "dependencies": [
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/radio-group.tsx"
+    ]
+  },
+  {
+    "name": "sheet",
+    "type": "registry:ui",
+    "title": "Sheet",
+    "description": "A modal panel that slides in from an edge for settings and filters.",
+    "categories": [
+      "Overlays"
+    ],
+    "docs": "https://abackui.com/docs/components/sheet",
+    "dependencies": [
+      "@tabler/icons-react",
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch",
+        "aback-group"
+      ]
+    },
+    "files": [
+      "components/ui/sheet.tsx"
+    ]
+  },
+  {
+    "name": "toggle-group",
+    "type": "registry:ui",
+    "title": "Toggle Group",
+    "description": "A set of related toggles with shared styling and keyboard behavior.",
+    "categories": [
+      "Forms"
+    ],
+    "docs": "https://abackui.com/docs/components/toggle-group",
+    "dependencies": [
+      "class-variance-authority",
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/toggle-group.tsx"
+    ]
+  },
+  {
+    "name": "command",
+    "type": "registry:ui",
+    "title": "Command",
+    "description": "A keyboard-first command palette with filtering, groups, and shortcuts.",
+    "categories": [
+      "Overlays"
+    ],
+    "docs": "https://abackui.com/docs/components/command",
+    "dependencies": [
+      "@tabler/icons-react",
+      "cmdk"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/dialog.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-launch",
+        "aback-group"
+      ]
+    },
+    "files": [
+      "components/ui/command.tsx"
+    ]
+  },
+  {
+    "name": "toast",
+    "type": "registry:ui",
+    "title": "Toast",
+    "description": "Transient status messages with actions, themed by the Aback tokens.",
+    "categories": [
+      "Feedback"
+    ],
+    "docs": "https://abackui.com/docs/components/toast",
+    "dependencies": [
+      "@tabler/icons-react",
+      "sonner"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/toaster.tsx"
+    ]
+  },
+  {
+    "name": "slider",
+    "type": "registry:ui",
+    "title": "Slider",
+    "description": "A single-value range control with keyboard support and a square thumb.",
+    "categories": [
+      "Forms"
+    ],
+    "docs": "https://abackui.com/docs/components/slider",
+    "dependencies": [
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/slider.tsx"
+    ]
+  },
+  {
+    "name": "scroll-area",
+    "type": "registry:ui",
+    "title": "Scroll Area",
+    "description": "A focusable, themed scroll container for long lists and panels.",
+    "categories": [
+      "Layout"
+    ],
+    "docs": "https://abackui.com/docs/components/scroll-area",
+    "dependencies": [
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/scroll-area.tsx"
+    ]
+  },
+  {
+    "name": "copy-button",
+    "type": "registry:ui",
+    "title": "Copy Button",
+    "description": "Copies a value and confirms it in place, with an announced result and a failure state.",
+    "categories": [
+      "Foundation"
+    ],
+    "docs": "https://abackui.com/docs/components/copy-button",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/button.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/ui/copy-button.tsx"
+    ]
+  },
+  {
+    "name": "input-group",
+    "type": "registry:ui",
+    "title": "Input Group",
+    "description": "Joins an input with units, prefixes, icons, or a compact button inside one 36px frame.",
+    "categories": [
+      "Forms"
+    ],
+    "docs": "https://abackui.com/docs/components/input-group",
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/input.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/ui/input-group.tsx"
+    ]
+  },
+  {
+    "name": "dropzone",
+    "type": "registry:ui",
+    "title": "Dropzone",
+    "description": "A keyboard-operable drag-and-drop file area that validates type, size, and count.",
+    "categories": [
+      "Forms"
+    ],
+    "docs": "https://abackui.com/docs/components/dropzone",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools"
+      ]
+    },
+    "files": [
+      "components/ui/dropzone.tsx"
+    ]
+  },
+  {
+    "name": "rating",
+    "type": "registry:ui",
+    "title": "Rating",
+    "description": "A star rating built on native radios, with a read-only display for averages.",
+    "categories": [
+      "Forms"
+    ],
+    "docs": "https://abackui.com/docs/components/rating",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/ui/rating.tsx"
+    ]
+  },
+  {
+    "name": "stat",
+    "type": "registry:ui",
+    "title": "Stat",
+    "description": "A labelled number with unit, trend, hint, and tone, plus a responsive grid.",
+    "categories": [
+      "Data Display"
+    ],
+    "docs": "https://abackui.com/docs/components/stat",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/ui/stat.tsx"
+    ]
+  },
+  {
+    "name": "description-list",
+    "type": "registry:ui",
+    "title": "Description List",
+    "description": "Key and value rows for metadata, breakdowns, and totals, as a real description list.",
+    "categories": [
+      "Data Display"
+    ],
+    "docs": "https://abackui.com/docs/components/description-list",
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools"
+      ]
+    },
+    "files": [
+      "components/ui/description-list.tsx"
+    ]
+  },
+  {
+    "name": "relative-time",
+    "type": "registry:ui",
+    "title": "Relative Time",
+    "description": "A hydration-safe \"3 hours ago\" timestamp, localized by Intl and refreshed on one shared clock.",
+    "categories": [
+      "Data Display"
+    ],
+    "docs": "https://abackui.com/docs/components/relative-time",
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/ui/relative-time.tsx"
+    ]
+  },
+  {
+    "name": "steps",
+    "type": "registry:ui",
+    "title": "Steps",
+    "description": "An ordered sequence with complete, current, and upcoming states for onboarding and how-it-works sections.",
+    "categories": [
+      "Data Display"
+    ],
+    "docs": "https://abackui.com/docs/components/steps",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/ui/steps.tsx"
+    ]
+  },
+  {
+    "name": "code-block",
+    "type": "registry:ui",
+    "title": "Code Block",
+    "description": "A captioned, scrollable code sample with a copy button and optional line numbers.",
+    "categories": [
+      "Data Display"
+    ],
+    "docs": "https://abackui.com/docs/components/code-block",
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/copy-button.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools"
+      ]
+    },
+    "files": [
+      "components/ui/code-block.tsx"
+    ]
+  },
+  {
+    "name": "layout",
+    "type": "registry:ui",
+    "title": "Layout",
+    "description": "Container, Stack, Group, and Grid primitives that map to the Aback spacing scale.",
+    "categories": [
+      "Layout"
+    ],
+    "docs": "https://abackui.com/docs/components/layout",
+    "dependencies": [
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/ui/layout.tsx"
+    ]
+  },
+  {
+    "name": "section-heading",
+    "type": "registry:ui",
+    "title": "Section Heading",
+    "description": "The eyebrow, title, description, and action that open a page section.",
+    "categories": [
+      "Application"
+    ],
+    "docs": "https://abackui.com/docs/components/section-heading",
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch",
+        "aback-group"
+      ]
+    },
+    "files": [
+      "components/ui/section-heading.tsx"
+    ]
+  },
+  {
+    "name": "theme-toggle",
+    "type": "registry:ui",
+    "title": "Theme Toggle",
+    "description": "A light and dark switch, a useTheme hook, and a no-flash theme script.",
+    "categories": [
+      "Application"
+    ],
+    "docs": "https://abackui.com/docs/components/theme-toggle",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/button.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch",
+        "aback-group"
+      ]
+    },
+    "files": [
+      "components/ui/theme-toggle.tsx"
+    ]
+  },
+  {
+    "name": "skip-link",
+    "type": "registry:ui",
+    "title": "Skip Link",
+    "description": "The first focusable element, which jumps keyboard users past the header to the content.",
+    "categories": [
+      "Navigation"
+    ],
+    "docs": "https://abackui.com/docs/components/skip-link",
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch",
+        "aback-group"
+      ]
+    },
+    "files": [
+      "components/ui/skip-link.tsx"
+    ]
+  },
+  {
+    "name": "table-of-contents",
+    "type": "registry:ui",
+    "title": "Table of Contents",
+    "description": "An \"On this page\" list of anchors that tracks the section in view.",
+    "categories": [
+      "Navigation"
+    ],
+    "docs": "https://abackui.com/docs/components/table-of-contents",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/ui/table-of-contents.tsx"
+    ]
+  },
+  {
+    "name": "reading-progress",
+    "type": "registry:ui",
+    "title": "Reading Progress",
+    "description": "A decorative bar that fills as the reader moves through an article.",
+    "categories": [
+      "Feedback"
+    ],
+    "docs": "https://abackui.com/docs/components/reading-progress",
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/ui/reading-progress.tsx"
+    ]
+  },
+  {
+    "name": "share-buttons",
+    "type": "registry:ui",
+    "title": "Share Buttons",
+    "description": "Share links for X, LinkedIn, and more, with copy link and the native share sheet.",
+    "categories": [
+      "Application"
+    ],
+    "docs": "https://abackui.com/docs/components/share-buttons",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/button.json",
+      "https://abackui.com/r/copy-button.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/ui/share-buttons.tsx"
+    ]
+  },
+  {
+    "name": "sign-in",
+    "type": "registry:block",
+    "title": "Sign in",
+    "description": "A complete sign-in card with email, password, remember me, and account links.",
+    "categories": [
+      "Authentication"
+    ],
+    "docs": "https://abackui.com/docs/blocks/sign-in",
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/button.json",
+      "https://abackui.com/r/card.json",
+      "https://abackui.com/r/checkbox.json",
+      "https://abackui.com/r/field.json",
+      "https://abackui.com/r/input.json",
+      "https://abackui.com/r/label.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/blocks/sign-in.tsx"
+    ]
+  },
+  {
+    "name": "settings-section",
+    "type": "registry:block",
+    "title": "Settings section",
+    "description": "A workspace settings section with identity fields, preferences, a save bar, and a confirmed danger zone.",
+    "categories": [
+      "Settings"
+    ],
+    "docs": "https://abackui.com/docs/blocks/settings-section",
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/alert-dialog.json",
+      "https://abackui.com/r/button.json",
+      "https://abackui.com/r/card.json",
+      "https://abackui.com/r/field.json",
+      "https://abackui.com/r/input.json",
+      "https://abackui.com/r/label.json",
+      "https://abackui.com/r/switch.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/blocks/settings-section.tsx"
+    ]
+  },
+  {
+    "name": "dashboard-shell",
+    "type": "registry:block",
+    "title": "Dashboard shell",
+    "description": "A responsive application shell with persistent navigation, a mobile sheet, top bar, and page header.",
+    "categories": [
+      "Application"
+    ],
+    "docs": "https://abackui.com/docs/blocks/dashboard-shell",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/avatar.json",
+      "https://abackui.com/r/button.json",
+      "https://abackui.com/r/dropdown-menu.json",
+      "https://abackui.com/r/sheet.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/blocks/dashboard-shell.tsx"
+    ]
+  },
+  {
+    "name": "users-table",
+    "type": "registry:block",
+    "title": "Users table",
+    "description": "A searchable member directory with role filters, sorting, row actions, empty state, and pagination.",
+    "categories": [
+      "Data Display"
+    ],
+    "docs": "https://abackui.com/docs/blocks/users-table",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/avatar.json",
+      "https://abackui.com/r/badge.json",
+      "https://abackui.com/r/button.json",
+      "https://abackui.com/r/dropdown-menu.json",
+      "https://abackui.com/r/empty-state.json",
+      "https://abackui.com/r/input.json",
+      "https://abackui.com/r/pagination.json",
+      "https://abackui.com/r/table.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/blocks/users-table.tsx"
+    ]
+  },
+  {
+    "name": "pagination",
+    "type": "registry:ui",
+    "title": "Pagination",
+    "description": "Page controls with a current-page marker, collapsing ranges, and link mode.",
+    "categories": [
+      "Navigation"
+    ],
+    "docs": "https://abackui.com/docs/components/pagination",
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/pagination.tsx"
+    ]
+  },
+  {
+    "name": "collapsible",
+    "type": "registry:ui",
+    "title": "Collapsible",
+    "description": "A single disclosure region for optional or advanced content.",
+    "categories": [
+      "Navigation"
+    ],
+    "docs": "https://abackui.com/docs/components/collapsible",
+    "dependencies": [
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/collapsible.tsx"
+    ]
+  },
+  {
+    "name": "hover-card",
+    "type": "registry:ui",
+    "title": "Hover Card",
+    "description": "A short profile or context card shown on hover and keyboard focus.",
+    "categories": [
+      "Overlays"
+    ],
+    "docs": "https://abackui.com/docs/components/hover-card",
+    "dependencies": [
+      "radix-ui"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/hover-card.tsx"
+    ]
+  },
+  {
+    "name": "calendar",
+    "type": "registry:ui",
+    "title": "Calendar",
+    "description": "A square-cornered month grid with single, multiple, and range selection.",
+    "categories": [
+      "Data Display"
+    ],
+    "docs": "https://abackui.com/docs/components/calendar",
+    "dependencies": [
+      "@tabler/icons-react",
+      "react-day-picker"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/calendar.tsx"
+    ]
+  },
+  {
+    "name": "date-picker",
+    "type": "registry:ui",
+    "title": "Date Picker",
+    "description": "A date field and a range field, with real keyboard behavior and native form support.",
+    "categories": [
+      "Forms"
+    ],
+    "docs": "https://abackui.com/docs/components/date-picker",
+    "dependencies": [
+      "@tabler/icons-react",
+      "react-day-picker"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/button.json",
+      "https://abackui.com/r/calendar.json",
+      "https://abackui.com/r/popover.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/date-picker.tsx"
+    ]
+  },
+  {
+    "name": "combobox",
+    "type": "registry:ui",
+    "title": "Combobox",
+    "description": "A searchable single-select field built on Popover and Command.",
+    "categories": [
+      "Forms"
+    ],
+    "docs": "https://abackui.com/docs/components/combobox",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/command.json",
+      "https://abackui.com/r/popover.json"
+    ],
+    "meta": {
+      "status": "beta"
+    },
+    "files": [
+      "components/ui/combobox.tsx"
+    ]
+  },
+  {
+    "name": "site-header",
+    "type": "registry:block",
+    "title": "Site header",
+    "description": "A sticky header with brand, primary navigation, optional search, theme toggle, actions, and a mobile sheet.",
+    "categories": [
+      "Marketing"
+    ],
+    "docs": "https://abackui.com/docs/blocks/site-header",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/button.json",
+      "https://abackui.com/r/kbd.json",
+      "https://abackui.com/r/sheet.json",
+      "https://abackui.com/r/theme-toggle.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch",
+        "aback-group"
+      ]
+    },
+    "files": [
+      "components/blocks/site-header.tsx"
+    ]
+  },
+  {
+    "name": "site-footer",
+    "type": "registry:block",
+    "title": "Site footer",
+    "description": "Brand column, link columns, and a legal bar that collapse cleanly from four columns to one.",
+    "categories": [
+      "Marketing"
+    ],
+    "docs": "https://abackui.com/docs/blocks/site-footer",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch",
+        "aback-group"
+      ]
+    },
+    "files": [
+      "components/blocks/site-footer.tsx"
+    ]
+  },
+  {
+    "name": "hero",
+    "type": "registry:block",
+    "title": "Hero",
+    "description": "A landing-page opening with announcement, h1, highlight line, actions, proof points, and an aside.",
+    "categories": [
+      "Marketing"
+    ],
+    "docs": "https://abackui.com/docs/blocks/hero",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/button.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-launch",
+        "aback-group"
+      ]
+    },
+    "files": [
+      "components/blocks/hero.tsx"
+    ]
+  },
+  {
+    "name": "feature-grid",
+    "type": "registry:block",
+    "title": "Feature grid",
+    "description": "A titled grid of features with brand icon chips and optional links, joined by hairlines.",
+    "categories": [
+      "Marketing"
+    ],
+    "docs": "https://abackui.com/docs/blocks/feature-grid",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/section-heading.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/blocks/feature-grid.tsx"
+    ]
+  },
+  {
+    "name": "pricing",
+    "type": "registry:block",
+    "title": "Pricing",
+    "description": "Plan cards with a monthly or yearly switch, Intl prices, included and excluded features, and aligned actions.",
+    "categories": [
+      "Marketing"
+    ],
+    "docs": "https://abackui.com/docs/blocks/pricing",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/badge.json",
+      "https://abackui.com/r/button.json",
+      "https://abackui.com/r/section-heading.json",
+      "https://abackui.com/r/toggle-group.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/blocks/pricing.tsx"
+    ]
+  },
+  {
+    "name": "faq",
+    "type": "registry:block",
+    "title": "FAQ",
+    "description": "Questions in an accordion with indexable closed answers and optional FAQPage structured data.",
+    "categories": [
+      "Marketing"
+    ],
+    "docs": "https://abackui.com/docs/blocks/faq",
+    "registryDependencies": [
+      "https://abackui.com/r/accordion.json",
+      "https://abackui.com/r/section-heading.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch",
+        "aback-group"
+      ]
+    },
+    "files": [
+      "components/blocks/faq.tsx"
+    ]
+  },
+  {
+    "name": "newsletter",
+    "type": "registry:block",
+    "title": "Newsletter signup",
+    "description": "An email signup with real submitting, success, and error states driven by your subscribe call.",
+    "categories": [
+      "Marketing"
+    ],
+    "docs": "https://abackui.com/docs/blocks/newsletter",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/button.json",
+      "https://abackui.com/r/input-group.json",
+      "https://abackui.com/r/spinner.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/blocks/newsletter.tsx"
+    ]
+  },
+  {
+    "name": "cta-banner",
+    "type": "registry:block",
+    "title": "Call to action",
+    "description": "A closing banner with one primary and one optional secondary action, in brand or neutral tone.",
+    "categories": [
+      "Marketing"
+    ],
+    "docs": "https://abackui.com/docs/blocks/cta-banner",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/utils.json",
+      "https://abackui.com/r/button.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/blocks/cta-banner.tsx"
+    ]
+  },
+  {
+    "name": "cookie-consent",
+    "type": "registry:block",
+    "title": "Cookie consent",
+    "description": "A non-blocking consent banner with equally prominent accept and decline, remembered per browser.",
+    "categories": [
+      "Application"
+    ],
+    "docs": "https://abackui.com/docs/blocks/cookie-consent",
+    "registryDependencies": [
+      "https://abackui.com/r/button.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/blocks/cookie-consent.tsx"
+    ]
+  },
+  {
+    "name": "not-found",
+    "type": "registry:block",
+    "title": "Not found",
+    "description": "A 404 page with a way forward: home, an alternative, and the destinations people usually want.",
+    "categories": [
+      "Application"
+    ],
+    "docs": "https://abackui.com/docs/blocks/not-found",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/badge.json",
+      "https://abackui.com/r/button.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch",
+        "aback-group"
+      ]
+    },
+    "files": [
+      "components/blocks/not-found.tsx"
+    ]
+  },
+  {
+    "name": "contact-form",
+    "type": "registry:block",
+    "title": "Contact form",
+    "description": "A contact form with field-level errors, focus on the first error, a character count, and submit states.",
+    "categories": [
+      "Forms"
+    ],
+    "docs": "https://abackui.com/docs/blocks/contact-form",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/alert.json",
+      "https://abackui.com/r/button.json",
+      "https://abackui.com/r/field.json",
+      "https://abackui.com/r/input.json",
+      "https://abackui.com/r/select.json",
+      "https://abackui.com/r/spinner.json",
+      "https://abackui.com/r/textarea.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/blocks/contact-form.tsx"
+    ]
+  },
+  {
+    "name": "article-layout",
+    "type": "registry:block",
+    "title": "Article layout",
+    "description": "A long-form page with meta bar, scoped typography, sticky contents, share links, and reading progress.",
+    "categories": [
+      "Content"
+    ],
+    "docs": "https://abackui.com/docs/blocks/article-layout",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "registryDependencies": [
+      "https://abackui.com/r/avatar.json",
+      "https://abackui.com/r/badge.json",
+      "https://abackui.com/r/breadcrumbs.json",
+      "https://abackui.com/r/collapsible.json",
+      "https://abackui.com/r/reading-progress.json",
+      "https://abackui.com/r/share-buttons.json",
+      "https://abackui.com/r/table-of-contents.json"
+    ],
+    "meta": {
+      "status": "beta",
+      "usedIn": [
+        "aback-tools",
+        "aback-launch"
+      ]
+    },
+    "files": [
+      "components/blocks/article-layout.tsx"
     ]
   }
 ];

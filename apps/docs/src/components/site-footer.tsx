@@ -6,7 +6,7 @@ import { footerNav, site } from "@/data/site";
 export function SiteFooter() {
   return (
     <footer className="border-t border-separator bg-background">
-      <div className="mx-auto grid w-full max-w-[1600px] gap-x-8 gap-y-10 px-4 py-12 sm:grid-cols-2 md:px-6 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+      <div className="mx-auto grid w-full max-w-[1600px] gap-x-8 gap-y-10 px-4 py-12 sm:grid-cols-2 md:px-6 lg:grid-cols-[1.6fr_1fr_1fr_1fr_1fr]">
         <div className="max-w-sm">
           <Logo />
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
@@ -27,7 +27,14 @@ export function SiteFooter() {
             <ul className="mt-3 space-y-2">
               {section.items.map((item) => (
                 <li key={item.href}>
-                  {item.external ? (
+                  {item.file ? (
+                    <a
+                      href={item.href}
+                      className="font-mono text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                    >
+                      {item.title}
+                    </a>
+                  ) : item.external ? (
                     <a
                       href={item.href}
                       target="_blank"

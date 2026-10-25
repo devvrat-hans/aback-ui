@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "reading-progress",
+  "type": "registry:ui",
+  "title": "Reading Progress",
+  "description": "A decorative bar that fills as the reader moves through an article.",
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Feedback"
+  ],
+  "docs": "https://abackui.com/docs/components/reading-progress",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/reading-progress.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport interface ReadingProgressProps extends Omit<React.ComponentProps<\"div\">, \"children\"> {\n  /**\n   * The element whose length is being read, such as the article. Without it,\n   * progress follows the whole document.\n   */\n  target?: React.RefObject<HTMLElement | null>;\n}\n\nfunction measure(target?: HTMLElement | null) {\n  if (!target) {\n    const root = document.documentElement;\n    const scrollable = root.scrollHeight - root.clientHeight;\n    return scrollable > 0 ? root.scrollTop / scrollable : 0;\n  }\n  const rect = target.getBoundingClientRect();\n  const scrollable = rect.height - window.innerHeight;\n  if (scrollable <= 0) return rect.top <= 0 ? 1 : 0;\n  return -rect.top / scrollable;\n}\n\n/**\n * A thin bar along the top of the viewport that fills as the reader scrolls.\n * It is decorative and hidden from assistive technology. Updates run once per\n * frame and write a transform directly, so scrolling never re-renders React.\n */\nfunction ReadingProgress({ target, className, ...props }: ReadingProgressProps) {\n  const bar = React.useRef<HTMLDivElement>(null);\n\n  React.useEffect(() => {\n    let frame = 0;\n    let pending = false;\n    function update() {\n      const progress = Math.min(Math.max(measure(target?.current), 0), 1);\n      if (bar.current) bar.current.style.transform = `scaleX(${progress})`;\n    }\n    function schedule() {\n      if (pending) return;\n      pending = true;\n      frame = window.requestAnimationFrame(() => {\n        pending = false;\n        update();\n      });\n    }\n\n    update();\n    window.addEventListener(\"scroll\", schedule, { passive: true });\n    window.addEventListener(\"resize\", schedule);\n    return () => {\n      window.removeEventListener(\"scroll\", schedule);\n      window.removeEventListener(\"resize\", schedule);\n      if (pending) window.cancelAnimationFrame(frame);\n    };\n  }, [target]);\n\n  return (\n    <div\n      aria-hidden=\"true\"\n      data-slot=\"reading-progress\"\n      className={cn(\"pointer-events-none fixed inset-x-0 top-0 z-[100] h-[3px] print:hidden\", className)}\n      {...props}\n    >\n      <div\n        ref={bar}\n        data-slot=\"reading-progress-bar\"\n        className=\"h-full origin-left bg-linear-to-r from-primary-400 to-primary-600\"\n        style={{ transform: \"scaleX(0)\" }}\n      />\n    </div>\n  );\n}\n\nexport { ReadingProgress };\n",
+      "type": "registry:ui",
+      "target": "components/ui/reading-progress.tsx"
+    }
+  ]
+}

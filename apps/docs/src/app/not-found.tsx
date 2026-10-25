@@ -3,8 +3,11 @@ import { IconArrowRight, IconHome, IconSearch } from "@tabler/icons-react";
 
 import { Badge, Button } from "@aback-ui/ui";
 
+import { SiteChrome } from "@/components/site-chrome";
+
 export default function NotFound() {
   return (
+    <SiteChrome>
     <div className="mx-auto w-full max-w-3xl px-4 py-16 md:px-6 lg:py-24">
       <div className="border border-border bg-card p-6 md:p-10">
         <Badge variant="brand">Error 404</Badge>
@@ -68,5 +71,6 @@ export default function NotFound() {
         </p>
       </div>
     </div>
+    </SiteChrome>
   );
 }

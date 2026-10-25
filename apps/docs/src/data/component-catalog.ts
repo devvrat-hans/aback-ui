@@ -2,6 +2,7 @@ import { registryItems, type RegistryItemSummary } from "./registry.generated";
 
 export const CATEGORY_ORDER = [
   "Foundation",
+  "Layout",
   "Forms",
   "Feedback",
   "Overlays",

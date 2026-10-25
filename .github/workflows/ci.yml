@@ -41,8 +41,14 @@ jobs:
       - name: Build UI package
         run: bun run build:ui
 
+      - name: Build CLI
+        run: bun run build:cli
+
       - name: Smoke-test package exports
         run: bun run smoke:package
+
+      - name: Consumer test against packed tarballs
+        run: bun run test:consumer
 
       - name: Build documentation site
         run: bun run --filter @aback-ui/docs build

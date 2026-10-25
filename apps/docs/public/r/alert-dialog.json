@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "alert-dialog",
+  "type": "registry:ui",
+  "title": "Alert Dialog",
+  "description": "A modal that requires an explicit response before an irreversible action runs.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Overlays"
+  ],
+  "docs": "https://abackui.com/docs/components/alert-dialog",
+  "meta": {
+    "status": "beta"
+  },
+  "files": [
+    {
+      "path": "components/ui/alert-dialog.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { AlertDialog as AlertDialogPrimitive } from \"radix-ui\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst AlertDialog = AlertDialogPrimitive.Root;\nconst AlertDialogTrigger = AlertDialogPrimitive.Trigger;\nconst AlertDialogPortal = AlertDialogPrimitive.Portal;\n\nconst buttonBase =\n  \"inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap text-sm font-medium outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50\";\nconst buttonSizes = {\n  default: \"h-9 px-4\",\n  sm: \"h-8 px-3\",\n} as const;\n\nfunction AlertDialogOverlay({\n  className,\n  ...props\n}: React.ComponentProps<typeof AlertDialogPrimitive.Overlay>) {\n  return (\n    <AlertDialogPrimitive.Overlay\n      data-slot=\"alert-dialog-overlay\"\n      className={cn(\n        \"fixed inset-0 z-50 bg-black/40 backdrop-blur-sm dark:bg-black/60\",\n        \"data-[state=open]:animate-in data-[state=open]:fade-in-0\",\n        \"data-[state=closed]:animate-out data-[state=closed]:fade-out-0\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDialogContent({\n  className,\n  ...props\n}: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {\n  return (\n    <AlertDialogPortal>\n      <AlertDialogOverlay />\n      <AlertDialogPrimitive.Content\n        data-slot=\"alert-dialog-content\"\n        className={cn(\n          \"fixed left-1/2 top-1/2 z-50 grid max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto\",\n          \"border border-border bg-popover p-6 text-popover-foreground shadow-2xl\",\n          \"duration-200 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95\",\n          \"data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95\",\n          className,\n        )}\n        {...props}\n      />\n    </AlertDialogPortal>\n  );\n}\n\nfunction AlertDialogHeader({ className, ...props }: React.ComponentProps<\"div\">) {\n  return <div data-slot=\"alert-dialog-header\" className={cn(\"flex flex-col gap-1.5\", className)} {...props} />;\n}\n\nfunction AlertDialogFooter({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"alert-dialog-footer\"\n      className={cn(\"flex flex-col-reverse gap-2 sm:flex-row sm:justify-end\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDialogTitle({\n  className,\n  ...props\n}: React.ComponentProps<typeof AlertDialogPrimitive.Title>) {\n  return (\n    <AlertDialogPrimitive.Title\n      data-slot=\"alert-dialog-title\"\n      className={cn(\"text-lg font-semibold leading-none tracking-tight\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDialogDescription({\n  className,\n  ...props\n}: React.ComponentProps<typeof AlertDialogPrimitive.Description>) {\n  return (\n    <AlertDialogPrimitive.Description\n      data-slot=\"alert-dialog-description\"\n      className={cn(\"text-sm leading-relaxed text-muted-foreground\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDialogAction({\n  className,\n  ...props\n}: React.ComponentProps<typeof AlertDialogPrimitive.Action>) {\n  return (\n    <AlertDialogPrimitive.Action\n      data-slot=\"alert-dialog-action\"\n      className={cn(\n        buttonBase,\n        buttonSizes.default,\n        \"bg-primary text-primary-foreground hover:bg-primary/90\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDialogCancel({\n  className,\n  ...props\n}: React.ComponentProps<typeof AlertDialogPrimitive.Cancel>) {\n  return (\n    <AlertDialogPrimitive.Cancel\n      data-slot=\"alert-dialog-cancel\"\n      className={cn(\n        buttonBase,\n        buttonSizes.default,\n        \"border border-input bg-background text-foreground shadow-xs hover:bg-muted\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport {\n  AlertDialog,\n  AlertDialogTrigger,\n  AlertDialogPortal,\n  AlertDialogOverlay,\n  AlertDialogContent,\n  AlertDialogHeader,\n  AlertDialogFooter,\n  AlertDialogTitle,\n  AlertDialogDescription,\n  AlertDialogAction,\n  AlertDialogCancel,\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/alert-dialog.tsx"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "copy-button",
+  "type": "registry:ui",
+  "title": "Copy Button",
+  "description": "Copies a value and confirms it in place, with an announced result and a failure state.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json",
+    "https://abackui.com/r/button.json"
+  ],
+  "categories": [
+    "Foundation"
+  ],
+  "docs": "https://abackui.com/docs/components/copy-button",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/copy-button.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { IconCheck, IconCopy, IconX } from \"@tabler/icons-react\";\n\nimport { cn } from \"@/lib/utils\";\nimport { Button, type ButtonProps } from \"@/components/ui/button\";\n\n/**\n * Writes text to the clipboard. Falls back to a temporary textarea and\n * `execCommand(\"copy\")` where the async Clipboard API is unavailable, such as\n * an insecure origin or an older embedded browser. Rejects when both fail.\n */\nasync function copyToClipboard(value: string): Promise<void> {\n  if (typeof navigator !== \"undefined\" && navigator.clipboard?.writeText) {\n    await navigator.clipboard.writeText(value);\n    return;\n  }\n\n  const textarea = document.createElement(\"textarea\");\n  textarea.value = value;\n  textarea.setAttribute(\"readonly\", \"\");\n  textarea.style.position = \"fixed\";\n  textarea.style.opacity = \"0\";\n  document.body.appendChild(textarea);\n  textarea.select();\n  const copied = document.execCommand(\"copy\");\n  document.body.removeChild(textarea);\n  if (!copied) throw new Error(\"Copy failed\");\n}\n\ntype CopyState = \"idle\" | \"copied\" | \"error\";\n\nexport interface CopyButtonProps\n  extends Omit<ButtonProps, \"value\" | \"onClick\" | \"children\" | \"asChild\" | \"onCopy\"> {\n  /** The exact text written to the clipboard. An empty string disables the button. */\n  value: string;\n  /** Accessible name and visible text before copying. */\n  label?: string;\n  /** Text shown and announced after a successful copy. */\n  copiedLabel?: string;\n  /** Text shown and announced when the browser refuses the write. */\n  errorLabel?: string;\n  /** Render the label next to the icon instead of an icon-only button. */\n  showLabel?: boolean;\n  /** How long the copied or error state stays visible, in milliseconds. */\n  timeout?: number;\n  onCopy?: (value: string) => void;\n  onCopyError?: (error: unknown) => void;\n}\n\n/**\n * Copies a value and confirms it in place: the icon and label swap for a\n * moment, and a polite live region announces the result. It never toasts,\n * so the confirmation stays next to the thing that was copied.\n */\nfunction CopyButton({\n  value,\n  label = \"Copy\",\n  copiedLabel = \"Copied\",\n  errorLabel = \"Copy failed\",\n  showLabel = false,\n  timeout = 2000,\n  onCopy,\n  onCopyError,\n  variant = \"ghost\",\n  size,\n  disabled,\n  className,\n  ...props\n}: CopyButtonProps) {\n  const [state, setState] = React.useState<CopyState>(\"idle\");\n  const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);\n\n  React.useEffect(() => {\n    return () => {\n      if (timer.current) clearTimeout(timer.current);\n    };\n  }, []);\n\n  function settle(next: CopyState) {\n    setState(next);\n    if (timer.current) clearTimeout(timer.current);\n    timer.current = setTimeout(() => setState(\"idle\"), timeout);\n  }\n\n  async function handleClick() {\n    try {\n      await copyToClipboard(value);\n      settle(\"copied\");\n      onCopy?.(value);\n    } catch (error) {\n      settle(\"error\");\n      onCopyError?.(error);\n    }\n  }\n\n  const currentLabel = state === \"copied\" ? copiedLabel : state === \"error\" ? errorLabel : label;\n  const Icon = state === \"copied\" ? IconCheck : state === \"error\" ? IconX : IconCopy;\n\n  return (\n    <>\n      <Button\n        type=\"button\"\n        data-slot=\"copy-button\"\n        data-state={state}\n        variant={variant}\n        size={size ?? (showLabel ? \"sm\" : \"icon-sm\")}\n        disabled={disabled || value.length === 0}\n        aria-label={showLabel ? undefined : currentLabel}\n        title={showLabel ? undefined : currentLabel}\n        onClick={handleClick}\n        className={cn(className)}\n        {...props}\n      >\n        <Icon\n          aria-hidden=\"true\"\n          className={cn(\n            state === \"copied\" && \"text-success\",\n            state === \"error\" && \"text-danger\",\n          )}\n        />\n        {showLabel ? <span>{currentLabel}</span> : null}\n      </Button>\n      <span role=\"status\" aria-live=\"polite\" className=\"sr-only\">\n        {state === \"copied\" ? `${copiedLabel} to clipboard` : state === \"error\" ? errorLabel : \"\"}\n      </span>\n    </>\n  );\n}\n\nexport { CopyButton, copyToClipboard };\n",
+      "type": "registry:ui",
+      "target": "components/ui/copy-button.tsx"
+    }
+  ]
+}

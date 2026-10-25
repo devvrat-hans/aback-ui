@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "collapsible",
+  "type": "registry:ui",
+  "title": "Collapsible",
+  "description": "A single disclosure region for optional or advanced content.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Navigation"
+  ],
+  "docs": "https://abackui.com/docs/components/collapsible",
+  "meta": {
+    "status": "beta"
+  },
+  "files": [
+    {
+      "path": "components/ui/collapsible.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Collapsible as CollapsiblePrimitive } from \"radix-ui\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst Collapsible = CollapsiblePrimitive.Root;\nconst CollapsibleTrigger = CollapsiblePrimitive.Trigger;\n\nfunction CollapsibleContent({\n  className,\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.Content>) {\n  return (\n    <CollapsiblePrimitive.Content\n      data-slot=\"collapsible-content\"\n      className={cn(\"overflow-hidden\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Collapsible, CollapsibleTrigger, CollapsibleContent };\n",
+      "type": "registry:ui",
+      "target": "components/ui/collapsible.tsx"
+    }
+  ]
+}

@@ -10,7 +10,7 @@
     "declarationMap": true,
     "sourceMap": true,
     "noEmit": false,
-    "tsBuildInfoFile": "dist/.tsbuildinfo",
+    "tsBuildInfoFile": "./node_modules/.cache/ui.tsbuildinfo",
     "types": []
   },
   "include": ["src"],

@@ -21,14 +21,11 @@ bun run dev
 Run these before opening a pull request:
 
 ```bash
-bun run typecheck
-bun run lint
-bun run test
-bun run check:registry
+bun run check
 bun run build
 ```
 
-`bun run check` runs the first four.
+`bun run check` runs typecheck, lint, tests, the registry freshness check, and the consumer test. `bun run test:consumer` packs both packages with `npm pack`, installs the tarballs into `tests/consumer`, typechecks the shipped declarations, and renders from the packed entry points, so a broken exports map or a dependency that only resolves through a workspace alias cannot land.
 
 ## Adding or changing a component
 
@@ -40,10 +37,20 @@ A component is ready to merge when all of the following are true:
 - It is typed, forwards refs where the DOM pattern expects it, and has sensible defaults.
 - It has a documented keyboard model and uses semantic HTML first.
 - It passes the tests that cover its behavior, including keyboard and focus where applicable.
-- It has a live example in `apps/docs/src/examples`, a documentation entry in `apps/docs/src/data/components.ts`, and a page under `/docs/components`.
+- It has a live example in `apps/docs/src/examples` and a documentation entry in `apps/docs/src/data/component-docs.ts`. The page under `/docs/components` is generated; `apps/docs/src/data/catalog.test.ts` fails if either piece is missing.
+- Its registry category is one of the catalogue categories. The registry build rejects anything else.
 - Its registry entry in `registry/registry.json` is valid and generated output is committed.
 - It has reviewed provenance and dependency implications.
 - Light and dark themes, long content, and a 375px viewport were checked.
+
+## Adding or changing a block
+
+- The block source lives at `apps/docs/src/blocks/{name}.tsx`. It imports installed aliases (`@/components/ui/*`, `@/lib/utils`) and declares each one as a registry dependency.
+- Keep example content out of the block file. Put the preview in `apps/docs/src/blocks/previews.tsx` and label example data as example data.
+- Blocks own no routing, auth, network calls, or product data. Take callbacks such as `onSubmit` and show the result they return; never claim success on your own.
+- Use `useId` for ids so two instances can share a page.
+- Add behavior tests to `apps/docs/src/blocks/blocks.test.tsx`. Every preview already gets an axe check.
+- Check the preview at all three widths on its docs page.
 
 ## Public API changes
 

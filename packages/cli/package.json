@@ -1,0 +1,58 @@
+{
+  "name": "@aback-ui/cli",
+  "version": "0.1.0",
+  "description": "Initialize an Aback UI project and install component source from the registry.",
+  "license": "MIT",
+  "author": "Aback Group",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devvrat-hans/aback-ui.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://abackui.com/docs/cli",
+  "bugs": {
+    "url": "https://github.com/devvrat-hans/aback-ui/issues"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "aback-ui": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rm -rf dist node_modules/.cache && tsc -p tsconfig.build.json && chmod +x dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "bun run typecheck && bun run test && bun run build && bun ../../scripts/verify-publishable.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  },
+  "keywords": [
+    "aback",
+    "cli",
+    "design-system",
+    "registry",
+    "react",
+    "tailwindcss"
+  ]
+}
