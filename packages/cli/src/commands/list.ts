@@ -1,5 +1,5 @@
 import type { Logger } from "../logger.js";
-import { DEFAULT_REGISTRY, RegistryClient } from "../registry.js";
+import { RegistryClient, defaultRegistry } from "../registry.js";
 import type { RegistryFetch, RegistryIndexItem } from "../types.js";
 
 export interface ListCommandOptions {
@@ -12,7 +12,7 @@ export interface ListCommandOptions {
 
 export async function runList(options: ListCommandOptions): Promise<number> {
   const client = new RegistryClient({
-    registry: options.registry ?? process.env.ABACK_UI_REGISTRY ?? DEFAULT_REGISTRY,
+    registry: options.registry ?? process.env.ABACK_UI_REGISTRY ?? defaultRegistry(),
     fetchImpl: options.fetchImpl,
   });
 

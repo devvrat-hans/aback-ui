@@ -1,0 +1,30 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "section-heading",
+  "type": "registry:ui",
+  "title": "Section Heading",
+  "description": "The eyebrow, title, description, and action that open a page section.",
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Application"
+  ],
+  "docs": "https://abackui.com/docs/components/section-heading",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch",
+      "aback-group"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/section-heading.tsx",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst titleSizes = {\n  sm: \"text-xl font-semibold\",\n  default: \"text-2xl font-bold sm:text-3xl\",\n  lg: \"text-3xl font-bold sm:text-4xl\",\n} as const;\n\nconst descriptionSizes = {\n  sm: \"text-sm\",\n  default: \"text-base\",\n  lg: \"text-lg\",\n} as const;\n\nexport interface SectionHeadingProps extends Omit<React.ComponentProps<\"div\">, \"title\"> {\n  title: React.ReactNode;\n  /** A short label above the title. */\n  eyebrow?: React.ReactNode;\n  description?: React.ReactNode;\n  /** A link or button that belongs to the section, such as \"View all\". */\n  action?: React.ReactNode;\n  /** Heading level. A section under the page title is an h2. */\n  as?: \"h2\" | \"h3\" | \"h4\";\n  size?: keyof typeof titleSizes;\n  align?: \"start\" | \"center\";\n  /** Id for the heading, so the section can use `aria-labelledby`. */\n  headingId?: string;\n}\n\n/**\n * The heading of a page section: eyebrow, title, one-line description, and an\n * optional action that moves to the right on wide screens. PageHeader is for\n * the page's h1; this is for everything below it.\n */\nfunction SectionHeading({\n  title,\n  eyebrow,\n  description,\n  action,\n  as: Heading = \"h2\",\n  size = \"default\",\n  align = \"start\",\n  headingId,\n  className,\n  ...props\n}: SectionHeadingProps) {\n  const centered = align === \"center\";\n  return (\n    <div\n      data-slot=\"section-heading\"\n      className={cn(\n        \"flex flex-col gap-4\",\n        centered ? \"items-center text-center\" : \"md:flex-row md:items-end md:justify-between\",\n        className,\n      )}\n      {...props}\n    >\n      <div className={cn(\"flex max-w-2xl flex-col gap-2\", centered && \"items-center\")}>\n        {eyebrow ? (\n          <p className=\"text-xs font-semibold uppercase tracking-wide text-link\">{eyebrow}</p>\n        ) : null}\n        <Heading\n          id={headingId}\n          className={cn(\"leading-tight tracking-tight text-foreground text-balance\", titleSizes[size])}\n        >\n          {title}\n        </Heading>\n        {description ? (\n          <p className={cn(\"leading-relaxed text-muted-foreground text-pretty\", descriptionSizes[size])}>\n            {description}\n          </p>\n        ) : null}\n      </div>\n      {action ? <div className=\"shrink-0\">{action}</div> : null}\n    </div>\n  );\n}\n\nexport { SectionHeading };\n",
+      "type": "registry:ui",
+      "target": "components/ui/section-heading.tsx"
+    }
+  ]
+}

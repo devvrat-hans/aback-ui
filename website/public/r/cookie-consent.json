@@ -1,0 +1,28 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "cookie-consent",
+  "type": "registry:block",
+  "title": "Cookie consent",
+  "description": "A non-blocking consent banner with equally prominent accept and decline, remembered per browser.",
+  "registryDependencies": [
+    "https://abackui.com/r/button.json"
+  ],
+  "categories": [
+    "Application"
+  ],
+  "docs": "https://abackui.com/docs/blocks/cookie-consent",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/blocks/cookie-consent.tsx",
+      "content": "\"use client\";\n\nimport { useCallback, useSyncExternalStore, type ReactNode } from \"react\";\n\nimport { Button } from \"@/components/ui/button\";\n\nexport type ConsentDecision = \"accepted\" | \"rejected\";\n\nexport interface CookieConsentBlockProps {\n  /** What you are asking for and what happens either way. Be specific. */\n  message: ReactNode;\n  /** Called with the visitor's choice. Load optional scripts only after \"accepted\". */\n  onDecision: (decision: ConsentDecision) => void;\n  /** Where the choice is remembered. Pass null to keep nothing, for example in a preview. */\n  storageKey?: string | null;\n  acceptLabel?: string;\n  rejectLabel?: string;\n  /** Your cookie or privacy policy. */\n  policyHref?: string;\n  policyLabel?: string;\n}\n\nconst EVENT = \"aback-ui:consentchange\";\n\nfunction readDecision(key: string | null): ConsentDecision | null {\n  if (!key) return null;\n  try {\n    const value = window.localStorage.getItem(key);\n    return value === \"accepted\" || value === \"rejected\" ? value : null;\n  } catch {\n    return null;\n  }\n}\n\n/**\n * A consent banner that does not block the page: no overlay, no scroll lock,\n * and two equally prominent buttons, so declining is as easy as accepting.\n * It appears until the visitor answers and remembers the answer.\n */\nexport function CookieConsentBlock({\n  message,\n  onDecision,\n  storageKey = \"cookie-consent\",\n  acceptLabel = \"Allow analytics\",\n  rejectLabel = \"Decline\",\n  policyHref,\n  policyLabel = \"Cookie policy\",\n}: CookieConsentBlockProps) {\n  const subscribe = useCallback((onChange: () => void) => {\n    window.addEventListener(EVENT, onChange);\n    window.addEventListener(\"storage\", onChange);\n    return () => {\n      window.removeEventListener(EVENT, onChange);\n      window.removeEventListener(\"storage\", onChange);\n    };\n  }, []);\n  // The server snapshot reports \"answered\" so the banner never flashes in the\n  // HTML for a visitor who already chose; it appears after hydration if needed.\n  const decided = useSyncExternalStore(\n    subscribe,\n    () => readDecision(storageKey ?? null) !== null,\n    () => true,\n  );\n\n  if (decided && storageKey) return null;\n\n  function decide(decision: ConsentDecision) {\n    if (storageKey) {\n      try {\n        window.localStorage.setItem(storageKey, decision);\n      } catch {\n        // Not remembered, but the decision still applies to this page view.\n      }\n      window.dispatchEvent(new Event(EVENT));\n    }\n    onDecision(decision);\n  }\n\n  return (\n    <div\n      role=\"region\"\n      aria-label=\"Cookie consent\"\n      className=\"fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card/95 p-3 shadow-[0_-2px_8px_rgb(0_0_0/0.06)] backdrop-blur-sm sm:p-4\"\n    >\n      <div className=\"mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between\">\n        <p className=\"text-xs leading-relaxed text-muted-foreground sm:text-sm\">\n          {message}\n          {policyHref ? (\n            <>\n              {\" \"}\n              <a\n                href={policyHref}\n                className=\"font-medium text-link underline underline-offset-4 hover:text-link-hover\"\n              >\n                {policyLabel}\n              </a>\n            </>\n          ) : null}\n        </p>\n        <div className=\"flex shrink-0 items-center gap-2\">\n          <Button type=\"button\" size=\"sm\" variant=\"outline\" className=\"flex-1 sm:flex-none\" onClick={() => decide(\"rejected\")}>\n            {rejectLabel}\n          </Button>\n          <Button type=\"button\" size=\"sm\" variant=\"brand\" className=\"flex-1 sm:flex-none\" onClick={() => decide(\"accepted\")}>\n            {acceptLabel}\n          </Button>\n        </div>\n      </div>\n    </div>\n  );\n}\n",
+      "type": "registry:block",
+      "target": "components/blocks/cookie-consent.tsx"
+    }
+  ]
+}

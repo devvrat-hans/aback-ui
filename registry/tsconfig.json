@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/components/ui/*": [
+        "../packages/ui/src/components/*"
+      ],
+      "@/lib/utils": [
+        "../packages/ui/src/lib/utils.ts"
+      ]
+    }
+  },
+  "include": [
+    "blocks/**/*.tsx"
+  ]
+}

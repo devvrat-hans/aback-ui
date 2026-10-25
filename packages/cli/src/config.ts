@@ -227,18 +227,21 @@ export async function detectCssFile(root: string): Promise<string | null> {
   return null;
 }
 
+/** The project configuration file `aback-ui init` writes. */
+export const CONFIG_FILE = "aback-ui.json";
+
 export async function loadConfig(root: string): Promise<AbackConfig | null> {
-  const file = path.join(root, "components.json");
+  const file = path.join(root, CONFIG_FILE);
   if (!(await exists(file))) return null;
   try {
     return JSON.parse(await readFile(file, "utf8")) as AbackConfig;
   } catch (error) {
-    throw new ConfigError(`components.json is not valid JSON: ${(error as Error).message}`);
+    throw new ConfigError(`${CONFIG_FILE} is not valid JSON: ${(error as Error).message}`);
   }
 }
 
 export async function writeConfig(root: string, config: AbackConfig): Promise<void> {
-  await writeFile(path.join(root, "components.json"), `${JSON.stringify(config, null, 2)}\n`, "utf8");
+  await writeFile(path.join(root, CONFIG_FILE), `${JSON.stringify(config, null, 2)}\n`, "utf8");
 }
 
 export interface ConfigInput {
@@ -251,15 +254,12 @@ export interface ConfigInput {
 
 export function createConfig({ aliasPrefix, css, rsc, tsx, framework }: ConfigInput): AbackConfig {
   return {
-    $schema: "https://abackui.com/schema/components.json",
+    $schema: "https://abackui.com/schema/aback-ui.json",
     style: "aback",
     rsc,
     tsx,
     tailwind: {
-      config: "",
       css,
-      baseColor: "neutral",
-      cssVariables: true,
     },
     aliases: {
       components: `${aliasPrefix}components`,

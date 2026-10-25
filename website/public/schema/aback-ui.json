@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://abackui.com/schema/aback-ui.json",
+  "title": "aback-ui.json",
+  "description": "Project configuration written by `aback-ui init` and read by every other aback-ui command.",
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "style": { "const": "aback", "description": "The component style. Always \"aback\"." },
+    "framework": {
+      "type": "string",
+      "description": "The framework detected by init, such as \"next\" or \"vite\"."
+    },
+    "rsc": {
+      "type": "boolean",
+      "description": "True when the project uses React Server Components, so client components keep their \"use client\" directive."
+    },
+    "tsx": { "type": "boolean", "description": "Install TypeScript source." },
+    "tailwind": {
+      "type": "object",
+      "properties": {
+        "css": {
+          "type": "string",
+          "description": "The global stylesheet, relative to the project root. init adds the theme import to it."
+        }
+      }
+    },
+    "aliases": {
+      "type": "object",
+      "description": "Import aliases from your tsconfig paths. They decide where files are written.",
+      "properties": {
+        "components": { "type": "string", "examples": ["@/components"] },
+        "ui": { "type": "string", "examples": ["@/components/ui"] },
+        "lib": { "type": "string", "examples": ["@/lib"] },
+        "utils": { "type": "string", "examples": ["@/lib/utils"] },
+        "hooks": { "type": "string", "examples": ["@/hooks"] }
+      }
+    },
+    "registries": {
+      "type": "object",
+      "description": "Registry templates by scope. The standard \"@aback\" entry means the registry bundled with the CLI; any other URL is used as a mirror.",
+      "additionalProperties": { "type": "string", "pattern": "\\{name\\}" }
+    }
+  }
+}

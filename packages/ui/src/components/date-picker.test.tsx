@@ -32,7 +32,7 @@ describe("DatePicker", () => {
     await user.click(screen.getByRole("button", { name: "Pick a date" }));
 
     expect(await screen.findByRole("dialog", { name: "Choose a date" })).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Monday, October 12th, 2026" }));
+    await user.click(screen.getByRole("button", { name: "Monday, October 12, 2026" }));
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange.mock.calls[0]?.[0]?.toDateString()).toBe("Mon Oct 12 2026");
@@ -71,9 +71,9 @@ describe("DatePicker", () => {
     );
 
     await user.click(screen.getByRole("button", { name: "Pick a date" }));
-    expect(screen.getByRole("button", { name: "Friday, October 9th, 2026" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Wednesday, October 21st, 2026" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Monday, October 12th, 2026" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Friday, October 9, 2026" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Wednesday, October 21, 2026" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Monday, October 12, 2026" })).toBeEnabled();
   });
 
   it("submits a hidden ISO value for native forms", () => {
@@ -119,13 +119,13 @@ describe("DateRangePicker", () => {
 
     render(<Example />);
     await user.click(screen.getByRole("button", { name: "Pick a date range" }));
-    await user.click(await screen.findByRole("button", { name: "Monday, October 5th, 2026" }));
+    await user.click(await screen.findByRole("button", { name: "Monday, October 5, 2026" }));
 
     expect(screen.getByRole("dialog", { name: "Choose a date range" })).toBeInTheDocument();
     // The first click anchors the range; the popover stays open for the end.
     expect(screen.getByRole("button", { name: "Oct 5, 2026" })).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "Friday, October 9th, 2026" }));
+    await user.click(screen.getByRole("button", { name: "Friday, October 9, 2026" }));
 
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();

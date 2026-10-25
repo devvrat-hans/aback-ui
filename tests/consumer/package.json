@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Installs the packed npm tarballs and renders from them, proving the published entry points work outside the monorepo.",
+  "description": "Installs the packed npm tarballs and uses them, proving the published packages work outside the monorepo.",
   "scripts": {
     "test": "vitest run"
   },
@@ -20,6 +20,7 @@
     "@types/node": "^24.10.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "aback-ui": "file:./tarballs/aback-ui-cli.tgz",
     "jsdom": "^30.1.3",
     "postcss": "^8.5.31",
     "tailwindcss": "^4.3.3",

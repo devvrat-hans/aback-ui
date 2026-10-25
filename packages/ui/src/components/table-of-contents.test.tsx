@@ -5,22 +5,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { expectNoA11yViolations } from "../test-utils/axe.js";
 import { TableOfContents } from "./table-of-contents.js";
 
-type ObserverCallback = (entries: Array<{ isIntersecting: boolean; target: Element }>) => void;
-
-let observerCallback: ObserverCallback | null = null;
-const observed: Element[] = [];
-
-class FakeObserver {
-  constructor(callback: ObserverCallback) {
-    observerCallback = callback;
-  }
-  observe(element: Element) {
-    observed.push(element);
-  }
-  disconnect() {}
-  unobserve() {}
-}
-
 const items = [
   { id: "install", title: "Installation" },
   { id: "usage", title: "Usage" },
@@ -40,12 +24,14 @@ function Page() {
 
 describe("TableOfContents", () => {
   beforeEach(() => {
-    observed.length = 0;
-    vi.stubGlobal("IntersectionObserver", FakeObserver);
+    vi.spyOn(window, "requestAnimationFrame").mockImplementation((callback) => {
+      callback(0);
+      return 1;
+    });
   });
 
   afterEach(() => {
-    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
   });
 
   it("is a labelled navigation landmark of anchor links", () => {
@@ -55,15 +41,27 @@ describe("TableOfContents", () => {
     expect(screen.getByRole("link", { name: "Usage" })).toHaveAttribute("href", "#usage");
   });
 
-  it("marks the section in view as the current location", () => {
+  it("marks the last section scrolled past the offset as the current location", () => {
     render(<Page />);
-    expect(observed.map((element) => element.id)).toEqual(["install", "usage", "props"]);
+    const tops: Record<string, number> = { install: -400, usage: 40, props: 600 };
+    for (const id of Object.keys(tops)) {
+      vi.spyOn(document.getElementById(id)!, "getBoundingClientRect").mockReturnValue({
+        top: tops[id],
+      } as DOMRect);
+    }
 
     act(() => {
-      observerCallback?.([{ isIntersecting: true, target: document.getElementById("usage")! }]);
+      window.dispatchEvent(new Event("scroll"));
     });
     expect(screen.getByRole("link", { name: "Usage" })).toHaveAttribute("aria-current", "location");
     expect(screen.getByRole("link", { name: "Installation" })).not.toHaveAttribute("aria-current");
+  });
+
+  it("stops listening when it unmounts", () => {
+    const remove = vi.spyOn(window, "removeEventListener");
+    const { unmount } = render(<Page />);
+    unmount();
+    expect(remove).toHaveBeenCalledWith("scroll", expect.any(Function));
   });
 
   it("marks a clicked entry immediately", async () => {

@@ -61,7 +61,7 @@ export async function createProject(options: ProjectOptions = {}): Promise<Creat
   };
 
   if (options.withConfig) {
-    files["components.json"] = JSON.stringify(CONFIG, null, 2);
+    files["aback-ui.json"] = JSON.stringify(CONFIG, null, 2);
   }
   files[css] = '@import "tailwindcss";\n\n:root { color-scheme: light; }\n';
 
@@ -149,7 +149,7 @@ export async function createRegistry(): Promise<CreatedRegistry> {
     title: "Sign in",
     files: [
       {
-        path: "apps/docs/src/blocks/sign-in.tsx",
+        path: "registry/blocks/sign-in.tsx",
         target: "components/blocks/sign-in.tsx",
         content: "export function SignInBlock() {\n  return null;\n}\n",
       },

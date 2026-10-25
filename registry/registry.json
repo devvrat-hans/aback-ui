@@ -1,5 +1,5 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "$schema": "https://abackui.com/schema/registry.json",
   "name": "aback-ui",
   "homepage": "https://abackui.com",
   "items": [
@@ -1515,7 +1515,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/sign-in.tsx",
+          "path": "registry/blocks/sign-in.tsx",
           "target": "components/blocks/sign-in.tsx",
           "type": "registry:block"
         }
@@ -1545,7 +1545,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/settings-section.tsx",
+          "path": "registry/blocks/settings-section.tsx",
           "target": "components/blocks/settings-section.tsx",
           "type": "registry:block"
         }
@@ -1575,7 +1575,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/dashboard-shell.tsx",
+          "path": "registry/blocks/dashboard-shell.tsx",
           "target": "components/blocks/dashboard-shell.tsx",
           "type": "registry:block"
         }
@@ -1609,7 +1609,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/users-table.tsx",
+          "path": "registry/blocks/users-table.tsx",
           "target": "components/blocks/users-table.tsx",
           "type": "registry:block"
         }
@@ -1804,7 +1804,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/site-header.tsx",
+          "path": "registry/blocks/site-header.tsx",
           "target": "components/blocks/site-header.tsx",
           "type": "registry:block"
         }
@@ -1833,7 +1833,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/site-footer.tsx",
+          "path": "registry/blocks/site-footer.tsx",
           "target": "components/blocks/site-footer.tsx",
           "type": "registry:block"
         }
@@ -1863,7 +1863,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/hero.tsx",
+          "path": "registry/blocks/hero.tsx",
           "target": "components/blocks/hero.tsx",
           "type": "registry:block"
         }
@@ -1894,7 +1894,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/feature-grid.tsx",
+          "path": "registry/blocks/feature-grid.tsx",
           "target": "components/blocks/feature-grid.tsx",
           "type": "registry:block"
         }
@@ -1927,7 +1927,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/pricing.tsx",
+          "path": "registry/blocks/pricing.tsx",
           "target": "components/blocks/pricing.tsx",
           "type": "registry:block"
         }
@@ -1956,7 +1956,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/faq.tsx",
+          "path": "registry/blocks/faq.tsx",
           "target": "components/blocks/faq.tsx",
           "type": "registry:block"
         }
@@ -1989,7 +1989,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/newsletter.tsx",
+          "path": "registry/blocks/newsletter.tsx",
           "target": "components/blocks/newsletter.tsx",
           "type": "registry:block"
         }
@@ -2019,7 +2019,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/cta-banner.tsx",
+          "path": "registry/blocks/cta-banner.tsx",
           "target": "components/blocks/cta-banner.tsx",
           "type": "registry:block"
         }
@@ -2045,7 +2045,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/cookie-consent.tsx",
+          "path": "registry/blocks/cookie-consent.tsx",
           "target": "components/blocks/cookie-consent.tsx",
           "type": "registry:block"
         }
@@ -2077,7 +2077,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/not-found.tsx",
+          "path": "registry/blocks/not-found.tsx",
           "target": "components/blocks/not-found.tsx",
           "type": "registry:block"
         }
@@ -2112,7 +2112,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/contact-form.tsx",
+          "path": "registry/blocks/contact-form.tsx",
           "target": "components/blocks/contact-form.tsx",
           "type": "registry:block"
         }
@@ -2148,7 +2148,7 @@
       },
       "files": [
         {
-          "path": "apps/docs/src/blocks/article-layout.tsx",
+          "path": "registry/blocks/article-layout.tsx",
           "target": "components/blocks/article-layout.tsx",
           "type": "registry:block"
         }

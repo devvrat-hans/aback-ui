@@ -1,0 +1,193 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "../../../packages/tokens/src/tokens.css";
+
+@source "../../../packages/ui/src";
+@source "../../../registry/blocks";
+
+/* One page width for the header, footer, home sections, and docs, so every
+   left edge on the site lines up. */
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1400px;
+  padding-inline: 1rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 1.5rem;
+  }
+
+  @media (width >= 80rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* A code surface one step off the canvas, in both themes. */
+:root {
+  --code: color-mix(in oklab, var(--muted) 45%, var(--background));
+}
+
+@theme inline {
+  --color-code: var(--code);
+}
+
+html {
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .docs-grid-lines {
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--foreground) 4%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 4%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Shiki writes both themes' colours as variables on every token. */
+  .docs-code .shiki {
+    background: transparent;
+    color: var(--foreground);
+  }
+
+  .docs-code .shiki span {
+    color: var(--shiki-light);
+  }
+
+  .dark .docs-code .shiki span {
+    color: var(--shiki-dark);
+  }
+
+  /* Guide steps count themselves, so a step can be inserted without renumbering. */
+  .docs-steps {
+    counter-reset: docs-step;
+  }
+
+  .docs-step {
+    counter-increment: docs-step;
+  }
+
+  .docs-step-marker::before {
+    content: counter(docs-step);
+  }
+
+  .docs-step:last-child > .docs-step-line {
+    display: none;
+  }
+
+  .docs-grid-fade {
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, black 30%, transparent 75%);
+  }
+
+  .prose-docs {
+    max-width: 72ch;
+    font-size: 0.9375rem;
+  }
+
+  .prose-docs > * + * {
+    margin-top: 1rem;
+  }
+
+  .prose-docs h2 {
+    margin-top: 3rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 1.375rem;
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    color: var(--foreground);
+    scroll-margin-top: 5rem;
+  }
+
+  .prose-docs h2:first-child {
+    margin-top: 0;
+  }
+
+  .prose-docs h3 {
+    margin-top: 2rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--foreground);
+    scroll-margin-top: 5rem;
+  }
+
+  .prose-docs p,
+  .prose-docs li {
+    color: color-mix(in oklab, var(--foreground) 78%, var(--background));
+    line-height: 1.75;
+  }
+
+  .prose-docs ul,
+  .prose-docs ol {
+    padding-left: 1.25rem;
+  }
+
+  .prose-docs ul {
+    list-style: disc;
+  }
+
+  .prose-docs ol {
+    list-style: decimal;
+  }
+
+  .prose-docs li::marker {
+    color: var(--muted-foreground);
+  }
+
+  .prose-docs li + li {
+    margin-top: 0.5rem;
+  }
+
+  .prose-docs a {
+    color: var(--link);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklab, var(--link) 40%, transparent);
+    text-underline-offset: 3px;
+  }
+
+  .prose-docs a:hover {
+    color: var(--link-hover);
+    text-decoration-color: currentColor;
+  }
+
+  /* Inline code in running text only, so command and code blocks keep their own frames. */
+  .prose-docs :where(p, li, td, th, h2, h3) > code {
+    border: 1px solid var(--border);
+    background: var(--muted);
+    padding: 0.05em 0.35em;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--foreground);
+  }
+
+  .prose-docs strong {
+    color: var(--foreground);
+    font-weight: 600;
+  }
+
+  .prose-docs table {
+    width: 100%;
+    font-size: 0.875rem;
+  }
+
+  .prose-docs th {
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0.75rem 0.5rem 0;
+    text-align: left;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  .prose-docs td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0.75rem 0.5rem 0;
+    vertical-align: top;
+    color: color-mix(in oklab, var(--foreground) 78%, var(--background));
+  }
+}

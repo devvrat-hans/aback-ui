@@ -54,7 +54,7 @@ function CodeBlock({
               <span className="truncate font-mono text-xs text-foreground">{filename}</span>
             ) : null}
             {language ? (
-              <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+              <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.12em] text-foreground">
                 {language}
               </span>
             ) : null}

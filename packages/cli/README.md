@@ -1,95 +1,86 @@
-# @aback-ui/cli
+# aback-ui
 
-The Aback UI command line. It configures a React project and installs component
-source from the [Aback UI registry](https://abackui.com/r).
-
-The registry is also compatible with the shadcn CLI. Use whichever fits your
-workflow; both install the same canonical source.
+The Aback UI command line. It sets up a React project and copies accessible components and blocks into it as source you own.
 
 ```bash
-# Configure the project once
-npx @aback-ui/cli init
+# Set up the project once
+npx aback-ui@latest init
 
-# Install components or blocks by name
-npx @aback-ui/cli add button dialog
-npx @aback-ui/cli add sign-in
-
-# Or by URL, or through a named registry from components.json
-npx @aback-ui/cli add https://abackui.com/r/table.json
-npx @aback-ui/cli add @aback/tooltip
+# Add components or blocks by name
+npx aback-ui@latest add button dialog
+npx aback-ui@latest add sign-in
 ```
+
+Every component's source ships inside this package. Installing never downloads code from a website, and the files always match the CLI version you ran. Your package manager still installs npm dependencies such as Radix UI.
+
+Requirements: Node.js 20.9 or newer, a React 19 project, Tailwind CSS v4, and a `@/` path alias.
+
+Documentation: [abackui.com/docs/cli](https://abackui.com/docs/cli)
 
 ## Commands
 
 | Command | What it does |
 | --- | --- |
-| `init` | Detects Next.js/Vite, Tailwind v4, the stylesheet, and path aliases. Writes `components.json`, the theme at `styles/aback.css`, `lib/utils.ts`, and the stylesheet import. Installs `clsx` and `tailwind-merge`. |
-| `add <items...>` | Resolves the item and its registry dependencies, writes source files, and installs declared npm packages. |
-| `diff [items...]` | Compares installed files with the registry and prints what a reinstall would change. `--all` covers every UI and block item. |
-| `doctor` | Checks the project setup without writing: config, aliases, utilities, stylesheet, theme, Tailwind, registry, and installed files. Exits non-zero on errors. |
-| `list [query]` | Lists registry items, grouped by category. `--json` for tooling. |
-| `view <item>` | Shows metadata, dependencies, and file targets for one item. |
+| `init` | Checks for Tailwind v4, finds the stylesheet and path alias, writes `aback-ui.json`, `styles/aback.css`, and `lib/utils.ts`, imports the theme, and installs `clsx` and `tailwind-merge`. |
+| `add <items...>` | Resolves each item and the items it builds on, writes the files in dependency order, and installs the npm packages they import. |
+| `diff [items...]` | Prints a line diff for each installed file that differs from this version. Never writes. `--all` checks every installed component and block. |
+| `doctor` | Checks the setup without writing: Node, framework, Tailwind, config, aliases, utilities, stylesheet, theme, registry, installed files, and lockfiles. Exits non-zero on errors. |
+| `list [query]` | Lists installable items, grouped by category. |
+| `view <item>` | Shows an item's description, dependencies, and file targets. |
 
 ## Options
 
 | Option | Effect |
 | --- | --- |
-| `--cwd <dir>` | Project directory. Defaults to the current directory. |
-| `--registry <url>` | Registry base URL or a local directory. Also `ABACK_UI_REGISTRY`. |
 | `--yes`, `-y` | Accept defaults. Existing files are kept. |
-| `--overwrite` | Replace existing files without prompting. |
+| `--overwrite` | Replace existing files without asking. |
 | `--no-overwrite` | Keep every existing file. |
+| `--dry-run` | Print the plan without writing or installing. |
 | `--no-install` | Write files but skip the package manager. |
-| `--dry-run` | Print the plan without writing anything. |
-| `--json` | Machine-readable output for `diff`, `list`, `view`, and `doctor`. |
-| `--all` | Compare every installed UI and block item in `diff`. |
+| `--cwd <dir>` | Project directory. Defaults to the current directory. |
+| `--css <file>` | The global stylesheet for `init`, when it cannot be found. |
+| `--force` | Let `init` rewrite an existing `aback-ui.json`. |
+| `--registry <url>` | Install from a mirror or a local directory. Also `ABACK_UI_REGISTRY`. |
+| `--json` | Machine-readable output for `diff`, `doctor`, `list`, and `view`. |
+| `--all` | With `diff`: compare every installed item. |
 
 ## Safety
 
-- Install targets must stay inside the project. Absolute paths and `..`
-  segments are rejected before anything is written.
-- Existing files are compared by content. Identical files are left alone; a
-  different file needs confirmation, `--overwrite`, or `--no-overwrite`.
-- No registry file is executed. The CLI writes files and delegates dependency
-  installation to the project's detected package manager.
+- Install targets must stay inside the project. Absolute paths and `..` segments are rejected before anything is written.
+- Existing files are compared by content. Identical files are left alone; a different file needs confirmation, `--overwrite`, or `--no-overwrite`.
+- No registry file is executed. The CLI writes files and hands dependency installation to the project's package manager.
 - `--dry-run` performs no writes and no installs.
 
 ## Configuration
 
-`init` writes a shadcn-compatible `components.json`:
+`init` writes `aback-ui.json` ([schema](https://abackui.com/schema/aback-ui.json)):
 
 ```json
 {
+  "$schema": "https://abackui.com/schema/aback-ui.json",
   "style": "aback",
-  "tailwind": { "css": "app/globals.css", "cssVariables": true },
+  "rsc": true,
+  "tsx": true,
+  "tailwind": { "css": "app/globals.css" },
   "aliases": {
     "components": "@/components",
+    "utils": "@/lib/utils",
     "ui": "@/components/ui",
-    "utils": "@/lib/utils"
+    "lib": "@/lib",
+    "hooks": "@/hooks"
   },
   "registries": { "@aback": "https://abackui.com/r/{name}.json" }
 }
 ```
 
-Because the file is compatible, the shadcn CLI can install from the same
-registry and this CLI can install from any shadcn-compatible registry.
+The standard `@aback` entry means the registry bundled with the CLI. Any other template is used as a mirror.
 
 ## Development
 
-```bash
-bun run build
-bun run typecheck
-bun run test
-node dist/index.js --help
-
-# After installing an item, prove you have the registry version
-node dist/index.js diff button --registry apps/docs/public/r
-node dist/index.js doctor
-```
-
-Run the built CLI against the repository registry without a network:
+From the repository root:
 
 ```bash
-node packages/cli/dist/index.js list --registry apps/docs/public/r
-node packages/cli/dist/index.js view button --registry apps/docs/public/r
+bun run build:registry   # regenerate the registry
+bun run build:cli        # compile and bundle it into packages/cli/registry
+node packages/cli/dist/index.js --help
 ```

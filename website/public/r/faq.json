@@ -1,0 +1,31 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "faq",
+  "type": "registry:block",
+  "title": "FAQ",
+  "description": "Questions in an accordion with indexable closed answers and optional FAQPage structured data.",
+  "registryDependencies": [
+    "https://abackui.com/r/accordion.json",
+    "https://abackui.com/r/section-heading.json"
+  ],
+  "categories": [
+    "Marketing"
+  ],
+  "docs": "https://abackui.com/docs/blocks/faq",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch",
+      "aback-group"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/blocks/faq.tsx",
+      "content": "import { useId, type ReactNode } from \"react\";\n\nimport {\n  Accordion,\n  AccordionContent,\n  AccordionItem,\n  AccordionTrigger,\n} from \"@/components/ui/accordion\";\nimport { SectionHeading } from \"@/components/ui/section-heading\";\n\nexport interface FaqItem {\n  question: string;\n  /** Plain text, so it can be mirrored in structured data. Blank lines start new paragraphs. */\n  answer: string;\n}\n\nexport interface FaqBlockProps {\n  eyebrow?: ReactNode;\n  title?: ReactNode;\n  description?: ReactNode;\n  items: FaqItem[];\n  /** Emit FAQPage JSON-LD for search engines. Only for questions you answer on the page. */\n  structuredData?: boolean;\n  /** A line after the list, such as a contact link. */\n  footer?: ReactNode;\n}\n\nfunction faqJsonLd(items: FaqItem[]) {\n  const data = {\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"FAQPage\",\n    mainEntity: items.map((item) => ({\n      \"@type\": \"Question\",\n      name: item.question,\n      acceptedAnswer: { \"@type\": \"Answer\", text: item.answer },\n    })),\n  };\n  // Escaping \"<\" keeps an answer containing \"</script>\" inside the tag.\n  return JSON.stringify(data).replace(/</g, \"\\\\u003c\");\n}\n\n/**\n * Frequently asked questions in an accordion. The first answer is open and\n * closed answers stay in the HTML, so they are searchable and indexable.\n */\nexport function FaqBlock({\n  eyebrow,\n  title = \"Frequently asked questions\",\n  description,\n  items,\n  structuredData = false,\n  footer,\n}: FaqBlockProps) {\n  const headingId = useId();\n  return (\n    <section aria-labelledby={headingId} className=\"mx-auto w-full max-w-3xl px-4 py-16 md:px-6 lg:py-20\">\n      <SectionHeading eyebrow={eyebrow} title={title} description={description} headingId={headingId} />\n\n      <Accordion\n        type=\"multiple\"\n        defaultValue={items.length ? [\"faq-0\"] : []}\n        className=\"mt-8 border-t border-border\"\n      >\n        {items.map((item, index) => (\n          <AccordionItem key={item.question} value={`faq-${index}`}>\n            <AccordionTrigger className=\"text-base\">{item.question}</AccordionTrigger>\n            <AccordionContent forceMount className=\"flex flex-col gap-3 [[data-state=closed]>&]:hidden\">\n              {item.answer.split(/\\n\\s*\\n/).map((paragraph, paragraphIndex) => (\n                <p key={paragraphIndex}>{paragraph}</p>\n              ))}\n            </AccordionContent>\n          </AccordionItem>\n        ))}\n      </Accordion>\n\n      {footer ? <div className=\"mt-6 text-sm text-muted-foreground\">{footer}</div> : null}\n\n      {structuredData && items.length ? (\n        <script type=\"application/ld+json\" dangerouslySetInnerHTML={{ __html: faqJsonLd(items) }} />\n      ) : null}\n    </section>\n  );\n}\n",
+      "type": "registry:block",
+      "target": "components/blocks/faq.tsx"
+    }
+  ]
+}

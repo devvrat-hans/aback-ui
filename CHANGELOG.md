@@ -24,18 +24,22 @@ All notable changes are recorded here. The project is pre-1.0; minor versions ma
 - `Dashboard shell` block: persistent sidebar, mobile sheet navigation, top bar, optional search/sign-out, and page header. Navigation is real anchors with `aria-current`; optional controls are omitted rather than rendered dead.
 - The documentation search now uses the library's own `Command` component instead of a hand-rolled listbox, giving it cmdk's combobox semantics, filtering, and roving selection.
 - `CommandDialog` gained `showCloseButton`, so a search palette can omit the corner close control without hiding the dialog title from assistive technology.
-- `@aback-ui/cli`, the first-party source registry client: `init`, `add`, `diff`, `list`, and `view`, with project detection, dependency-graph resolution, dry runs, a guarded overwrite policy, and path-traversal protection. The package is built and tested but not published to npm yet.
+- `aback-ui`, the Aback UI CLI (`npx aback-ui@latest add button`): `init`, `add`, `diff`, `list`, and `view`, with project detection, dependency-graph resolution, dry runs, a guarded overwrite policy, and path-traversal protection. The package is built and tested but not published to npm yet.
 - Seven components: Alert Dialog, Avatar, Popover, Progress, Radio Group, Sheet, and Toggle Group, each with behavior tests, an axe structural check, a live documentation example, API and accessibility notes, and a validated registry item.
 - A CLI documentation page at `/docs/cli`, CLI entries in the docs navigation, sitemap, and the component installation section, plus a component status update for the seven beta items.
 - `packages/cli` tests for argument parsing, target safety, registry ordering and cycles, init/add behavior, overwrite protection, dry runs, block installs, and command dispatch.
 - Three components: Command (cmdk, with a labelled combobox and a dialog palette), Slider, and ScrollArea, each with tests, docs, and a registry item.
 - `registry:block` support in the registry build and CLI, with `components/blocks` install targets, registry-dependency validation for composed imports, and a `registry:block` item type.
 - Three components: Pagination (button and link modes, collapsing ranges), Collapsible, and Hover Card, each with tests, docs, and a registry item.
-- Three blocks: Users table (search, role filtering, sorting, row actions, empty state, and pagination over a provided member list), Sign in, and Settings section. Each has a live documentation page, catalogue and navigation entries, install commands, customization and accessibility notes, and a sitemap entry. Blocks live at `apps/docs/src/blocks` so the preview and the installed source are identical.
+- Three blocks: Users table (search, role filtering, sorting, row actions, empty state, and pagination over a provided member list), Sign in, and Settings section. Each has a live documentation page, catalogue and navigation entries, install commands, customization and accessibility notes, and a sitemap entry. Blocks live at `registry/blocks` so the preview and the installed source are identical.
 - `aback-ui diff [items...] --all --json`, which compares installed files with the registry, prints a contextual line diff, and never writes. CI can use the JSON output to detect drift.
 
 ### Fixed
 
+- `Calendar` day buttons are now named "Sunday, November 1, 2026" instead of react-day-picker's "Sunday, November 1st, 2026", so each name contains the visible day number (WCAG 2.5.3, Label in Name). Days outside the current month no longer use reduced-opacity text, which fell below 4.5:1. Pass `labels` to override the names.
+- `AvatarFallback` initials use ink instead of muted text; muted text on the muted fill measured 4.34:1.
+- The `CodeBlock` language label uses ink; muted text on the caption bar measured 4.34:1.
+- `TableOfContents` reads the active section from the scroll position once per frame instead of waiting for intersection changes, so a fast scroll that jumps past a section no longer leaves the wrong entry marked. At the bottom of the page the last entry is marked. The props are unchanged.
 - Calendar was missing from the catalogue, sidebar, and search because its registry category was spelled "Data display". The registry build now rejects unknown component categories.
 - The package README said npm consumers need no Tailwind configuration. Tailwind v4 does not scan `node_modules`; the README and installation guide now document `@source "../node_modules/@aback-ui/ui/dist"`.
 - The docs site kept private copies of CopyButton, CodeBlock, ThemeToggle, and ThemeScript. It now uses the library components it documents.
@@ -45,7 +49,25 @@ All notable changes are recorded here. The project is pre-1.0; minor versions ma
 
 ### Changed
 
+- Aback UI installs with its own CLI. Every install command on the site and in the READMEs is `npx aback-ui@latest …`; the shadcn CLI is no longer documented or needed.
+  - The CLI package is named `aback-ui` (was `@aback-ui/cli`), so `npx aback-ui` works without a scope.
+  - The CLI ships the whole registry inside its npm package and installs from it by default: no code is downloaded from a website, and the files always match the CLI version. `--registry`, `ABACK_UI_REGISTRY`, or a custom `@aback` entry still select a mirror.
+  - The project config is `aback-ui.json` (was `components.json`), with a published schema at `abackui.com/schema/aback-ui.json`. Registry items and the index point at `abackui.com/schema/registry-item.json` and `registry.json` instead of shadcn's schemas.
+  - The release workflow publishes the CLI after the two library packages, and the consumer test runs `init` and `add` from the packed CLI tarball with the network blocked.
+- The repository separates what ships from the website: npm packages in `packages/`, item definitions and block source in `registry/` (a private workspace), and abackui.com in `website/` (was `apps/docs`).
+- The documentation is reorganized into Get started, Foundations, Components, Blocks, and Resources, with rewritten Introduction, Installation, CLI, Theming, and Registry format guides, and new npm package, Dark mode, Contributing, and Changelog pages. Guides use numbered steps, callouts, and previous and next links, and component pages show CLI, npm package, and manual install tabs.
 - Root `typecheck`, `test`, and `build` now include the CLI; CI builds the CLI binary before the documentation site.
+- The documentation site was redesigned:
+  - One page width is shared by the header, footer, home page, and docs.
+  - The docs sidebar now shows from 768 pixels. Previously there was no navigation between 768 and 1024 pixels.
+  - Below 768 pixels, a left drawer carries the same navigation tree, Blocks included.
+  - Docs pages gain a sticky "On this page" rail, linkable section headings, and previous and next links.
+  - Component pages open with Preview and Code tabs. They also gain an import snippet built from the installed file's exports, Kbd key combinations, and a "Copy as Markdown" action.
+  - Block pages render the desktop preview at a true 1280 pixel viewport scaled to the column, start at phone width on small screens, and list the components each block installs.
+  - The blocks gallery and the home page show live, inert thumbnails of each block.
+  - The home page was rebuilt around a wall of working components.
+  - Code samples are highlighted with Shiki at build time; no highlighter ships to the browser.
+  - An axe scan of 16 pages in both themes reports no violations.
 
 ## 0.1.0 - October 2026
 

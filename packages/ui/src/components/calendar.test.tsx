@@ -24,9 +24,17 @@ describe("Calendar", () => {
     render(<SingleExample />);
 
     expect(screen.getByRole("grid", { name: "October 2026" })).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Monday, October 12th, 2026" }));
+    await user.click(screen.getByRole("button", { name: "Monday, October 12, 2026" }));
 
     expect(screen.getByText("Mon Oct 12 2026")).toBeInTheDocument();
+  });
+
+  it("names every day with a full date that contains its visible number", () => {
+    render(<SingleExample />);
+    for (const button of screen.getAllByRole("button").filter((item) => /^\d+$/.test(item.textContent ?? ""))) {
+      const name = button.getAttribute("aria-label") ?? "";
+      expect(name.split(/[\s,]+/)).toContain(button.textContent);
+    }
   });
 
   it("moves focus between days with the arrow keys", async () => {
@@ -40,14 +48,14 @@ describe("Calendar", () => {
       />,
     );
 
-    const day = screen.getByRole("button", { name: /Monday, October 12th, 2026/ });
+    const day = screen.getByRole("button", { name: /Monday, October 12, 2026/ });
     await waitFor(() => expect(day).toHaveFocus());
 
     await user.keyboard("{ArrowRight}");
-    expect(screen.getByRole("button", { name: "Tuesday, October 13th, 2026" })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Tuesday, October 13, 2026" })).toHaveFocus();
 
     await user.keyboard("{ArrowDown}");
-    expect(screen.getByRole("button", { name: "Tuesday, October 20th, 2026" })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Tuesday, October 20, 2026" })).toHaveFocus();
   });
 
   it("disables dates matched by the disabled prop", () => {
@@ -59,8 +67,8 @@ describe("Calendar", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "Sunday, October 4th, 2026" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Monday, October 5th, 2026" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Sunday, October 4, 2026" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Monday, October 5, 2026" })).toBeEnabled();
   });
 
   it("supports range selection", async () => {
@@ -87,8 +95,8 @@ describe("Calendar", () => {
     }
 
     render(<RangeExample />);
-    await user.click(screen.getByRole("button", { name: "Monday, October 5th, 2026" }));
-    await user.click(screen.getByRole("button", { name: "Friday, October 9th, 2026" }));
+    await user.click(screen.getByRole("button", { name: "Monday, October 5, 2026" }));
+    await user.click(screen.getByRole("button", { name: "Friday, October 9, 2026" }));
 
     expect(screen.getByText("Mon Oct 05 2026 / Fri Oct 09 2026")).toBeInTheDocument();
   });

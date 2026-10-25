@@ -35,7 +35,7 @@ Accessibility is part of correctness, not a polish phase. This document states w
 
 ## Automated checks
 
-- `bun run test` runs component behavior tests and axe checks on representative renders, plus an axe check on every block preview (`apps/docs/src/blocks/blocks.test.tsx`). Those checks have already caught duplicate heading ids, indistinguishable landmarks, and a skipped heading level in block previews.
+- `bun run test` runs component behavior tests and axe checks on representative renders, plus an axe check on every block preview (`website/src/block-previews/blocks.test.tsx`). Those checks have already caught duplicate heading ids, indistinguishable landmarks, and a skipped heading level in block previews.
 - axe runs in jsdom. It cannot evaluate computed color contrast, so contrast is verified from measured token pairs in `DESIGN.md` and reviewed visually.
 - The docs site is checked for one H1 per page, landmarks, skip link, and keyboard-operable navigation.
 

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "cta-banner",
+  "type": "registry:block",
+  "title": "Call to action",
+  "description": "A closing banner with one primary and one optional secondary action, in brand or neutral tone.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json",
+    "https://abackui.com/r/button.json"
+  ],
+  "categories": [
+    "Marketing"
+  ],
+  "docs": "https://abackui.com/docs/blocks/cta-banner",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/blocks/cta-banner.tsx",
+      "content": "import { useId, type ReactNode } from \"react\";\nimport { IconArrowRight } from \"@tabler/icons-react\";\n\nimport { Button } from \"@/components/ui/button\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface CtaBannerBlockProps {\n  title: ReactNode;\n  description?: ReactNode;\n  primaryAction: { label: string; href: string };\n  secondaryAction?: { label: string; href: string };\n  /** \"brand\" is a soft Aback Blue wash; \"muted\" is neutral for dense pages. */\n  tone?: \"brand\" | \"muted\";\n}\n\n/**\n * A closing call to action for the end of a page or a section. One primary\n * action, at most one secondary. It stacks on phones and lines up on one row\n * from md.\n */\nexport function CtaBannerBlock({\n  title,\n  description,\n  primaryAction,\n  secondaryAction,\n  tone = \"brand\",\n}: CtaBannerBlockProps) {\n  const headingId = useId();\n  return (\n    <section aria-labelledby={headingId} className=\"mx-auto w-full max-w-6xl px-4 py-12 md:px-6\">\n      <div\n        className={cn(\n          \"flex flex-col gap-6 border p-6 sm:p-10 md:flex-row md:items-center md:justify-between\",\n          tone === \"brand\"\n            ? \"border-primary-200 bg-brand-wash dark:border-primary-800/60\"\n            : \"border-border bg-muted/40\",\n        )}\n      >\n        <div className=\"flex max-w-2xl flex-col gap-2\">\n          <h2 id={headingId} className=\"text-2xl font-bold tracking-tight text-foreground text-balance\">\n            {title}\n          </h2>\n          {description ? (\n            <p className=\"text-sm leading-relaxed text-muted-foreground sm:text-base\">{description}</p>\n          ) : null}\n        </div>\n        <div className=\"flex shrink-0 flex-col gap-2 sm:flex-row\">\n          {secondaryAction ? (\n            <Button variant=\"outline\" size=\"lg\" asChild>\n              <a href={secondaryAction.href}>{secondaryAction.label}</a>\n            </Button>\n          ) : null}\n          <Button variant=\"brand\" size=\"lg\" asChild>\n            <a href={primaryAction.href}>\n              {primaryAction.label}\n              <IconArrowRight aria-hidden=\"true\" />\n            </a>\n          </Button>\n        </div>\n      </div>\n    </section>\n  );\n}\n",
+      "type": "registry:block",
+      "target": "components/blocks/cta-banner.tsx"
+    }
+  ]
+}

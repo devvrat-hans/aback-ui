@@ -6,22 +6,17 @@ Accessible, square-cornered React components for the Aback design system: 57 com
 - Status: pre-1.0. APIs may change before the first stable release.
 - Requires React 19 and Tailwind CSS v4.
 
-> This package is built and tested from its packed tarball, but it is **not published to npm yet**. Until the first release, install components with the source-copy registry below.
+> This package is built and tested from its packed tarball, but it is **not published to npm yet**.
 
 ## Two ways to install
 
-### Copy the source (registry)
+### Copy the source (aback-ui CLI)
 
-You own the file and can edit it.
+You own the files and can edit them.
 
 ```bash
-npx shadcn@latest add https://abackui.com/r/theme.json
-npx shadcn@latest add https://abackui.com/r/button.json
-```
-
-```css
-@import "tailwindcss";
-@import "../styles/aback.css";
+npx aback-ui@latest init
+npx aback-ui@latest add button
 ```
 
 ### Use the package

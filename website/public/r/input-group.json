@@ -1,0 +1,30 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "input-group",
+  "type": "registry:ui",
+  "title": "Input Group",
+  "description": "Joins an input with units, prefixes, icons, or a compact button inside one 36px frame.",
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json",
+    "https://abackui.com/r/input.json"
+  ],
+  "categories": [
+    "Forms"
+  ],
+  "docs": "https://abackui.com/docs/components/input-group",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/input-group.tsx",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\nimport { Input } from \"@/components/ui/input\";\n\nconst CONTROL_SELECTOR = \"[data-slot='input-group-control']\";\n\n/**\n * A 36px input frame that joins a control with prefixes and suffixes: units,\n * currency, a search icon, or a small button. The frame owns the border and\n * the focus ring, so the affixes and the field read as one control.\n */\nfunction InputGroup({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"input-group\"\n      className={cn(\n        \"flex h-9 w-full min-w-0 items-stretch border border-input bg-transparent shadow-xs dark:bg-input/30\",\n        \"transition-[border-color,box-shadow] duration-200\",\n        \"has-[[data-slot=input-group-control]:focus-visible]:border-ring\",\n        \"has-[[data-slot=input-group-control]:focus-visible]:ring-2 has-[[data-slot=input-group-control]:focus-visible]:ring-focus-ring\",\n        \"has-[[data-slot=input-group-control]:focus-visible]:ring-offset-2 has-[[data-slot=input-group-control]:focus-visible]:ring-offset-background\",\n        \"has-[[data-slot=input-group-control][aria-invalid=true]]:border-destructive\",\n        \"has-[[data-slot=input-group-control]:disabled]:cursor-not-allowed has-[[data-slot=input-group-control]:disabled]:opacity-50\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\n/** The text control inside an InputGroup. Accepts every native input prop. */\nconst InputGroupInput = React.forwardRef<HTMLInputElement, React.ComponentProps<\"input\">>(\n  function InputGroupInput({ className, ...props }, ref) {\n    return (\n      <Input\n        ref={ref}\n        data-slot=\"input-group-control\"\n        className={cn(\n          \"h-full min-w-0 flex-1 border-0 bg-transparent shadow-none\",\n          \"focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-transparent\",\n          className,\n        )}\n        {...props}\n      />\n    );\n  },\n);\nInputGroupInput.displayName = \"InputGroupInput\";\n\nexport interface InputGroupAddonProps extends React.ComponentProps<\"div\"> {\n  /** Which side of the control the addon sits on. Sets the dividing border. */\n  align?: \"start\" | \"end\";\n  /**\n   * `text` is a boxed segment for units and prefixes (\"$\", \"%\", \"https://\").\n   * `inline` sits inside the field for an icon or a compact button.\n   */\n  variant?: \"text\" | \"inline\";\n}\n\n/**\n * A prefix or suffix. Clicking a non-interactive addon focuses the control,\n * the way a native label would. Give the addon an id and add it to the\n * control's `aria-describedby` when it carries meaning, such as a unit.\n */\nfunction InputGroupAddon({\n  align = \"start\",\n  variant = \"text\",\n  className,\n  onMouseDown,\n  ...props\n}: InputGroupAddonProps) {\n  function handleMouseDown(event: React.MouseEvent<HTMLDivElement>) {\n    onMouseDown?.(event);\n    if (event.defaultPrevented) return;\n    const target = event.target as HTMLElement;\n    if (target.closest(\"button, a, input, select, textarea\")) return;\n    const control = event.currentTarget.parentElement?.querySelector<HTMLElement>(CONTROL_SELECTOR);\n    if (!control) return;\n    event.preventDefault();\n    control.focus();\n  }\n\n  return (\n    <div\n      data-slot=\"input-group-addon\"\n      data-align={align}\n      data-variant={variant}\n      onMouseDown={handleMouseDown}\n      className={cn(\n        \"flex shrink-0 select-none items-center whitespace-nowrap text-sm text-muted-foreground\",\n        \"[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4\",\n        variant === \"text\" && \"border-input bg-muted/40 px-3\",\n        variant === \"text\" && (align === \"start\" ? \"border-r\" : \"border-l\"),\n        variant === \"inline\" && (align === \"start\" ? \"pl-3\" : \"gap-1 pr-2\"),\n        align === \"end\" && \"order-last\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { InputGroup, InputGroupAddon, InputGroupInput };\n",
+      "type": "registry:ui",
+      "target": "components/ui/input-group.tsx"
+    }
+  ]
+}

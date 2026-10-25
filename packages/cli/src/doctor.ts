@@ -161,20 +161,20 @@ export async function diagnoseProject(options: DoctorOptions): Promise<DoctorRep
   try {
     config = await loadConfig(root);
     if (config) {
-      add("config", "components.json", "pass", "Found and parsed.");
+      add("config", "aback-ui.json", "pass", "Found and parsed.");
     } else {
       add(
         "config",
-        "components.json",
+        "aback-ui.json",
         "fail",
-        "components.json is missing.",
+        "aback-ui.json is missing.",
         "Run `aback-ui init` to create it and install the theme.",
       );
     }
   } catch (error) {
     add(
       "config",
-      "components.json",
+      "aback-ui.json",
       "fail",
       (error as Error).message,
       "Fix the JSON, or run `aback-ui init --force` to rewrite it.",
@@ -182,12 +182,12 @@ export async function diagnoseProject(options: DoctorOptions): Promise<DoctorRep
   }
 
   if (!config) {
-    add("aliases", "Path aliases", "skip", "Needs components.json.");
-    add("utils", "Class utility", "skip", "Needs components.json.");
-    add("css", "Global stylesheet", "skip", "Needs components.json.");
-    add("theme", "Aback theme", "skip", "Needs components.json.");
-    add("registry", "Registry", "skip", "Needs components.json.");
-    add("installed", "Installed components", "skip", "Needs components.json.");
+    add("aliases", "Path aliases", "skip", "Needs aback-ui.json.");
+    add("utils", "Class utility", "skip", "Needs aback-ui.json.");
+    add("css", "Global stylesheet", "skip", "Needs aback-ui.json.");
+    add("theme", "Aback theme", "skip", "Needs aback-ui.json.");
+    add("registry", "Registry", "skip", "Needs aback-ui.json.");
+    add("installed", "Installed components", "skip", "Needs aback-ui.json.");
   } else {
     if (config.style === "aback") {
       add("style", "Style", "pass", 'Using the "aback" style.');
@@ -196,7 +196,7 @@ export async function diagnoseProject(options: DoctorOptions): Promise<DoctorRep
         "style",
         "Style",
         "warn",
-        `components.json sets style "${config.style ?? "(missing)"}", not "aback".`,
+        `aback-ui.json sets style "${config.style ?? "(missing)"}", not "aback".`,
         'Set "style" to "aback" so component docs and theme tokens match.',
       );
     }
@@ -229,7 +229,7 @@ export async function diagnoseProject(options: DoctorOptions): Promise<DoctorRep
         "Class utility",
         "warn",
         `The utils alias "${utilsAlias ?? "(missing)"}" does not resolve inside the project.`,
-        "Set aliases.utils in components.json, for example @/lib/utils.",
+        "Set aliases.utils in aback-ui.json, for example @/lib/utils.",
       );
     } else if (utilsFile) {
       add("utils", "Class utility", "pass", `${relative(root, utilsFile)} exists.`);
@@ -249,7 +249,7 @@ export async function diagnoseProject(options: DoctorOptions): Promise<DoctorRep
         "css",
         "Global stylesheet",
         "fail",
-        "tailwind.css is not set in components.json.",
+        "tailwind.css is not set in aback-ui.json.",
         "Set tailwind.css to the project stylesheet, for example src/app/globals.css.",
       );
     } else {
@@ -267,7 +267,7 @@ export async function diagnoseProject(options: DoctorOptions): Promise<DoctorRep
             "Global stylesheet",
             "fail",
             `${cssRelative} does not exist.`,
-            "Correct tailwind.css in components.json, or create the file.",
+            "Correct tailwind.css in aback-ui.json, or create the file.",
           );
         } else {
           const css = await readFile(cssPath, "utf8");
@@ -306,7 +306,7 @@ export async function diagnoseProject(options: DoctorOptions): Promise<DoctorRep
         "registry",
         "Registry",
         "warn",
-        'No "@aback" registry in components.json.',
+        'No "@aback" registry in aback-ui.json.',
         'Add "@aback": "https://abackui.com/r/{name}.json" under registries.',
       );
     } else if (!registry.includes("{name}") || !/^https?:\/\//.test(registry)) {

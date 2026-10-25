@@ -4,8 +4,11 @@
  * Consumer test. Proves the npm packages work for someone who installs them
  * from the registry, in a directory with no access to this monorepo's source.
  *
- * It packs both packages with `npm pack`, installs the tarballs into
- * `tests/consumer`, then runs that fixture's tests against the packed output.
+ * It packs the three npm packages with `npm pack`, installs the tarballs into
+ * `tests/consumer`, then runs that fixture's tests against the packed output:
+ * imports and rendering for @aback-ui/ui, the Tailwind setup for
+ * @aback-ui/tokens, and a full `aback-ui init` and `add` from the CLI tarball
+ * with the network blocked.
  * This is the only check that catches a broken exports map, a missing
  * dependency, a stale dist, or a type declaration that only resolves because
  * of a workspace path alias.
@@ -24,6 +27,7 @@ const tarballDir = path.join(fixtureDir, "tarballs");
 const packages = [
   { dir: "packages/ui", tarball: "aback-ui-ui.tgz" },
   { dir: "packages/tokens", tarball: "aback-ui-tokens.tgz" },
+  { dir: "packages/cli", tarball: "aback-ui-cli.tgz" },
 ];
 
 const fail = (message) => {
@@ -66,5 +70,8 @@ if (test.status !== 0) fail("consumer render tests failed");
 if (!existsSync(path.join(fixtureDir, "node_modules", "@aback-ui", "ui", "dist", "index.js"))) {
   fail("the installed package is missing dist/index.js");
 }
+if (!existsSync(path.join(fixtureDir, "node_modules", "aback-ui", "registry", "index.json"))) {
+  fail("the installed CLI is missing its bundled registry");
+}
 
-console.log("\n✓ Packed packages install and render outside the monorepo");
+console.log("\n✓ Packed packages install, render, and copy components outside the monorepo");

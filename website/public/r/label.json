@@ -1,0 +1,29 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "label",
+  "type": "registry:ui",
+  "title": "Label",
+  "description": "An accessible form label with peer-disabled styling.",
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Forms"
+  ],
+  "docs": "https://abackui.com/docs/components/label",
+  "meta": {
+    "status": "stable",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/label.tsx",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst Label = React.forwardRef<\n  HTMLLabelElement,\n  React.ComponentProps<\"label\">\n>(function Label({ className, ...props }, ref) {\n  return (\n    <label\n      ref={ref}\n      data-slot=\"label\"\n      className={cn(\n        \"flex items-center gap-1 text-sm font-medium leading-none text-foreground\",\n        \"peer-disabled:cursor-not-allowed peer-disabled:opacity-70\",\n        className,\n      )}\n      {...props}\n    />\n  );\n});\nLabel.displayName = \"Label\";\n\nexport { Label };\n",
+      "type": "registry:ui",
+      "target": "components/ui/label.tsx"
+    }
+  ]
+}

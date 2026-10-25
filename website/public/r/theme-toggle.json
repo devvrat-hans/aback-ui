@@ -1,0 +1,34 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "theme-toggle",
+  "type": "registry:ui",
+  "title": "Theme Toggle",
+  "description": "A light and dark switch, a useTheme hook, and a no-flash theme script.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json",
+    "https://abackui.com/r/button.json"
+  ],
+  "categories": [
+    "Application"
+  ],
+  "docs": "https://abackui.com/docs/components/theme-toggle",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch",
+      "aback-group"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/theme-toggle.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { IconMoon, IconSun } from \"@tabler/icons-react\";\n\nimport { cn } from \"@/lib/utils\";\nimport { Button, type ButtonProps } from \"@/components/ui/button\";\n\nexport type ThemePreference = \"light\" | \"dark\" | \"system\";\nexport type ResolvedTheme = \"light\" | \"dark\";\n\nconst DEFAULT_STORAGE_KEY = \"theme\";\nconst CHANGE_EVENT = \"aback-ui:themechange\";\n\nfunction readPreference(storageKey: string): ThemePreference {\n  try {\n    const stored = window.localStorage.getItem(storageKey);\n    if (stored === \"light\" || stored === \"dark\" || stored === \"system\") return stored;\n  } catch {\n    // Storage throws in some privacy modes and sandboxed frames.\n  }\n  return \"system\";\n}\n\nfunction systemTheme(): ResolvedTheme {\n  return window.matchMedia(\"(prefers-color-scheme: dark)\").matches ? \"dark\" : \"light\";\n}\n\nfunction resolve(preference: ThemePreference): ResolvedTheme {\n  return preference === \"system\" ? systemTheme() : preference;\n}\n\nfunction applyTheme(theme: ResolvedTheme) {\n  document.documentElement.classList.toggle(\"dark\", theme === \"dark\");\n}\n\nfunction subscribe(storageKey: string, onChange: () => void) {\n  const media = window.matchMedia(\"(prefers-color-scheme: dark)\");\n\n  function onSystemChange() {\n    if (readPreference(storageKey) !== \"system\") return;\n    applyTheme(systemTheme());\n    onChange();\n  }\n\n  function onStorage(event: StorageEvent) {\n    if (event.key !== storageKey) return;\n    applyTheme(resolve(readPreference(storageKey)));\n    onChange();\n  }\n\n  media.addEventListener(\"change\", onSystemChange);\n  window.addEventListener(\"storage\", onStorage);\n  window.addEventListener(CHANGE_EVENT, onChange);\n  return () => {\n    media.removeEventListener(\"change\", onSystemChange);\n    window.removeEventListener(\"storage\", onStorage);\n    window.removeEventListener(CHANGE_EVENT, onChange);\n  };\n}\n\nexport interface UseThemeResult {\n  /** What the visitor chose, including \"system\". */\n  theme: ThemePreference;\n  /** What is on screen. \"light\" during the server render. */\n  resolvedTheme: ResolvedTheme;\n  setTheme: (theme: ThemePreference) => void;\n}\n\n/**\n * Reads and writes the colour theme. The contract is the one the Aback theme\n * CSS expects: a `dark` class on `<html>`, with the choice stored under\n * `storageKey`. Every component using the hook stays in sync, and so do\n * other tabs.\n */\nfunction useTheme(storageKey: string = DEFAULT_STORAGE_KEY): UseThemeResult {\n  const subscribeToTheme = React.useCallback(\n    (onChange: () => void) => subscribe(storageKey, onChange),\n    [storageKey],\n  );\n  // A string snapshot keeps the value primitive, so React can compare it.\n  const snapshot = React.useSyncExternalStore(\n    subscribeToTheme,\n    () => {\n      const preference = readPreference(storageKey);\n      return `${preference}:${document.documentElement.classList.contains(\"dark\") ? \"dark\" : \"light\"}`;\n    },\n    () => \"system:light\",\n  );\n  const [theme, resolvedTheme] = snapshot.split(\":\") as [ThemePreference, ResolvedTheme];\n\n  const setTheme = React.useCallback(\n    (next: ThemePreference) => {\n      try {\n        window.localStorage.setItem(storageKey, next);\n      } catch {\n        // Not persisted, but the theme still changes for this page view.\n      }\n      applyTheme(resolve(next));\n      window.dispatchEvent(new Event(CHANGE_EVENT));\n    },\n    [storageKey],\n  );\n\n  return { theme, resolvedTheme, setTheme };\n}\n\nexport interface ThemeToggleProps\n  extends Omit<ButtonProps, \"onClick\" | \"children\" | \"asChild\"> {\n  storageKey?: string;\n  /** Accessible name while the light theme is showing. */\n  toDarkLabel?: string;\n  /** Accessible name while the dark theme is showing. */\n  toLightLabel?: string;\n}\n\n/**\n * A light and dark switch. The icon follows the `dark` class through CSS, so\n * it is right before hydration; the accessible name follows the state.\n */\nfunction ThemeToggle({\n  storageKey,\n  toDarkLabel = \"Switch to dark theme\",\n  toLightLabel = \"Switch to light theme\",\n  variant = \"ghost\",\n  size = \"icon\",\n  className,\n  ...props\n}: ThemeToggleProps) {\n  const { resolvedTheme, setTheme } = useTheme(storageKey);\n  const label = resolvedTheme === \"dark\" ? toLightLabel : toDarkLabel;\n\n  return (\n    <Button\n      type=\"button\"\n      data-slot=\"theme-toggle\"\n      variant={variant}\n      size={size}\n      aria-label={label}\n      title={label}\n      onClick={() => setTheme(resolvedTheme === \"dark\" ? \"light\" : \"dark\")}\n      className={cn(className)}\n      {...props}\n    >\n      <IconMoon aria-hidden=\"true\" className=\"dark:hidden\" />\n      <IconSun aria-hidden=\"true\" className=\"hidden dark:block\" />\n    </Button>\n  );\n}\n\nexport interface ThemeScriptProps {\n  storageKey?: string;\n  /** Content Security Policy nonce for the inline script. */\n  nonce?: string;\n}\n\n/**\n * Applies the stored theme before the first paint, so a dark-mode visitor\n * never sees a white flash. Render it in `<head>`, or first in `<body>`, and\n * add `suppressHydrationWarning` to `<html>` because the class changes early.\n */\nfunction ThemeScript({ storageKey = DEFAULT_STORAGE_KEY, nonce }: ThemeScriptProps) {\n  // JSON.stringify quotes the key, and the escape keeps it inside the script.\n  const key = JSON.stringify(storageKey).replace(/</g, \"\\\\u003c\");\n  const code = `(function(){try{var t=localStorage.getItem(${key});var d=t===\"dark\"||((!t||t===\"system\")&&window.matchMedia(\"(prefers-color-scheme: dark)\").matches);document.documentElement.classList.toggle(\"dark\",d);}catch(e){}})();`;\n  return <script nonce={nonce} dangerouslySetInnerHTML={{ __html: code }} />;\n}\n\nexport { ThemeScript, ThemeToggle, useTheme };\n",
+      "type": "registry:ui",
+      "target": "components/ui/theme-toggle.tsx"
+    }
+  ]
+}

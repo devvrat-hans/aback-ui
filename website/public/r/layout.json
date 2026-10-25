@@ -1,0 +1,32 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "layout",
+  "type": "registry:ui",
+  "title": "Layout",
+  "description": "Container, Stack, Group, and Grid primitives that map to the Aback spacing scale.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Layout"
+  ],
+  "docs": "https://abackui.com/docs/components/layout",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/layout.tsx",
+      "content": "import * as React from \"react\";\nimport { Slot } from \"radix-ui\";\n\nimport { cn } from \"@/lib/utils\";\n\n// Literal class names, so Tailwind can find every one of them in the source.\nconst gapClasses = {\n  none: \"gap-0\",\n  xs: \"gap-1\",\n  sm: \"gap-2\",\n  md: \"gap-4\",\n  lg: \"gap-6\",\n  xl: \"gap-8\",\n} as const;\n\nexport type LayoutGap = keyof typeof gapClasses;\n\ninterface LayoutProps extends React.ComponentProps<\"div\"> {\n  /** Render the child element instead of a div, such as a `<main>` or `<section>`. */\n  asChild?: boolean;\n}\n\nconst containerSizes = {\n  sm: \"max-w-2xl\",\n  md: \"max-w-4xl\",\n  lg: \"max-w-6xl\",\n  xl: \"max-w-7xl\",\n  full: \"max-w-full\",\n} as const;\n\nexport interface ContainerProps extends LayoutProps {\n  size?: keyof typeof containerSizes;\n}\n\n/** A centred page column with the standard gutter: 16px on phones, 24px from md. */\nfunction Container({ size = \"lg\", asChild = false, className, ...props }: ContainerProps) {\n  const Comp = asChild ? Slot.Root : \"div\";\n  return (\n    <Comp\n      data-slot=\"container\"\n      className={cn(\"mx-auto w-full px-4 md:px-6\", containerSizes[size], className)}\n      {...props}\n    />\n  );\n}\n\nexport interface StackProps extends LayoutProps {\n  gap?: LayoutGap;\n}\n\n/** A vertical flow with one gap between children. */\nfunction Stack({ gap = \"md\", asChild = false, className, ...props }: StackProps) {\n  const Comp = asChild ? Slot.Root : \"div\";\n  return (\n    <Comp\n      data-slot=\"stack\"\n      className={cn(\"flex flex-col\", gapClasses[gap], className)}\n      {...props}\n    />\n  );\n}\n\nconst alignClasses = {\n  start: \"items-start\",\n  center: \"items-center\",\n  end: \"items-end\",\n  baseline: \"items-baseline\",\n  stretch: \"items-stretch\",\n} as const;\n\nconst justifyClasses = {\n  start: \"justify-start\",\n  center: \"justify-center\",\n  end: \"justify-end\",\n  between: \"justify-between\",\n} as const;\n\nexport interface GroupProps extends LayoutProps {\n  gap?: LayoutGap;\n  align?: keyof typeof alignClasses;\n  justify?: keyof typeof justifyClasses;\n  /** Wrap onto new lines on narrow screens. On by default, so rows never overflow. */\n  wrap?: boolean;\n}\n\n/** A horizontal row for toolbars and action groups. */\nfunction Group({\n  gap = \"sm\",\n  align = \"center\",\n  justify = \"start\",\n  wrap = true,\n  asChild = false,\n  className,\n  ...props\n}: GroupProps) {\n  const Comp = asChild ? Slot.Root : \"div\";\n  return (\n    <Comp\n      data-slot=\"group\"\n      className={cn(\n        \"flex flex-row\",\n        wrap && \"flex-wrap\",\n        gapClasses[gap],\n        alignClasses[align],\n        justifyClasses[justify],\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nconst gridColumns = {\n  1: \"grid-cols-1\",\n  2: \"grid-cols-1 sm:grid-cols-2\",\n  3: \"grid-cols-1 sm:grid-cols-2 lg:grid-cols-3\",\n  4: \"grid-cols-1 sm:grid-cols-2 lg:grid-cols-4\",\n  6: \"grid-cols-2 sm:grid-cols-3 lg:grid-cols-6\",\n} as const;\n\nexport interface GridProps extends LayoutProps {\n  /** Columns at the widest breakpoint. Narrower screens step down to one or two. */\n  columns?: keyof typeof gridColumns;\n  gap?: LayoutGap;\n}\n\n/** A responsive card grid that starts at one column on phones. */\nfunction Grid({ columns = 3, gap = \"md\", asChild = false, className, ...props }: GridProps) {\n  const Comp = asChild ? Slot.Root : \"div\";\n  return (\n    <Comp\n      data-slot=\"grid\"\n      className={cn(\"grid\", gridColumns[columns], gapClasses[gap], className)}\n      {...props}\n    />\n  );\n}\n\nexport { Container, Grid, Group, Stack };\n",
+      "type": "registry:ui",
+      "target": "components/ui/layout.tsx"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "breadcrumbs",
+  "type": "registry:ui",
+  "title": "Breadcrumbs",
+  "description": "A hierarchical trail back to parent pages with current-page semantics.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Navigation"
+  ],
+  "docs": "https://abackui.com/docs/components/breadcrumbs",
+  "meta": {
+    "status": "stable",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/breadcrumbs.tsx",
+      "content": "import * as React from \"react\";\nimport { IconChevronRight } from \"@tabler/icons-react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport interface BreadcrumbItem {\n  label: React.ReactNode;\n  href?: string;\n}\n\nexport interface BreadcrumbsProps extends React.ComponentProps<\"nav\"> {\n  items: BreadcrumbItem[];\n}\n\nfunction Breadcrumbs({ items, className, ...props }: BreadcrumbsProps) {\n  return (\n    <nav\n      data-slot=\"breadcrumbs\"\n      aria-label=\"Breadcrumb\"\n      className={cn(\"text-sm\", className)}\n      {...props}\n    >\n      <ol className=\"flex flex-wrap items-center gap-1\">\n        {items.map((item, index) => {\n          const isCurrent = index === items.length - 1;\n          return (\n            <li key={item.href ?? index} className=\"flex items-center gap-1\">\n              {index > 0 ? (\n                <IconChevronRight\n                  aria-hidden=\"true\"\n                  className=\"mx-0.5 size-3.5 shrink-0 text-muted-foreground\"\n                />\n              ) : null}\n              {item.href && !isCurrent ? (\n                <a\n                  href={item.href}\n                  className={cn(\n                    \"text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline\",\n                    \"outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n                  )}\n                >\n                  {item.label}\n                </a>\n              ) : (\n                <span\n                  aria-current={isCurrent ? \"page\" : undefined}\n                  className={cn(isCurrent ? \"font-medium text-foreground\" : \"text-muted-foreground\")}\n                >\n                  {item.label}\n                </span>\n              )}\n            </li>\n          );\n        })}\n      </ol>\n    </nav>\n  );\n}\n\nexport { Breadcrumbs };\n",
+      "type": "registry:ui",
+      "target": "components/ui/breadcrumbs.tsx"
+    }
+  ]
+}

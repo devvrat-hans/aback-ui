@@ -35,7 +35,7 @@ const depthIndent = {
 /**
  * An "On this page" list that follows the reader. Links are real anchors, so
  * they work without JavaScript and update the URL hash; the active section is
- * tracked with an IntersectionObserver and marked with `aria-current`.
+ * read from the scroll position, once per frame, and marked with `aria-current`.
  */
 function TableOfContents({
   items,
@@ -51,27 +51,50 @@ function TableOfContents({
   const ids = items.map((item) => item.id).join("|");
 
   React.useEffect(() => {
-    if (!trackActive || typeof IntersectionObserver === "undefined") return;
+    if (!trackActive) return;
     const targets = ids
       .split("|")
       .map((id) => document.getElementById(id))
       .filter((element): element is HTMLElement => element !== null);
     if (targets.length === 0) return;
 
-    const visible = new Set<string>();
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) visible.add(entry.target.id);
-          else visible.delete(entry.target.id);
+    // The current section is the last heading that has scrolled up to the
+    // offset line. Reading positions on scroll, rather than waiting for
+    // intersection changes, keeps it right when a fast scroll jumps past a
+    // section. At the very bottom the last section wins, since short final
+    // sections can never reach the line.
+    let frame = 0;
+    let pending = false;
+    function update() {
+      pending = false;
+      const root = document.documentElement;
+      const atBottom =
+        window.scrollY > 0 && window.innerHeight + window.scrollY >= root.scrollHeight - 2;
+      let current = targets[0]!.id;
+      if (atBottom) {
+        current = targets[targets.length - 1]!.id;
+      } else {
+        for (const target of targets) {
+          if (target.getBoundingClientRect().top > offset + 8) break;
+          current = target.id;
         }
-        const first = targets.find((target) => visible.has(target.id));
-        if (first) setActive(first.id);
-      },
-      { rootMargin: `-${offset}px 0px -55% 0px`, threshold: 0 },
-    );
-    targets.forEach((target) => observer.observe(target));
-    return () => observer.disconnect();
+      }
+      setActive(current);
+    }
+    function schedule() {
+      if (pending) return;
+      pending = true;
+      frame = window.requestAnimationFrame(update);
+    }
+
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      if (pending) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
   }, [ids, offset, trackActive]);
 
   if (items.length === 0) return null;

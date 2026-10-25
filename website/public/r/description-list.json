@@ -1,0 +1,28 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "description-list",
+  "type": "registry:ui",
+  "title": "Description List",
+  "description": "Key and value rows for metadata, breakdowns, and totals, as a real description list.",
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Data Display"
+  ],
+  "docs": "https://abackui.com/docs/components/description-list",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/description-list.tsx",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\ntype DetailsTone = \"neutral\" | \"success\" | \"warning\" | \"danger\" | \"info\";\n\nconst toneText: Record<DetailsTone, string> = {\n  neutral: \"text-foreground\",\n  success: \"text-success\",\n  warning: \"text-warning\",\n  danger: \"text-danger\",\n  info: \"text-info\",\n};\n\nexport interface DescriptionListProps extends React.ComponentProps<\"dl\"> {\n  /** Draws the outer border. Turn it off when the list sits inside a card. */\n  bordered?: boolean;\n}\n\n/**\n * Key and value rows: file metadata, a price breakdown, request headers, or\n * account details. A real `<dl>`, so each term labels its value for assistive\n * technology. Rows wrap on narrow screens instead of truncating the value.\n */\nfunction DescriptionList({ bordered = true, className, ...props }: DescriptionListProps) {\n  return (\n    <dl\n      data-slot=\"description-list\"\n      className={cn(\"divide-y divide-border text-sm\", bordered && \"border border-border\", className)}\n      {...props}\n    />\n  );\n}\n\nexport interface DescriptionListItemProps extends React.ComponentProps<\"div\"> {\n  /** A bold row with a heavier rule, for a total. */\n  emphasis?: boolean;\n}\n\nfunction DescriptionListItem({ emphasis = false, className, ...props }: DescriptionListItemProps) {\n  return (\n    <div\n      data-slot=\"description-list-item\"\n      data-emphasis={emphasis ? \"\" : undefined}\n      className={cn(\n        \"flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-3 py-2.5\",\n        emphasis && \"border-t-2 border-t-border font-semibold [&>dt]:text-foreground\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport interface DescriptionListTermProps extends React.ComponentProps<\"dt\"> {\n  /** Monospace keys for technical fields such as header names. */\n  mono?: boolean;\n}\n\nfunction DescriptionListTerm({ mono = false, className, ...props }: DescriptionListTermProps) {\n  return (\n    <dt\n      data-slot=\"description-list-term\"\n      className={cn(\n        \"min-w-[4.5rem] text-muted-foreground\",\n        mono && \"font-mono text-xs\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport interface DescriptionListDetailsProps extends React.ComponentProps<\"dd\"> {\n  /** Colours the value. Keep a sign or a word with it, such as \"-$12\" or \"saved\". */\n  tone?: DetailsTone;\n}\n\nfunction DescriptionListDetails({ tone = \"neutral\", className, ...props }: DescriptionListDetailsProps) {\n  return (\n    <dd\n      data-slot=\"description-list-details\"\n      className={cn(\"text-right tabular-nums break-words\", toneText[tone], className)}\n      {...props}\n    />\n  );\n}\n\nexport { DescriptionList, DescriptionListDetails, DescriptionListItem, DescriptionListTerm };\n",
+      "type": "registry:ui",
+      "target": "components/ui/description-list.tsx"
+    }
+  ]
+}

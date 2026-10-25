@@ -1,0 +1,35 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "pricing",
+  "type": "registry:block",
+  "title": "Pricing",
+  "description": "Plan cards with a monthly or yearly switch, Intl prices, included and excluded features, and aligned actions.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json",
+    "https://abackui.com/r/badge.json",
+    "https://abackui.com/r/button.json",
+    "https://abackui.com/r/section-heading.json",
+    "https://abackui.com/r/toggle-group.json"
+  ],
+  "categories": [
+    "Marketing"
+  ],
+  "docs": "https://abackui.com/docs/blocks/pricing",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/blocks/pricing.tsx",
+      "content": "\"use client\";\n\nimport { type ReactNode, useId, useState } from \"react\";\nimport { IconCheck, IconMinus } from \"@tabler/icons-react\";\n\nimport { Badge } from \"@/components/ui/badge\";\nimport { Button } from \"@/components/ui/button\";\nimport { SectionHeading } from \"@/components/ui/section-heading\";\nimport { ToggleGroup, ToggleGroupItem } from \"@/components/ui/toggle-group\";\nimport { cn } from \"@/lib/utils\";\n\nexport type BillingPeriod = \"monthly\" | \"yearly\";\n\nexport interface PricingFeature {\n  text: string;\n  included: boolean;\n}\n\nexport interface PricingPlan {\n  name: string;\n  description: string;\n  /** Price per month for each period, in the currency's main unit. 0 renders as Free. */\n  price: Record<BillingPeriod, number>;\n  features: PricingFeature[];\n  cta: { label: string; href: string };\n  /** Highlights the plan and shows the badge. */\n  highlighted?: boolean;\n  badge?: string;\n}\n\nexport interface PricingBlockProps {\n  eyebrow?: ReactNode;\n  title: ReactNode;\n  description?: ReactNode;\n  plans: PricingPlan[];\n  /** ISO 4217 code for Intl.NumberFormat. */\n  currency?: string;\n  locale?: string;\n  defaultPeriod?: BillingPeriod;\n  /** Label for the yearly option, such as \"Yearly, save 20%\". Keep the saving accurate. */\n  yearlyLabel?: string;\n  /** A sentence under the plans: taxes, trials, or refunds. */\n  footnote?: ReactNode;\n}\n\n/**\n * Plan cards with a monthly or yearly switch. Prices are formatted with Intl,\n * features list what is and is not included in words, and every card's call\n * to action lines up on one baseline.\n */\nexport function PricingBlock({\n  eyebrow,\n  title,\n  description,\n  plans,\n  currency = \"USD\",\n  locale = \"en-US\",\n  defaultPeriod = \"monthly\",\n  yearlyLabel = \"Yearly\",\n  footnote,\n}: PricingBlockProps) {\n  const headingId = useId();\n  const [period, setPeriod] = useState<BillingPeriod>(defaultPeriod);\n  const format = new Intl.NumberFormat(locale, {\n    style: \"currency\",\n    currency,\n    maximumFractionDigits: 0,\n  });\n\n  return (\n    <section aria-labelledby={headingId} className=\"mx-auto w-full max-w-6xl px-4 py-16 md:px-6 lg:py-20\">\n      <SectionHeading\n        align=\"center\"\n        eyebrow={eyebrow}\n        title={title}\n        description={description}\n        headingId={headingId}\n      />\n\n      <div className=\"mt-8 flex justify-center\">\n        <ToggleGroup\n          type=\"single\"\n          variant=\"outline\"\n          aria-label=\"Billing period\"\n          value={period}\n          onValueChange={(value) => {\n            if (value === \"monthly\" || value === \"yearly\") setPeriod(value);\n          }}\n        >\n          <ToggleGroupItem value=\"monthly\">Monthly</ToggleGroupItem>\n          <ToggleGroupItem value=\"yearly\">{yearlyLabel}</ToggleGroupItem>\n        </ToggleGroup>\n      </div>\n\n      <ul className={cn(\"mt-10 grid gap-6\", plans.length >= 3 ? \"lg:grid-cols-3\" : \"md:grid-cols-2\")}>\n        {plans.map((plan) => {\n          const amount = plan.price[period];\n          return (\n            <li\n              key={plan.name}\n              className={cn(\n                \"relative flex flex-col border p-6 sm:p-8\",\n                plan.highlighted ? \"border-primary-500 bg-brand-wash\" : \"border-border bg-card\",\n              )}\n            >\n              {plan.badge ? (\n                <Badge variant={plan.highlighted ? \"brand\" : \"outline\"} className=\"absolute -top-3 left-6\">\n                  {plan.badge}\n                </Badge>\n              ) : null}\n              <h3 className=\"text-lg font-semibold text-foreground\">{plan.name}</h3>\n              <p className=\"mt-2 min-h-10 text-sm text-muted-foreground\">{plan.description}</p>\n\n              <p className=\"mt-6 flex items-baseline gap-1\">\n                <span className=\"text-4xl font-extrabold tracking-tight tabular-nums text-foreground\">\n                  {amount === 0 ? \"Free\" : format.format(amount)}\n                </span>\n                {amount === 0 ? null : (\n                  <span className=\"text-sm text-muted-foreground\">\n                    per month{period === \"yearly\" ? \", billed yearly\" : \"\"}\n                  </span>\n                )}\n              </p>\n\n              <ul className=\"mt-8 flex flex-1 flex-col gap-3\" aria-label={`${plan.name} features`}>\n                {plan.features.map((feature) => (\n                  <li key={feature.text} className=\"flex items-start gap-3 text-sm\">\n                    {feature.included ? (\n                      <IconCheck aria-hidden=\"true\" className=\"mt-0.5 size-4 shrink-0 text-brand-icon\" />\n                    ) : (\n                      <IconMinus aria-hidden=\"true\" className=\"mt-0.5 size-4 shrink-0 text-muted-foreground\" />\n                    )}\n                    <span className={feature.included ? \"text-foreground\" : \"text-muted-foreground\"}>\n                      {feature.included ? null : <span className=\"sr-only\">Not included: </span>}\n                      {feature.text}\n                    </span>\n                  </li>\n                ))}\n              </ul>\n\n              <Button asChild size=\"lg\" variant={plan.highlighted ? \"default\" : \"outline\"} className=\"mt-8 w-full\">\n                <a href={plan.cta.href}>\n                  {plan.cta.label}\n                  <span className=\"sr-only\">, {plan.name} plan</span>\n                </a>\n              </Button>\n            </li>\n          );\n        })}\n      </ul>\n\n      {footnote ? <p className=\"mt-6 text-center text-xs text-muted-foreground\">{footnote}</p> : null}\n    </section>\n  );\n}\n",
+      "type": "registry:block",
+      "target": "components/blocks/pricing.tsx"
+    }
+  ]
+}

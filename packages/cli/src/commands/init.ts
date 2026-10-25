@@ -23,7 +23,7 @@ import {
 import type { Logger } from "../logger.js";
 import { safeJoin } from "../paths.js";
 import type { Prompter } from "../prompt.js";
-import { DEFAULT_REGISTRY, RegistryClient } from "../registry.js";
+import { RegistryClient, defaultRegistry } from "../registry.js";
 import type { RegistryFetch } from "../types.js";
 import { commandError } from "../errors.js";
 
@@ -53,7 +53,7 @@ export async function runInit(options: InitCommandOptions): Promise<number> {
 
   const existingConfig = await loadConfig(projectRoot);
   if (existingConfig && !options.force) {
-    logger.info("components.json already exists. Nothing to do.");
+    logger.info("aback-ui.json already exists. Nothing to do.");
     logger.dim("Use `aback-ui add <component>` to install a component, or --force to rewrite the config.");
     return 0;
   }
@@ -97,7 +97,7 @@ export async function runInit(options: InitCommandOptions): Promise<number> {
   });
 
   const registryBase =
-    options.registry ?? process.env.ABACK_UI_REGISTRY ?? DEFAULT_REGISTRY;
+    options.registry ?? process.env.ABACK_UI_REGISTRY ?? defaultRegistry();
   const client = new RegistryClient({
     registry: registryBase,
     cwd: projectRoot,
@@ -105,7 +105,7 @@ export async function runInit(options: InitCommandOptions): Promise<number> {
     fetchImpl: options.fetchImpl,
   });
 
-  logger.step("Fetching the theme and shared utilities from the registry");
+  logger.step("Adding the theme and shared utilities");
   const items = await client.collect(["utils", "theme"]);
 
   const dirs = await resolveInstallDirs(projectRoot, config);
@@ -113,9 +113,9 @@ export async function runInit(options: InitCommandOptions): Promise<number> {
 
   if (!options.dryRun) {
     await writeConfig(projectRoot, config);
-    logger.success("Wrote components.json");
+    logger.success("Wrote aback-ui.json");
   } else {
-    logger.info("Would write components.json");
+    logger.info("Would write aback-ui.json");
   }
 
   await writeItemFiles({

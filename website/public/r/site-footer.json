@@ -1,0 +1,31 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "site-footer",
+  "type": "registry:block",
+  "title": "Site footer",
+  "description": "Brand column, link columns, and a legal bar that collapse cleanly from four columns to one.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [],
+  "categories": [
+    "Marketing"
+  ],
+  "docs": "https://abackui.com/docs/blocks/site-footer",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch",
+      "aback-group"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/blocks/site-footer.tsx",
+      "content": "import type { ReactNode } from \"react\";\nimport { IconArrowUpRight } from \"@tabler/icons-react\";\n\nexport interface SiteFooterLink {\n  title: string;\n  href: string;\n  /** Opens in a new tab with noopener and marks the link as external. */\n  external?: boolean;\n}\n\nexport interface SiteFooterColumn {\n  title: string;\n  links: SiteFooterLink[];\n}\n\nexport interface SiteFooterBlockProps {\n  brand: ReactNode;\n  /** One or two sentences about the product. */\n  tagline?: ReactNode;\n  columns: SiteFooterColumn[];\n  /** The copyright line, such as \"© 2026 Acme Inc.\" */\n  copyright: ReactNode;\n  /** Privacy, terms, and similar links in the bottom bar. */\n  legal?: SiteFooterLink[];\n}\n\nfunction FooterLink({ link, className }: { link: SiteFooterLink; className: string }) {\n  return (\n    <a\n      href={link.href}\n      target={link.external ? \"_blank\" : undefined}\n      rel={link.external ? \"noopener noreferrer\" : undefined}\n      className={className}\n    >\n      {link.title}\n      {link.external ? (\n        <>\n          <IconArrowUpRight aria-hidden=\"true\" className=\"size-3\" />\n          <span className=\"sr-only\">(opens in a new tab)</span>\n        </>\n      ) : null}\n    </a>\n  );\n}\n\nconst linkClass =\n  \"inline-flex items-center gap-1 text-xs text-muted-foreground outline-none transition-colors duration-200 hover:text-foreground focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\";\n\n/**\n * A site footer with a brand column, link columns, and a legal bar. Columns\n * collapse to two on tablets and one on phones. It renders the page's\n * contentinfo landmark, so use it once per page.\n */\nexport function SiteFooterBlock({ brand, tagline, columns, copyright, legal = [] }: SiteFooterBlockProps) {\n  return (\n    <footer className=\"border-t border-separator bg-background\">\n      <div className=\"mx-auto grid w-full max-w-6xl gap-x-8 gap-y-10 px-4 py-10 sm:grid-cols-2 md:px-6 lg:grid-cols-4\">\n        <div className=\"flex flex-col gap-3\">\n          {brand}\n          {tagline ? (\n            <p className=\"max-w-[34ch] text-xs leading-relaxed text-muted-foreground\">{tagline}</p>\n          ) : null}\n        </div>\n        {columns.map((column) => (\n          <nav key={column.title} aria-label={column.title}>\n            <h2 className=\"mb-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground\">\n              {column.title}\n            </h2>\n            <ul className=\"flex flex-col gap-2\">\n              {column.links.map((link) => (\n                <li key={link.href}>\n                  <FooterLink link={link} className={linkClass} />\n                </li>\n              ))}\n            </ul>\n          </nav>\n        ))}\n      </div>\n      <div className=\"bg-muted/40\">\n        <div className=\"mx-auto flex w-full max-w-6xl flex-col items-center gap-2 px-4 py-3 text-center sm:flex-row sm:justify-between sm:text-left md:px-6\">\n          <p className=\"text-xs text-muted-foreground\">{copyright}</p>\n          {legal.length ? (\n            <ul className=\"flex flex-wrap items-center justify-center gap-x-4 gap-y-1\">\n              {legal.map((link) => (\n                <li key={link.href}>\n                  <FooterLink link={link} className={linkClass} />\n                </li>\n              ))}\n            </ul>\n          ) : null}\n        </div>\n      </div>\n    </footer>\n  );\n}\n",
+      "type": "registry:block",
+      "target": "components/blocks/site-footer.tsx"
+    }
+  ]
+}

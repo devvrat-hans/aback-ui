@@ -1,0 +1,33 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "feature-grid",
+  "type": "registry:block",
+  "title": "Feature grid",
+  "description": "A titled grid of features with brand icon chips and optional links, joined by hairlines.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json",
+    "https://abackui.com/r/section-heading.json"
+  ],
+  "categories": [
+    "Marketing"
+  ],
+  "docs": "https://abackui.com/docs/blocks/feature-grid",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/blocks/feature-grid.tsx",
+      "content": "import type { ReactNode } from \"react\";\nimport { IconArrowRight } from \"@tabler/icons-react\";\n\nimport { SectionHeading } from \"@/components/ui/section-heading\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface Feature {\n  /** A 20px Tabler icon. It is decorative. */\n  icon: ReactNode;\n  title: string;\n  description: ReactNode;\n  /** Makes the feature a link to its detail page. */\n  href?: string;\n}\n\nexport interface FeatureGridBlockProps {\n  eyebrow?: ReactNode;\n  title: ReactNode;\n  description?: ReactNode;\n  features: Feature[];\n  columns?: 2 | 3 | 4;\n  /** Id of the section heading, unique per page. */\n  headingId?: string;\n}\n\nconst columnClasses = {\n  2: \"sm:grid-cols-2\",\n  3: \"sm:grid-cols-2 lg:grid-cols-3\",\n  4: \"sm:grid-cols-2 lg:grid-cols-4\",\n} as const;\n\n/**\n * A titled grid of features with brand icon chips. Cells share hairline\n * borders instead of floating cards. A feature with an href becomes one\n * link whose name is its title.\n */\nexport function FeatureGridBlock({\n  eyebrow,\n  title,\n  description,\n  features,\n  columns = 3,\n  headingId = \"features-title\",\n}: FeatureGridBlockProps) {\n  return (\n    <section aria-labelledby={headingId} className=\"mx-auto w-full max-w-6xl px-4 py-16 md:px-6 lg:py-20\">\n      <SectionHeading eyebrow={eyebrow} title={title} description={description} headingId={headingId} />\n\n      <ul className={cn(\"mt-10 grid gap-px border border-border bg-border\", columnClasses[columns])}>\n        {features.map((feature) => {\n          const body = (\n            <>\n              <span\n                aria-hidden=\"true\"\n                className=\"flex size-10 items-center justify-center bg-brand-chip text-brand-icon [&_svg]:size-5\"\n              >\n                {feature.icon}\n              </span>\n              <h3 className=\"mt-4 flex items-center gap-1.5 text-base font-semibold text-foreground\">\n                {feature.title}\n                {feature.href ? (\n                  <IconArrowRight\n                    aria-hidden=\"true\"\n                    className=\"size-4 text-muted-foreground transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none\"\n                  />\n                ) : null}\n              </h3>\n              <p className=\"mt-1.5 text-sm leading-relaxed text-muted-foreground\">{feature.description}</p>\n            </>\n          );\n\n          return (\n            <li key={feature.title} className=\"bg-card\">\n              {feature.href ? (\n                <a\n                  href={feature.href}\n                  className=\"group block h-full p-6 outline-none transition-colors duration-200 hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus-ring\"\n                >\n                  {body}\n                </a>\n              ) : (\n                <div className=\"h-full p-6\">{body}</div>\n              )}\n            </li>\n          );\n        })}\n      </ul>\n    </section>\n  );\n}\n",
+      "type": "registry:block",
+      "target": "components/blocks/feature-grid.tsx"
+    }
+  ]
+}

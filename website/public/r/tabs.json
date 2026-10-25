@@ -1,0 +1,29 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "tabs",
+  "type": "registry:ui",
+  "title": "Tabs",
+  "description": "Switch between related panels with arrow-key navigation.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Navigation"
+  ],
+  "docs": "https://abackui.com/docs/components/tabs",
+  "meta": {
+    "status": "stable",
+    "usedIn": []
+  },
+  "files": [
+    {
+      "path": "components/ui/tabs.tsx",
+      "content": "\"use client\";\n\nimport * as React from \"react\";\nimport { Tabs as TabsPrimitive } from \"radix-ui\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst Tabs = TabsPrimitive.Root;\n\nfunction TabsList({\n  className,\n  ...props\n}: React.ComponentProps<typeof TabsPrimitive.List>) {\n  return (\n    <TabsPrimitive.List\n      data-slot=\"tabs-list\"\n      className={cn(\n        \"inline-flex h-9 items-center justify-center gap-1 border border-border bg-muted/50 p-0.5 text-muted-foreground\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction TabsTrigger({\n  className,\n  ...props\n}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {\n  return (\n    <TabsPrimitive.Trigger\n      data-slot=\"tabs-trigger\"\n      className={cn(\n        \"inline-flex h-8 items-center justify-center gap-1.5 whitespace-nowrap px-3 text-sm font-medium\",\n        \"outline-none transition-colors duration-200 hover:text-foreground\",\n        \"focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n        \"disabled:pointer-events-none disabled:opacity-50\",\n        \"data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-xs\",\n        \"[&_svg]:size-4 [&_svg]:shrink-0\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction TabsContent({\n  className,\n  ...props\n}: React.ComponentProps<typeof TabsPrimitive.Content>) {\n  return (\n    <TabsPrimitive.Content\n      data-slot=\"tabs-content\"\n      className={cn(\n        \"mt-4 outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { Tabs, TabsList, TabsTrigger, TabsContent };\n",
+      "type": "registry:ui",
+      "target": "components/ui/tabs.tsx"
+    }
+  ]
+}

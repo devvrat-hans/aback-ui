@@ -10,7 +10,7 @@ import {
 } from "../install.js";
 import type { Logger } from "../logger.js";
 import type { Prompter } from "../prompt.js";
-import { DEFAULT_REGISTRY, RegistryClient } from "../registry.js";
+import { DEFAULT_REGISTRY, RegistryClient, defaultRegistry } from "../registry.js";
 import type { OverwriteMode, RegistryFetch } from "../types.js";
 
 export interface AddCommandOptions {
@@ -30,10 +30,16 @@ export interface AddCommandOptions {
 
 const REGISTRY_TEMPLATE = /\/?\{name\}\.json$/;
 
+/**
+ * The registry a project installs from. The standard "@aback" entry means
+ * the registry bundled with this CLI; any other template is a mirror or a
+ * self-hosted copy and is used as written.
+ */
 export function registryBaseFromConfig(config: { registries?: Record<string, string> }): string {
   const template = config.registries?.["@aback"];
-  if (!template) return DEFAULT_REGISTRY;
-  return template.replace(REGISTRY_TEMPLATE, "");
+  if (!template) return defaultRegistry();
+  const base = template.replace(REGISTRY_TEMPLATE, "");
+  return base === DEFAULT_REGISTRY ? defaultRegistry() : base;
 }
 
 export async function runAdd(options: AddCommandOptions): Promise<number> {
@@ -51,7 +57,7 @@ export async function runAdd(options: AddCommandOptions): Promise<number> {
 
   const config = await loadConfig(projectRoot);
   if (!config) {
-    throw commandError("No components.json found. Run `aback-ui init` first.");
+    throw commandError("No aback-ui.json found. Run `aback-ui init` first.");
   }
 
   const client = new RegistryClient({

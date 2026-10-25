@@ -1,31 +1,32 @@
 {
-  "name": "aback-ui",
+  "name": "aback-ui-monorepo",
   "version": "0.1.0",
   "private": true,
-  "description": "The building blocks behind better applications.",
+  "description": "Aback UI: the npm packages (packages/*), the registry (registry/), and the abackui.com website (website/).",
   "license": "MIT",
   "packageManager": "bun@1.4.3",
   "workspaces": [
-    "apps/*",
+    "website",
+    "registry",
     "packages/*"
   ],
   "scripts": {
-    "dev": "bun --filter @aback-ui/docs dev",
-    "build": "bun run build:ui && bun run build:cli && bun run build:registry && bun run --filter @aback-ui/docs build",
+    "dev": "bun --filter @aback-ui/website dev",
+    "build": "bun run build:ui && bun run build:registry && bun run build:cli && bun run --filter @aback-ui/website build",
     "build:ui": "bun --filter @aback-ui/ui build",
-    "build:cli": "bun --filter @aback-ui/cli build",
+    "build:cli": "bun --filter aback-ui build",
     "build:registry": "bun scripts/build-registry.mjs",
     "check:registry": "bun scripts/build-registry.mjs --check",
-    "test": "bun --filter @aback-ui/ui test && bun --filter @aback-ui/cli test && bun --filter @aback-ui/docs test",
-    "test:cli": "bun --filter @aback-ui/cli test",
+    "test": "bun --filter @aback-ui/ui test && bun --filter aback-ui test && bun --filter @aback-ui/website test",
+    "test:cli": "bun --filter aback-ui test",
     "test:watch": "bun --filter @aback-ui/ui test:watch",
-    "typecheck": "bun --filter @aback-ui/cli typecheck && bun --filter @aback-ui/ui typecheck && bun --filter @aback-ui/docs typecheck",
+    "typecheck": "bun --filter aback-ui typecheck && bun --filter @aback-ui/ui typecheck && bun --filter @aback-ui/registry typecheck && bun --filter @aback-ui/website typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check": "bun run typecheck && bun run lint && bun run test && bun run check:registry && bun run test:consumer",
     "smoke:package": "bun scripts/check-package.mjs",
     "test:consumer": "bun scripts/check-consumer.mjs",
-    "test:blocks": "bun --filter @aback-ui/docs test"
+    "test:blocks": "bun --filter @aback-ui/website test"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

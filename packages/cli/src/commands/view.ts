@@ -1,5 +1,5 @@
 import type { Logger } from "../logger.js";
-import { DEFAULT_REGISTRY, RegistryClient } from "../registry.js";
+import { RegistryClient, defaultRegistry } from "../registry.js";
 import type { RegistryFetch } from "../types.js";
 
 export interface ViewCommandOptions {
@@ -12,7 +12,7 @@ export interface ViewCommandOptions {
 
 export async function runView(options: ViewCommandOptions): Promise<number> {
   const client = new RegistryClient({
-    registry: options.registry ?? process.env.ABACK_UI_REGISTRY ?? DEFAULT_REGISTRY,
+    registry: options.registry ?? process.env.ABACK_UI_REGISTRY ?? defaultRegistry(),
     fetchImpl: options.fetchImpl,
   });
 

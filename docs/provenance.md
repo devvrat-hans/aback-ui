@@ -69,4 +69,4 @@ Reviewed at Aback Tools `ba7a6e621`, Aback Launch `837a71a`, and Aback Group `df
 
 ### Brand assets
 
-`apps/docs/public/aback-logo-128.png` is copied from Aback Tools `public/` (identical to Aback Group's). `apple-touch-icon.png`, `icon-192.png`, and `icon-512.png` are copied from Aback Launch `public/`. They are Aback Group trademarks used by the documentation site, not part of any npm package or registry item, and not covered by the MIT license.
+`website/public/aback-logo-128.png` is copied from Aback Tools `public/` (identical to Aback Group's). `apple-touch-icon.png`, `icon-192.png`, and `icon-512.png` are copied from Aback Launch `public/`. They are Aback Group trademarks used by the documentation site, not part of any npm package or registry item, and not covered by the MIT license.

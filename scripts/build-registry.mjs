@@ -8,8 +8,8 @@ import { fileURLToPath } from "node:url";
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDir, "..");
 const registryPath = path.join(root, "registry", "registry.json");
-const outDir = path.join(root, "apps", "docs", "public", "r");
-const generatedTsPath = path.join(root, "apps", "docs", "src", "data", "registry.generated.ts");
+const outDir = path.join(root, "website", "public", "r");
+const generatedTsPath = path.join(root, "website", "src", "data", "registry.generated.ts");
 const check = process.argv.includes("--check");
 const PRODUCTION_BASE = "https://abackui.com";
 const baseUrlArgument = process.argv.find((argument) =>
@@ -38,7 +38,7 @@ const ITEM_TYPES = new Set([
 const TARGET_PREFIXES = ["components/ui/", "components/blocks/", "lib/", "styles/"];
 const PEER_PACKAGES = new Set(["react", "react-dom"]);
 const NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-// Must match CATEGORY_ORDER in apps/docs/src/data/component-catalog.ts. A
+// Must match CATEGORY_ORDER in website/src/data/component-catalog.ts. A
 // component outside these is silently left out of the catalogue and search.
 const UI_CATEGORIES = new Set([
   "Foundation",
@@ -251,7 +251,7 @@ async function main() {
     }
 
     const builtItem = {
-      $schema: "https://ui.shadcn.com/schema/registry-item.json",
+      $schema: "https://abackui.com/schema/registry-item.json",
       name: item.name,
       type: item.type,
       title: item.title,
@@ -273,7 +273,7 @@ async function main() {
   }
 
   const index = {
-    $schema: "https://ui.shadcn.com/schema/registry.json",
+    $schema: "https://abackui.com/schema/registry.json",
     name: config.name,
     homepage: config.homepage,
     items: items.map(toSummary),
@@ -319,7 +319,7 @@ async function main() {
       ? await readFile(generatedTsPath, "utf8")
       : null;
     if (generatedActual !== generatedTs) {
-      stale.push("apps/docs/src/data/registry.generated.ts (out of date)");
+      stale.push("website/src/data/registry.generated.ts (out of date)");
     }
 
     if (stale.length > 0) {
@@ -349,7 +349,7 @@ async function main() {
   await writeFile(generatedTsPath, generatedTs, "utf8");
 
   console.log(
-    `Built ${items.length} registry items -> apps/docs/public/r (${outputFiles.size} files).`,
+    `Built ${items.length} registry items -> website/public/r (${outputFiles.size} files).`,
   );
 }
 

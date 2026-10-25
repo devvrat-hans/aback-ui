@@ -51,6 +51,9 @@ jobs:
       - name: Build UI package
         run: bun run build:ui
 
+      - name: Build CLI with the bundled registry
+        run: bun run build:cli
+
       - name: Smoke-test package exports
         run: bun run smoke:package
 
@@ -58,12 +61,12 @@ jobs:
         run: bun run test:consumer
 
       - name: Build documentation site
-        run: bun run --filter @aback-ui/docs build
+        run: bun run --filter @aback-ui/website build
 
       - name: Verify tag matches package versions
         run: |
           TAG="${GITHUB_REF_NAME#v}"
-          for pkg in packages/ui packages/tokens; do
+          for pkg in packages/ui packages/tokens packages/cli; do
             VERSION=$(node -p "require('./$pkg/package.json').version")
             if [ "$VERSION" != "$TAG" ]; then
               echo "Tag v$TAG does not match $pkg version $VERSION" >&2
@@ -80,5 +83,11 @@ jobs:
       - name: Publish UI
         run: npm publish --access public
         working-directory: packages/ui
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish CLI
+        run: npm publish --access public
+        working-directory: packages/cli
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

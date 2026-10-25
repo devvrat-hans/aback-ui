@@ -2,10 +2,12 @@
 
 import * as React from "react";
 import {
+  DateLib,
   DayPicker,
   type ClassNames,
   type CustomComponents,
   type DayPickerProps,
+  type Labels,
 } from "react-day-picker";
 import { IconChevronDown, IconChevronLeft, IconChevronRight, IconChevronUp } from "@tabler/icons-react";
 
@@ -66,7 +68,7 @@ const defaultClassNames: Partial<ClassNames> = {
   selected:
     "[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:font-medium",
   today: "[&:not([data-selected=true])>button]:font-semibold [&:not([data-selected=true])>button]:text-brand",
-  outside: "[&>button]:text-muted-foreground/60 [&>button]:hover:text-foreground",
+  outside: "[&>button]:text-muted-foreground [&>button]:hover:text-foreground",
   disabled: "[&>button]:text-muted-foreground/40 [&>button]:line-through",
   hidden: "invisible",
   range_middle:
@@ -79,6 +81,18 @@ const defaultClassNames: Partial<ClassNames> = {
     "h-8 appearance-none border border-input bg-background px-2 pr-6 text-sm text-foreground outline-none " +
     "focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-focus-ring",
   footer: "border-t border-border px-2 pt-3 text-xs text-muted-foreground",
+};
+
+// A day button shows only its number, so its accessible name must contain that
+// number as a word (WCAG 2.5.3, Label in Name). The library default reads
+// "November 1st", which does not; this reads "Sunday, November 1, 2026".
+const defaultLabels: Partial<Labels> = {
+  labelDayButton: (date, modifiers, options, dateLib) => {
+    let label = (dateLib ?? new DateLib(options)).format(date, "EEEE, MMMM d, yyyy");
+    if (modifiers.today) label = `Today, ${label}`;
+    if (modifiers.selected) label = `${label}, selected`;
+    return label;
+  },
 };
 
 const defaultComponents: Partial<CustomComponents> = {
@@ -107,6 +121,7 @@ function Calendar({
   className,
   classNames,
   components,
+  labels,
   showOutsideDays = true,
   navLayout = "around",
   ...props
@@ -118,6 +133,7 @@ function Calendar({
       className={cn("w-fit bg-background p-3 text-foreground", className)}
       classNames={{ ...defaultClassNames, ...classNames }}
       components={{ ...defaultComponents, ...components }}
+      labels={{ ...defaultLabels, ...labels }}
       {...props}
     />
   );

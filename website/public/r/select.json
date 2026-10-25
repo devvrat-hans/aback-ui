@@ -1,0 +1,32 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "select",
+  "type": "registry:ui",
+  "title": "Select",
+  "description": "A native select with a themed chevron and 36px height.",
+  "dependencies": [
+    "@tabler/icons-react"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Forms"
+  ],
+  "docs": "https://abackui.com/docs/components/select",
+  "meta": {
+    "status": "stable",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/select.tsx",
+      "content": "import * as React from \"react\";\nimport { IconChevronDown } from \"@tabler/icons-react\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst selectClassName = [\n  \"h-9 w-full appearance-none border border-input bg-background px-3 pr-9 text-sm text-foreground shadow-xs\",\n  \"outline-none transition-[color,background-color,border-color,box-shadow] duration-200\",\n  \"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n  \"disabled:cursor-not-allowed disabled:opacity-50\",\n  \"aria-invalid:border-destructive aria-invalid:ring-destructive/20\",\n].join(\" \");\n\nconst Select = React.forwardRef<HTMLSelectElement, React.ComponentProps<\"select\">>(\n  function Select({ className, children, ...props }, ref) {\n    return (\n      <div data-slot=\"select\" className=\"relative w-full\">\n        <select\n          ref={ref}\n          data-slot=\"select-control\"\n          className={cn(selectClassName, className)}\n          {...props}\n        >\n          {children}\n        </select>\n        <IconChevronDown\n          aria-hidden=\"true\"\n          className=\"pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground\"\n        />\n      </div>\n    );\n  },\n);\nSelect.displayName = \"Select\";\n\nexport { Select, selectClassName };\n",
+      "type": "registry:ui",
+      "target": "components/ui/select.tsx"
+    }
+  ]
+}

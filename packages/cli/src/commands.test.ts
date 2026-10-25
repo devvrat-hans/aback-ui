@@ -2,13 +2,14 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { runAdd } from "./commands/add.js";
+import { registryBaseFromConfig, runAdd } from "./commands/add.js";
 import { runDiff } from "./commands/diff.js";
 import { runDoctor } from "./commands/doctor.js";
 import { runInit } from "./commands/init.js";
 import { runList } from "./commands/list.js";
 import { runView } from "./commands/view.js";
 import type { InstallDependenciesOptions } from "./install.js";
+import { defaultRegistry } from "./registry.js";
 import type { RegistryFetch } from "./types.js";
 import {
   acceptPrompter,
@@ -59,7 +60,7 @@ describe("init", () => {
 
     expect(code).toBe(0);
 
-    const config = JSON.parse(await read("components.json")) as {
+    const config = JSON.parse(await read("aback-ui.json")) as {
       aliases: { ui: string };
       tailwind: { css: string };
       registries: Record<string, string>;
@@ -78,7 +79,7 @@ describe("init", () => {
     expect(lines.some((line) => line.includes("Aback UI is ready"))).toBe(true);
   });
 
-  it("does nothing when components.json already exists", async () => {
+  it("does nothing when aback-ui.json already exists", async () => {
     const { logger, lines } = captureLogger();
     const withConfig = await createProject({ withConfig: true });
     try {
@@ -216,7 +217,7 @@ describe("add", () => {
     ).rejects.toThrow(/outside the project root|traversal/);
   });
 
-  it("requires components.json", async () => {
+  it("requires aback-ui.json", async () => {
     const plain = await createProject({ withConfig: false });
     try {
       const { logger } = captureLogger();
@@ -325,14 +326,14 @@ describe("doctor", () => {
     expect(lines.join("\n")).toContain("Everything checks out.");
   });
 
-  it("fails when components.json is missing", async () => {
+  it("fails when aback-ui.json is missing", async () => {
     const plain = await createProject({ withConfig: false });
     try {
       const { logger, lines } = captureLogger();
       const code = await runDoctor({ cwd: plain.root, logger });
 
       expect(code).toBe(1);
-      expect(lines.join("\n")).toContain("components.json");
+      expect(lines.join("\n")).toContain("aback-ui.json");
       expect(lines.join("\n")).toContain("aback-ui init");
     } finally {
       await plain.cleanup();
@@ -370,5 +371,20 @@ describe("list and view", () => {
     await runView({ item: "button", registry: registry.dir, logger });
     expect(lines).toContain("Files");
     expect(lines.join("\n")).toContain("components/ui/button.tsx");
+  });
+});
+
+describe("registry selection", () => {
+  it("reads the standard @aback entry as the registry bundled with the CLI", () => {
+    expect(
+      registryBaseFromConfig({ registries: { "@aback": "https://abackui.com/r/{name}.json" } }),
+    ).toBe(defaultRegistry());
+    expect(registryBaseFromConfig({})).toBe(defaultRegistry());
+  });
+
+  it("uses a mirror or self-hosted registry exactly as configured", () => {
+    expect(
+      registryBaseFromConfig({ registries: { "@aback": "https://ui.example.com/r/{name}.json" } }),
+    ).toBe("https://ui.example.com/r");
   });
 });

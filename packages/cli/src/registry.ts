@@ -1,10 +1,30 @@
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import type { RegistryFetch, RegistryIndex, RegistryItem } from "./types.js";
 
+/**
+ * The canonical address of the Aback UI registry. Item files reference each
+ * other by URLs under it, and a project's aback-ui.json names it as "@aback".
+ */
 export const DEFAULT_REGISTRY = "https://abackui.com/r";
+
+/**
+ * The registry copy shipped inside this package, at `<package>/registry`.
+ * Installing from it needs no network and always matches the CLI version.
+ * Returns null when running from source before `bun run build`.
+ */
+export function bundledRegistry(): string | null {
+  const directory = fileURLToPath(new URL("../registry", import.meta.url));
+  return existsSync(path.join(directory, "index.json")) ? directory : null;
+}
+
+/** The bundled registry when present, otherwise the hosted one. */
+export function defaultRegistry(): string {
+  return bundledRegistry() ?? DEFAULT_REGISTRY;
+}
 const NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export class RegistryError extends Error {
@@ -19,7 +39,7 @@ export interface RegistryClientOptions {
   registry?: string;
   /** Working directory used for local file specifiers. */
   cwd?: string;
-  /** Named registry templates from components.json. */
+  /** Named registry templates from aback-ui.json. */
   registries?: Record<string, string>;
   fetchImpl?: RegistryFetch;
 }
@@ -122,7 +142,7 @@ export class RegistryClient {
       const template = this.registries[scope];
       if (!template) {
         throw new RegistryError(
-          `Unknown registry alias "${scope}". Add it to components.json under "registries".`,
+          `Unknown registry alias "${scope}". Add it to aback-ui.json under "registries".`,
         );
       }
       const expanded = template.replace("{name}", name);
@@ -154,6 +174,7 @@ export class RegistryClient {
    */
   private localiseDependency(url: string): string {
     if (this.base === DEFAULT_REGISTRY) return url;
+    // The bundled copy and any mirror serve the same file names.
 
     let parsed: URL;
     try {

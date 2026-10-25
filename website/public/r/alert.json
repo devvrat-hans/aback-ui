@@ -1,0 +1,31 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "alert",
+  "type": "registry:ui",
+  "title": "Alert",
+  "description": "Inline status messages for information, success, warning, and destructive feedback.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Feedback"
+  ],
+  "docs": "https://abackui.com/docs/components/alert",
+  "meta": {
+    "status": "stable",
+    "usedIn": [
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/alert.tsx",
+      "content": "import * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst alertVariants = cva(\n  \"relative flex w-full items-start gap-2.5 border p-3 text-sm [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:translate-y-0.5\",\n  {\n    variants: {\n      variant: {\n        info:\n          \"border-primary-200 bg-brand-wash/60 text-foreground dark:border-primary-800/60\",\n        success: \"border-success/25 bg-success-soft text-success-strong\",\n        warning: \"border-warning/25 bg-warning-soft text-warning-strong\",\n        destructive: \"border-danger/25 bg-danger-soft text-danger-strong\",\n        muted: \"border-border bg-muted/40 text-foreground\",\n      },\n    },\n    defaultVariants: {\n      variant: \"info\",\n    },\n  },\n);\n\nexport interface AlertProps\n  extends React.ComponentProps<\"div\">,\n    VariantProps<typeof alertVariants> {}\n\nfunction Alert({ className, variant = \"info\", ...props }: AlertProps) {\n  return (\n    <div\n      data-slot=\"alert\"\n      data-variant={variant}\n      className={cn(alertVariants({ variant }), className)}\n      {...props}\n    />\n  );\n}\n\nfunction AlertTitle({ className, ...props }: React.ComponentProps<\"p\">) {\n  return (\n    <p\n      data-slot=\"alert-title\"\n      className={cn(\"font-medium leading-snug\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDescription({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"alert-description\"\n      className={cn(\"text-sm leading-relaxed text-current\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Alert, AlertTitle, AlertDescription, alertVariants };\n",
+      "type": "registry:ui",
+      "target": "components/ui/alert.tsx"
+    }
+  ]
+}

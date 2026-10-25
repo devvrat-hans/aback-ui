@@ -2,7 +2,8 @@ import { findProjectRoot, loadConfig, resolveInstallDirs } from "../config.js";
 import { commandError } from "../errors.js";
 import { diffItems, trimDiff, type FileDiff } from "../diff.js";
 import type { Logger } from "../logger.js";
-import { DEFAULT_REGISTRY, RegistryClient } from "../registry.js";
+import { RegistryClient } from "../registry.js";
+import { registryBaseFromConfig } from "./add.js";
 import type { RegistryFetch } from "../types.js";
 
 export interface DiffCommandOptions {
@@ -28,11 +29,11 @@ export async function runDiff(options: DiffCommandOptions): Promise<number> {
   }
   const config = await loadConfig(projectRoot);
   if (!config) {
-    throw commandError("No components.json found. Run `aback-ui init` first.");
+    throw commandError("No aback-ui.json found. Run `aback-ui init` first.");
   }
 
   const client = new RegistryClient({
-    registry: options.registry ?? process.env.ABACK_UI_REGISTRY ?? DEFAULT_REGISTRY,
+    registry: options.registry ?? process.env.ABACK_UI_REGISTRY ?? registryBaseFromConfig(config),
     cwd: projectRoot,
     registries: config.registries,
     fetchImpl: options.fetchImpl,

@@ -1,6 +1,8 @@
 # Registry
 
-`registry.json` is the source of truth for installable items. The build script inlines the canonical source into shadcn-compatible JSON at `apps/docs/public/r`.
+`registry.json` is the source of truth for installable items, and `blocks/` holds the block source. The build script inlines the canonical source into one JSON file per item at `website/public/r` (schema: `website/public/schema/registry-item.json`). The CLI build then copies those files into `packages/cli/registry`, so the published `aback-ui` package carries every item.
+
+This folder is a private workspace with only the dependencies blocks import. It is never published on its own.
 
 ## Build
 
@@ -18,7 +20,7 @@ bun run dev
 bun scripts/build-registry.mjs --base-url=http://localhost:3000
 ```
 
-Point the shadcn CLI at `http://localhost:3000/r/button.json` in a throwaway project, confirm the files and dependencies, then rebuild without the flag before committing.
+In a throwaway project, run `node <repo>/packages/cli/dist/index.js add button --registry http://localhost:3000/r`, confirm the files and dependencies, then rebuild without the flag before committing.
 
 ## Adding an item
 

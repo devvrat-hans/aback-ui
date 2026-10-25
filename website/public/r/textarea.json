@@ -1,0 +1,29 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "textarea",
+  "type": "registry:ui",
+  "title": "Textarea",
+  "description": "A multi-line text control for longer input.",
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Forms"
+  ],
+  "docs": "https://abackui.com/docs/components/textarea",
+  "meta": {
+    "status": "stable",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/textarea.tsx",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst textareaClassName = [\n  \"flex min-h-20 w-full resize-y border border-input bg-transparent p-3 text-sm text-foreground shadow-xs\",\n  \"outline-none transition-[color,background-color,border-color,box-shadow] duration-200\",\n  \"placeholder:text-muted-foreground\",\n  \"focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n  \"disabled:cursor-not-allowed disabled:opacity-50\",\n  \"aria-invalid:border-destructive aria-invalid:ring-destructive/20\",\n  \"dark:bg-input/30\",\n].join(\" \");\n\nconst Textarea = React.forwardRef<\n  HTMLTextAreaElement,\n  React.ComponentProps<\"textarea\">\n>(function Textarea({ className, ...props }, ref) {\n  return (\n    <textarea\n      ref={ref}\n      data-slot=\"textarea\"\n      className={cn(textareaClassName, className)}\n      {...props}\n    />\n  );\n});\nTextarea.displayName = \"Textarea\";\n\nexport { Textarea, textareaClassName };\n",
+      "type": "registry:ui",
+      "target": "components/ui/textarea.tsx"
+    }
+  ]
+}

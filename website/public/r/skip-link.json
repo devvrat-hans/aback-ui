@@ -1,0 +1,30 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "skip-link",
+  "type": "registry:ui",
+  "title": "Skip Link",
+  "description": "The first focusable element, which jumps keyboard users past the header to the content.",
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Navigation"
+  ],
+  "docs": "https://abackui.com/docs/components/skip-link",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch",
+      "aback-group"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/skip-link.tsx",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nexport interface SkipLinkProps extends React.ComponentProps<\"a\"> {\n  /** The id of the main content, with its hash. */\n  href?: string;\n}\n\n/**\n * The first focusable element on a page. It stays hidden until it receives\n * keyboard focus, then lets a keyboard or switch user jump past the header.\n * The target needs a matching id, and `tabIndex={-1}` if it is not focusable.\n */\nfunction SkipLink({\n  href = \"#main-content\",\n  children = \"Skip to content\",\n  className,\n  ...props\n}: SkipLinkProps) {\n  return (\n    <a\n      data-slot=\"skip-link\"\n      href={href}\n      className={cn(\n        \"sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100]\",\n        \"focus:border focus:border-border focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground focus:shadow-lg\",\n        \"outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n    </a>\n  );\n}\n\nexport { SkipLink };\n",
+      "type": "registry:ui",
+      "target": "components/ui/skip-link.tsx"
+    }
+  ]
+}

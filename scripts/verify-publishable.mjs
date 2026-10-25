@@ -89,7 +89,7 @@ if (packed) {
   const leakPatterns = [
     { pattern: /localhost:\d+/, reason: "a localhost URL would ship" },
     { pattern: /from\s+["']\.\.\/\.\.\//, reason: "a relative path escapes the package root" },
-    { pattern: /@aback-ui\/(docs|ui|tokens)\/src/, reason: "a monorepo source path would ship" },
+    { pattern: /@aback-ui\/(website|ui|tokens)\/src/, reason: "a monorepo source path would ship" },
     { pattern: /\/Users\/[a-z-]+\//i, reason: "an absolute developer path would ship" },
     { pattern: /\.work\//, reason: "a scratch fixture path would ship" },
   ];
