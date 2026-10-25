@@ -1,22 +1,14 @@
 import type { NextConfig } from "next";
 
+// Every route is prerendered, so the site ships as static files (`out/`) and
+// is served by Cloudflare Workers static assets. Response headers live in
+// public/_headers, because Next.js does not apply `headers()` to an export.
 const nextConfig: NextConfig = {
+  output: "export",
   poweredByHeader: false,
   transpilePackages: ["@aback-ui/ui"],
   experimental: {
     optimizePackageImports: ["@tabler/icons-react"],
-  },
-  async headers() {
-    return [
-      {
-        source: "/r/:path*",
-        headers: [
-          { key: "Access-Control-Allow-Origin", value: "*" },
-          { key: "Content-Type", value: "application/json; charset=utf-8" },
-          { key: "Cache-Control", value: "public, max-age=300, s-maxage=3600" },
-        ],
-      },
-    ];
   },
 };
 

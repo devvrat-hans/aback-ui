@@ -4,6 +4,9 @@ import { components } from "@/data/component-catalog";
 import { blocks } from "@/data/blocks";
 import { site } from "@/data/site";
 
+// Generated once at build time; the site is a static export.
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 

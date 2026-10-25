@@ -26,7 +26,8 @@
     "check": "bun run typecheck && bun run lint && bun run test && bun run check:registry && bun run test:consumer",
     "smoke:package": "bun scripts/check-package.mjs",
     "test:consumer": "bun scripts/check-consumer.mjs",
-    "test:blocks": "bun --filter @aback-ui/website test"
+    "test:blocks": "bun --filter @aback-ui/website test",
+    "deploy:website": "bun --filter @aback-ui/website deploy"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

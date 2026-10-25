@@ -58,6 +58,8 @@ The registry is intentionally independent of the website. A copied component wor
 
 ## Website
 
+The website is a static export (`output: "export"` in `website/next.config.ts`): every route, including `llms.txt`, the sitemap, and the registry JSON, is a file in `website/out`. Cloudflare Workers static assets serves it (`website/wrangler.jsonc`), with headers from `website/public/_headers`.
+
 | Path | Purpose |
 | --- | --- |
 | `src/app/layout.tsx` | The document only: fonts, `ThemeScript`, metadata. No site chrome. |

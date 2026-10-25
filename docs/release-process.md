@@ -49,7 +49,7 @@ These are owner actions; none of them can be done from the repository alone.
 1. Create the free `aback-ui` organization on npmjs.com, so the `@aback-ui/*` scope exists, and claim the unscoped `aback-ui` name for the CLI. As of October 2026, `@aback-ui/ui`, `@aback-ui/tokens`, and `aback-ui` were all unclaimed on npm.
 2. Add the `NPM_TOKEN` repository secret described above.
 3. Make the GitHub repository public, so the package `repository` links and the docs' source links resolve.
-4. Deploy `website` to `abackui.com`. The CLI does not need it to install components, but the docs, the schema URLs, and mirrors do.
+4. Point `abackui.com` at the website. It is deployed (see "Deploying the website" below) but only on `aback-ui.aback-projects.workers.dev`, because the `abackui.com` zone is not in the Cloudflare account yet. Add the domain to Cloudflare, then attach it to the `aback-ui` Worker as a custom domain. The CLI does not need the site to install components, but the docs, the schema URLs, and mirrors do.
 5. Push a `v0.2.0` tag (after bumping the three package versions and `CLI_VERSION` in `packages/cli/src/help.ts`) to run the release workflow. It publishes `@aback-ui/tokens`, `@aback-ui/ui`, and `aback-ui`, in that order.
 6. Set `npmPublished: true` in `website/src/data/site.ts`, so the install pages stop showing the "Not on npm yet" notice.
 
@@ -58,7 +58,17 @@ These are owner actions; none of them can be done from the repository alone.
 - CLI: builds with the registry bundled, passes the publish guard, and installs components from its packed tarball with the network blocked in `bun run test:consumer`. Not published yet.
 - Registry: implemented and validated locally. The hosted copy depends on deploying `website`.
 - Package: builds, passes the publish guard, and is verified against packed tarballs by `bun run test:consumer`. Not published to a registry yet; the release workflow is ready and waits on an `NPM_TOKEN` secret.
-- Site: builds locally. Not deployed.
+- Site: deployed to https://aback-ui.aback-projects.workers.dev. Not on `abackui.com` yet.
+
+## Deploying the website
+
+The website is a Next.js static export (`output: "export"`) served by a Cloudflare Workers static-assets Worker named `aback-ui`, configured in `website/wrangler.jsonc`. There is no server code; response headers live in `website/public/_headers`.
+
+```bash
+bun run deploy:website   # next build, then wrangler deploy
+```
+
+Wrangler needs a Cloudflare login (`bunx wrangler login`) with Workers write access to the Aback account. Deploy only with owner authorization.
 
 ## Rollback
 

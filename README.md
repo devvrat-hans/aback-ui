@@ -66,6 +66,8 @@ bun run build:registry   # regenerate website/public/r after changing an item
 bun run build:cli        # build the CLI with the registry bundled
 ```
 
+Deploy the website (a static export on Cloudflare Workers) with `bun run deploy:website`. See [`docs/release-process.md`](docs/release-process.md#deploying-the-website).
+
 Before a change is done:
 
 ```bash

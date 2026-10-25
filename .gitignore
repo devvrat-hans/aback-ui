@@ -17,3 +17,4 @@ tests/consumer/bun.lock
 tests/consumer/.tailwind-check/
 # Copied into the CLI package at build time from website/public/r
 packages/cli/registry/
+.wrangler/
