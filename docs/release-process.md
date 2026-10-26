@@ -50,11 +50,11 @@ Done for 0.2.0 and 0.2.1 in October 2026, by hand from the owner's npm account. 
 
 ## Current distribution status
 
-- npm: `@aback-ui/tokens`, `@aback-ui/ui`, and `aback-ui` are published at 0.2.1. `aback-ui@0.2.0` is deprecated, because its `init` failed in new Next.js apps.
-- CLI: installs from the registry bundled in its package; `npx aback-ui@latest init` and `add` were verified in a fresh `create-next-app` project against the published 0.2.1.
+- npm: `@aback-ui/tokens`, `@aback-ui/ui`, and `aback-ui` are published at 0.2.2, with provenance. `aback-ui@0.2.0` is deprecated, because its `init` failed in new Next.js apps.
+- CLI: installs from the registry bundled in its package; `npx aback-ui@latest init` and `add` were verified in a fresh `create-next-app` project against the published 0.2.1 and 0.2.2.
 - Registry: also hosted at https://abackui.com/r for mirrors and tools.
 - Site: live at https://abackui.com (also https://aback-ui.aback-projects.workers.dev).
-- Trusted publishing: not configured yet. Configure it right before the next tagged release (see "Publishing").
+- Trusted publishing: configured for all three packages (owner `devvrat-hans`, repository `aback-ui`, workflow `release.yml`, direct publish allowed). 0.2.2 was the first release published by the workflow from a `v0.2.2` tag. A release is now: bump the three versions and `CLI_VERSION`, update the changelog, commit, then push a matching `v*` tag.
 
 ## Deploying the website
 
