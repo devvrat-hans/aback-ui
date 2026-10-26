@@ -109,12 +109,39 @@ export async function detectSrcDir(root: string): Promise<string> {
   return "";
 }
 
-/** Strip comments and trailing commas from a JSON-with-comments file. */
+/**
+ * Strip comments and trailing commas from a JSON-with-comments file. The scan
+ * skips over strings, because tsconfig paths such as "@/*" and "**\/*.ts"
+ * look like comment markers.
+ */
 export function parseJsonc(source: string): unknown {
-  const withoutBlock = source.replace(/\/\*[\s\S]*?\*\//g, "");
-  const withoutLine = withoutBlock.replace(/(^|[^:])\/\/.*$/gm, "$1");
-  const withoutTrailingCommas = withoutLine.replace(/,\s*([}\]])/g, "$1");
-  return JSON.parse(withoutTrailingCommas);
+  let output = "";
+  let index = 0;
+  while (index < source.length) {
+    const char = source[index];
+    const next = source[index + 1];
+    if (char === '"') {
+      let end = index + 1;
+      while (end < source.length && source[end] !== '"') {
+        end += source[end] === "\\" ? 2 : 1;
+      }
+      output += source.slice(index, end + 1);
+      index = end + 1;
+    } else if (char === "/" && next === "/") {
+      while (index < source.length && source[index] !== "\n") index += 1;
+    } else if (char === "/" && next === "*") {
+      const end = source.indexOf("*/", index + 2);
+      index = end === -1 ? source.length : end + 2;
+    } else if (char === "}" || char === "]") {
+      output = output.replace(/,\s*$/, "");
+      output += char;
+      index += 1;
+    } else {
+      output += char;
+      index += 1;
+    }
+  }
+  return JSON.parse(output);
 }
 
 export async function readTsconfig(root: string): Promise<TsconfigPaths> {

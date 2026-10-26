@@ -1,6 +1,6 @@
 {
   "name": "@aback-ui/tokens",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The Aback semantic design tokens: color roles, Aback Blue ramp, geometry, and theme CSS.",
   "license": "MIT",
   "author": "Aback Group",

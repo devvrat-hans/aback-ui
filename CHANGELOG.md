@@ -2,6 +2,12 @@
 
 All notable changes are recorded here. The project is pre-1.0; minor versions may include API changes with migration notes.
 
+## 0.2.1 - October 2026
+
+### Fixed
+
+- `aback-ui init` and `add` failed in a new Next.js app with "Could not read tsconfig.json". The tsconfig reader treated the `/*` in paths such as `"@/*"` and `"**/*.ts"` as comment markers. It now skips over strings when removing comments and trailing commas.
+
 ## 0.2.0 - October 2026
 
 The first release published to npm: `@aback-ui/tokens`, `@aback-ui/ui`, and the `aback-ui` CLI.
