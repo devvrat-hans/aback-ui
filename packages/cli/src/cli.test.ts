@@ -19,7 +19,7 @@ describe("runCli", () => {
   it("prints the version", async () => {
     const testContext = context();
     expect(await runCli(["--version"], testContext)).toBe(0);
-    expect(testContext.lines).toEqual(["0.2.1"]);
+    expect(testContext.lines).toEqual(["0.2.2"]);
   });
 
   it("returns a failure code for an unknown command", async () => {

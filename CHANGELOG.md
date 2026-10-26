@@ -2,6 +2,14 @@
 
 All notable changes are recorded here. The project is pre-1.0; minor versions may include API changes with migration notes.
 
+## 0.2.2 - October 2026
+
+The first release published from a GitHub tag through npm trusted publishing, with provenance, instead of from a maintainer's machine.
+
+### Fixed
+
+- The `@aback-ui/ui` README on npm no longer says the package is not published.
+
 ## 0.2.1 - October 2026
 
 ### Fixed
