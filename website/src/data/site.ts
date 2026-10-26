@@ -11,11 +11,11 @@ export const site = {
   author: "Aback Group",
   repository: "https://github.com/devvrat-hans/aback-ui",
   /**
-   * Flip to true after the first npm release of aback-ui, @aback-ui/ui, and
-   * @aback-ui/tokens. Until then install pages say the packages are not on
-   * npm yet, so nobody mistakes a failing command for a broken setup.
+   * Whether aback-ui, @aback-ui/ui, and @aback-ui/tokens are on npm. While
+   * false, install pages say the packages are not on npm yet, so nobody
+   * mistakes a failing command for a broken setup.
    */
-  npmPublished: false,
+  npmPublished: true,
 } as const;
 
 export interface NavItem {

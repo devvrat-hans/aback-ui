@@ -34,8 +34,6 @@ npm install @aback-ui/ui @aback-ui/tokens
 import { Button } from "@aback-ui/ui";
 ```
 
-> **Not on npm yet.** `aback-ui`, `@aback-ui/ui`, and `@aback-ui/tokens` are built and tested from their packed tarballs on every check, but the first release has not been published. See [`docs/release-process.md`](docs/release-process.md).
-
 ## Repository layout
 
 Everything published to npm lives in `packages/`. The website only consumes it.

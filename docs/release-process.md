@@ -38,7 +38,7 @@ The workflow uses npm trusted publishing (OIDC): it declares `id-token: write`, 
 
 ## First release
 
-These steps need the owner's npm account; none of them can be done from the repository alone.
+Done for 0.2.0 and 0.2.1 in October 2026, by hand from the owner's npm account. Kept here for reference; none of these steps can be done from the repository alone.
 
 1. Create the free `aback-ui` organization on npmjs.com, so the `@aback-ui/*` scope exists. The unscoped `aback-ui` name is for the CLI.
 2. Run `npm login` and keep two-factor authentication on for publishing.
@@ -50,10 +50,11 @@ These steps need the owner's npm account; none of them can be done from the repo
 
 ## Current distribution status
 
-- CLI: builds with the registry bundled, passes the publish guard, and installs components from its packed tarball with the network blocked in `bun run test:consumer`. Not published yet.
-- Registry: implemented and validated locally. The hosted copy depends on deploying `website`.
-- Package: builds, passes the publish guard, and is verified against packed tarballs by `bun run test:consumer`. Not published to a registry yet.
+- npm: `@aback-ui/tokens`, `@aback-ui/ui`, and `aback-ui` are published at 0.2.1. `aback-ui@0.2.0` is deprecated, because its `init` failed in new Next.js apps.
+- CLI: installs from the registry bundled in its package; `npx aback-ui@latest init` and `add` were verified in a fresh `create-next-app` project against the published 0.2.1.
+- Registry: also hosted at https://abackui.com/r for mirrors and tools.
 - Site: live at https://abackui.com (also https://aback-ui.aback-projects.workers.dev).
+- Trusted publishing: not configured yet. Configure it right before the next tagged release (see "Publishing").
 
 ## Deploying the website
 

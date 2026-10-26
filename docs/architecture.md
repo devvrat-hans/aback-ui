@@ -84,7 +84,7 @@ The tokens, components, CLI, registry build, and documentation share one release
 
 ## Deliberate constraints
 
-- **Copy-source first.** The registry is the supported public install path today. The npm package is built and validated but is not published yet; the docs do not claim otherwise.
+- **Copy-source first.** The CLI copies registry source into the project and is the primary install path. The `@aback-ui/ui` npm package is the alternative for teams that prefer upgrading a dependency over owning the source.
 - **No Tailwind config requirement.** Components use standard Tailwind utilities plus the published CSS variables. Consumers do not need a specific Tailwind configuration beyond importing the theme.
 - **No global side effects.** Importing a component never writes to `document`, installs a listener, or injects a stylesheet.
 - **Portals inherit the theme.** Radix portals mount to `body`, where the theme variables already live.

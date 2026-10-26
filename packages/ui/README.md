@@ -6,8 +6,6 @@ Accessible, square-cornered React components for the Aback design system: 57 com
 - Status: pre-1.0. APIs may change before the first stable release.
 - Requires React 19 and Tailwind CSS v4.
 
-> This package is built and tested from its packed tarball, but it is **not published to npm yet**.
-
 ## Two ways to install
 
 ### Copy the source (aback-ui CLI)
