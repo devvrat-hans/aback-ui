@@ -1,7 +1,10 @@
 import { blockDocs, blocks } from "@/data/blocks";
 import { componentDocs } from "@/data/component-docs";
 import { componentGroups, components } from "@/data/component-catalog";
+import { faqItems } from "@/data/faq";
+import { posts } from "@/data/posts";
 import { guides, site } from "@/data/site";
+import { tools } from "@/data/tools";
 
 const intro = `# ${site.name}
 
@@ -69,9 +72,34 @@ function blockSection() {
   ].join("\n");
 }
 
+function resourceSection() {
+  return [
+    "## Tools",
+    "",
+    `- [Theme generator](${site.url}/themes): Build a contrast-checked Aback UI theme (ramp plus brand roles, light and dark) from one colour, as CSS.`,
+    `- [Colors](${site.url}/colors): Every Aback UI colour token as HEX, RGB, HSL, and OKLCH.`,
+    ...tools.map((tool) => `- [${tool.title}](${site.url}/tools/${tool.slug}): ${tool.description}`),
+    "",
+    "## Blog",
+    "",
+    ...posts.map((post) => `- [${post.title}](${site.url}/blog/${post.slug}): ${post.description}`),
+    "",
+    "## Optional",
+    "",
+    `- [FAQ](${site.url}/faq): Short answers on licensing, requirements, install paths, theming, and accessibility.`,
+    `- [About](${site.url}/about): Why Aback UI exists and how it is maintained.`,
+    `- [Full reference](${site.url}/llms-full.txt): Every component's API, keyboard, and accessibility notes in one file.`,
+    "",
+  ].join("\n");
+}
+
+function faqSection() {
+  return ["## FAQ", "", ...faqItems.flatMap((item) => [`### ${item.question}`, "", item.answer, ""])].join("\n");
+}
+
 /** The short index: what exists and where to read about it. */
 export function llmsIndex() {
-  return [intro, docsSection(), componentSection(), blockSection()].join("\n");
+  return [intro, docsSection(), componentSection(), blockSection(), resourceSection()].join("\n");
 }
 
 /** One component's reference as Markdown: install command, API, keyboard, and accessibility notes. */
@@ -124,7 +152,7 @@ export function blockMarkdown(name: string) {
 
 /** The full reference: every component's install command, API, keyboard, and accessibility notes. */
 export function llmsFull() {
-  const parts = [intro, docsSection()];
+  const parts = [intro, docsSection(), faqSection()];
   for (const group of componentGroups) {
     for (const item of group.items) parts.push(componentMarkdown(item.name));
   }

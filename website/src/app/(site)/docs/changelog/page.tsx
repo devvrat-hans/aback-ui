@@ -5,12 +5,9 @@ import { Badge } from "@aback-ui/ui";
 import { DocsPage, DocsPageHeader } from "@/components/docs-page";
 import { GuidePager } from "@/components/docs-ui";
 import { readChangelog } from "@/lib/changelog";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Changelog",
-  description: "Every change to Aback UI's components, CLI, tokens, and documentation, newest first.",
-  alternates: { canonical: "/docs/changelog" },
-};
+export const metadata: Metadata = pageMetadata("/docs/changelog");
 
 const groupTone: Record<string, "success" | "info" | "warning" | "muted"> = {
   Added: "success",
@@ -64,6 +61,7 @@ export default async function ChangelogPage() {
   return (
     <DocsPage toc={toc}>
       <DocsPageHeader
+        path="/docs/changelog"
         eyebrow="Resources"
         title="Changelog"
         description="Every change a consumer can observe, newest first. Aback UI is pre-1.0, so minor versions may change an API; each change says what to do."

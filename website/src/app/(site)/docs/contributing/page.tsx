@@ -3,13 +3,9 @@ import type { Metadata } from "next";
 import { Code } from "@/components/code";
 import { DocsPage, DocsPageHeader, DocsSection, type TocItem } from "@/components/docs-page";
 import { Callout, GuidePager } from "@/components/docs-ui";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contributing",
-  description:
-    "How the Aback UI repository is organized, how to run it, and what a new component needs before it can merge.",
-  alternates: { canonical: "/docs/contributing" },
-};
+export const metadata: Metadata = pageMetadata("/docs/contributing");
 
 const toc: TocItem[] = [
   { id: "repository", title: "Repository layout" },
@@ -56,6 +52,7 @@ export default function ContributingPage() {
   return (
     <DocsPage toc={toc}>
       <DocsPageHeader
+        path="/docs/contributing"
         eyebrow="Resources"
         title="Contributing"
         description="Aback UI is judged on reuse, clarity, accessibility, and maintainability, not on component count. This page is for people working on the library itself."

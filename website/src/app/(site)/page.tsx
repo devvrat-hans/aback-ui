@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   IconAccessible,
@@ -12,12 +13,21 @@ import { Badge, Button } from "@aback-ui/ui";
 
 import { BlockThumbnail } from "@/components/block-thumbnail";
 import { Code } from "@/components/code";
+import { FaqList } from "@/components/faq-list";
 import { HomeShowcase } from "@/components/home-showcase";
+import { JsonLd } from "@/components/json-ld";
 import { PackageCommand } from "@/components/package-command";
 import { blocks } from "@/data/blocks";
 import { components } from "@/data/component-catalog";
+import { homeFaq } from "@/data/faq";
 import { products } from "@/data/products";
+import { getRoute } from "@/data/routes";
 import { site } from "@/data/site";
+import { cliSchema, faqSchema, librarySchema, webPageSchema } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
+import uiPackage from "../../../../packages/ui/package.json";
+
+export const metadata: Metadata = pageMetadata("/");
 
 const initCommand = `${site.cli} init`;
 const buttonCommand = `${site.cli} add button`;
@@ -97,6 +107,14 @@ function SectionIntro({
 export default function HomePage() {
   return (
     <div>
+      <JsonLd
+        data={[
+          webPageSchema(getRoute("/")!),
+          librarySchema(),
+          cliSchema(),
+          faqSchema(homeFaq.map(({ question, answer }) => ({ question, answer }))),
+        ]}
+      />
       <section className="relative overflow-hidden border-b border-separator">
         <div aria-hidden="true" className="docs-grid-lines docs-grid-fade pointer-events-none absolute inset-0" />
         <div className="container-page relative flex flex-col items-center pb-16 pt-16 text-center sm:pt-24 lg:pb-24 lg:pt-28">
@@ -104,7 +122,7 @@ export default function HomePage() {
             href="/docs"
             className="group inline-flex items-center gap-2 border border-border bg-background py-1 pl-1 pr-3 text-xs font-medium text-foreground transition-colors duration-200 hover:border-primary-300 dark:hover:border-primary-700"
           >
-            <Badge variant="brand">v0.1</Badge>
+            <Badge variant="brand">v{uiPackage.version}</Badge>
             {components.length} components and {blocks.length} blocks, open source
             <IconArrowRight
               aria-hidden="true"
@@ -326,6 +344,19 @@ export default function HomePage() {
               );
             })}
           </ul>
+        </div>
+      </section>
+
+      <section aria-labelledby="faq-heading" className="border-t border-separator">
+        <div className="container-page py-16 lg:py-24">
+          <SectionIntro
+            id="faq-heading"
+            eyebrow="FAQ"
+            title="Questions developers ask first."
+            description="Licensing, requirements, and how the two install paths differ. The FAQ page answers the rest."
+            link={{ href: "/faq", label: "All questions" }}
+          />
+          <FaqList items={homeFaq} className="mt-12" />
         </div>
       </section>
 

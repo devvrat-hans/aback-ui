@@ -16,6 +16,7 @@ import { getComponent } from "@/data/component-catalog";
 import { site } from "@/data/site";
 import { readBlockSource } from "@/lib/example-source";
 import { blockMarkdown } from "@/lib/llms";
+import { pageMetadata } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -29,23 +30,7 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const block = getBlock(slug);
-  if (!block) return {};
-
-  const title = `${block.title} block`;
-  const url = `/docs/blocks/${block.name}`;
-  return {
-    title,
-    description: block.description,
-    alternates: { canonical: url },
-    openGraph: {
-      title,
-      description: block.description,
-      url,
-      type: "article",
-      images: [{ url: "/og.png", width: 1200, height: 630, alt: `${block.title} block in Aback UI` }],
-    },
-  };
+  return getBlock(slug) ? pageMetadata(`/docs/blocks/${slug}`) : {};
 }
 
 export default async function BlockPage({ params }: PageProps) {
@@ -67,6 +52,7 @@ export default async function BlockPage({ params }: PageProps) {
   return (
     <DocsPage>
       <DocsPageHeader
+        path={`/docs/blocks/${block.name}`}
         eyebrow={`Block · ${block.categories?.[0] ?? "Pattern"}`}
         title={block.title}
         description={block.description}

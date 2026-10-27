@@ -2,13 +2,9 @@ import type { Metadata } from "next";
 
 import { DocsPage, DocsPageHeader, type TocItem } from "@/components/docs-page";
 import { GuidePager } from "@/components/docs-ui";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Design tokens",
-  description:
-    "The Aback UI color roles, Aback Blue ramp, typography scale, spacing, control heights, and square geometry.",
-  alternates: { canonical: "/docs/tokens" },
-};
+export const metadata: Metadata = pageMetadata("/docs/tokens");
 
 const semanticRoles = [
   { name: "Canvas", variable: "--background", utility: "bg-background", light: "#ffffff", dark: "#0a0a0a" },
@@ -78,6 +74,7 @@ export default function TokensPage() {
   return (
     <DocsPage toc={toc} className="flex flex-col gap-14">
       <DocsPageHeader
+        path="/docs/tokens"
         eyebrow="Foundations"
         title="Design tokens"
         description="Semantic roles, one Aback Blue ramp, a compact type scale, and square geometry. These are the values components read."

@@ -6,13 +6,9 @@ import { Code } from "@/components/code";
 import { DocsPage, DocsPageHeader, DocsSection, type TocItem } from "@/components/docs-page";
 import { Callout, DocsStep, DocsSteps, GuidePager, PreReleaseNotice } from "@/components/docs-ui";
 import { PackageCommand } from "@/components/package-command";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "npm package",
-  description:
-    "Install @aback-ui/ui and @aback-ui/tokens from npm, set up Tailwind CSS v4, and import Aback UI components.",
-  alternates: { canonical: "/docs/package" },
-};
+export const metadata: Metadata = pageMetadata("/docs/package");
 
 const toc: TocItem[] = [
   { id: "cli-or-package", title: "CLI or package?" },
@@ -42,6 +38,7 @@ export default function PackagePage() {
   return (
     <DocsPage toc={toc}>
       <DocsPageHeader
+        path="/docs/package"
         eyebrow="Get started"
         title="npm package"
         description="Install the components as a dependency and import them. Same source and theme as the CLI, compiled to ESM with type declarations."

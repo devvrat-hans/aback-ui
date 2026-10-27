@@ -7,13 +7,10 @@ import { Badge } from "@aback-ui/ui";
 import { BlockThumbnail } from "@/components/block-thumbnail";
 import { DocsPage, DocsPageHeader } from "@/components/docs-page";
 import { blocks } from "@/data/blocks";
+import { itemListSchema } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Blocks",
-  description:
-    "Composed Aback UI patterns: site headers, footers, pricing, FAQ, sign-in, settings, tables, and article layouts that install with their component dependencies.",
-  alternates: { canonical: "/docs/blocks" },
-};
+export const metadata: Metadata = pageMetadata("/docs/blocks");
 
 const categories = [...new Set(blocks.flatMap((block) => block.categories ?? []))];
 
@@ -21,6 +18,8 @@ export default function BlocksPage() {
   return (
     <DocsPage>
       <DocsPageHeader
+        path="/docs/blocks"
+        schema={[itemListSchema(blocks.map((block) => ({ name: block.title, path: `/docs/blocks/${block.name}` })))]}
         eyebrow="Catalogue"
         title="Blocks"
         description="Complete, customizable sections built from the same components. Install one item and the components it uses arrive with it."

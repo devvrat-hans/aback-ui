@@ -8,19 +8,16 @@ import { DocsPageHeader } from "@/components/docs-page";
 import { GuidePager } from "@/components/docs-ui";
 import { components } from "@/data/component-catalog";
 import { products } from "@/data/products";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Built with Aback UI",
-  description:
-    "The Aback products whose interfaces shaped Aback UI, and the components used in each.",
-  alternates: { canonical: "/built-with" },
-};
+export const metadata: Metadata = pageMetadata("/built-with");
 
 export default function BuiltWithPage() {
   return (
     <div className="container-page pb-20 pt-10 lg:pt-14">
       <div className="flex flex-col gap-10">
         <DocsPageHeader
+          path="/built-with"
           eyebrow="In production"
           title="Built with Aback UI"
           description="Aback UI is built for Aback Group products first. These are the interfaces whose repeated problems shaped the system, and the components they use today."

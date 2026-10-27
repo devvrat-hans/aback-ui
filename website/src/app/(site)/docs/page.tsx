@@ -24,13 +24,9 @@ import { blocks } from "@/data/blocks";
 import { components } from "@/data/component-catalog";
 import { products } from "@/data/products";
 import { site } from "@/data/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Introduction",
-  description:
-    "Aback UI is an open-source React design system from Aback Group: accessible components, blocks, semantic tokens, a CLI that copies source into your project, and an npm package.",
-  alternates: { canonical: "/docs" },
-};
+export const metadata: Metadata = pageMetadata("/docs");
 
 const toc: TocItem[] = [
   { id: "two-ways", title: "Two ways to use it" },
@@ -97,6 +93,7 @@ export default function DocsIntroductionPage() {
   return (
     <DocsPage toc={toc}>
       <DocsPageHeader
+        path="/docs"
         eyebrow="Get started"
         title="Introduction"
         description="Aback UI is the interface foundation for Aback Group products and an open-source React component library for everyone else: accessible components, complete blocks, and one set of design tokens."

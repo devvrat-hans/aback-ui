@@ -1,6 +1,8 @@
 import { blocks } from "./blocks";
 import { components } from "./component-catalog";
+import { posts } from "./posts";
 import { guides } from "./site";
+import { tools } from "./tools";
 
 export interface SearchItem {
   title: string;
@@ -44,4 +46,22 @@ const blockItems: SearchItem[] = blocks.map((block) => ({
   group: "Blocks",
 }));
 
-export const searchItems: SearchItem[] = [...docItems, ...blockItems, ...componentItems];
+const resourceItems: SearchItem[] = [
+  {
+    title: "Theme generator",
+    description: "Build a contrast-checked brand theme from one colour.",
+    href: "/themes",
+    group: "Tools",
+  },
+  {
+    title: "Colors",
+    description: "Every Aback UI colour as HEX, RGB, HSL, and OKLCH.",
+    href: "/colors",
+    group: "Tools",
+  },
+  ...tools.map((tool) => ({ title: tool.title, description: tool.description, href: `/tools/${tool.slug}`, group: "Tools" })),
+  ...posts.map((post) => ({ title: post.title, description: post.description, href: `/blog/${post.slug}`, group: "Blog" })),
+  { title: "About", description: "Why Aback UI exists and how it is maintained.", href: "/about", group: "Docs" },
+];
+
+export const searchItems: SearchItem[] = [...docItems, ...blockItems, ...componentItems, ...resourceItems];

@@ -6,13 +6,9 @@ import { DocsPage, DocsPageHeader, DocsSection, type TocItem } from "@/component
 import { Callout, GuidePager, PreReleaseNotice } from "@/components/docs-ui";
 import { PackageCommand } from "@/components/package-command";
 import { site } from "@/data/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "CLI",
-  description:
-    "Reference for the aback-ui command line: init, add, diff, doctor, list, and view, every option, and the aback-ui.json file.",
-  alternates: { canonical: "/docs/cli" },
-};
+export const metadata: Metadata = pageMetadata("/docs/cli");
 
 const commands = [
   {
@@ -89,6 +85,7 @@ export default function CliPage() {
   return (
     <DocsPage toc={toc}>
       <DocsPageHeader
+        path="/docs/cli"
         eyebrow="Get started"
         title="CLI"
         description="aback-ui sets up a project and copies components into it as source you own. There is nothing to install globally and no account."

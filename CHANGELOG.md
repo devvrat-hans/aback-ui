@@ -2,6 +2,25 @@
 
 All notable changes are recorded here. The project is pre-1.0; minor versions may include API changes with migration notes.
 
+## Unreleased
+
+Website only; no package changes.
+
+### Added
+
+- Installation guides for Next.js and Vite, each verified against a freshly created app.
+- `/themes`, a theme generator that builds a contrast-checked Aback theme from one brand colour and previews it on real components.
+- `/colors`, every theme colour as HEX, RGB, HSL, and OKLCH, read from the tokens package.
+- Free tools: a WCAG contrast checker, a HEX, RGB, HSL, and OKLCH converter, and a Tailwind CSS colour scale generator.
+- A blog with seven guides and an RSS feed, an FAQ page, and an About page.
+- Structured data on every page, a generated social card per page, and sitemap dates taken from git history. See `docs/seo.md`.
+
+### Fixed
+
+- Guide pages shared the home page's `og:url` and social title, and every page shared its Twitter title.
+- The Dialog accessibility notes said Radix sets `aria-modal`; it hides the rest of the page with `aria-hidden` instead.
+- The home page badge showed v0.1; it now reads the package version.
+
 ## 0.2.2 - October 2026
 
 The first release published from a GitHub tag through npm trusted publishing, with provenance, instead of from a maintainer's machine.

@@ -4,13 +4,9 @@ import Link from "next/link";
 import { Code } from "@/components/code";
 import { DocsPage, DocsPageHeader, DocsSection, type TocItem } from "@/components/docs-page";
 import { Callout, GuidePager } from "@/components/docs-ui";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Theming",
-  description:
-    "How the Aback theme works: semantic CSS variables for light and dark, the brand roles, and how to override them safely.",
-  alternates: { canonical: "/docs/theming" },
-};
+export const metadata: Metadata = pageMetadata("/docs/theming");
 
 const toc: TocItem[] = [
   { id: "how-it-works", title: "How it works" },
@@ -48,6 +44,7 @@ export default function ThemingPage() {
   return (
     <DocsPage toc={toc}>
       <DocsPageHeader
+        path="/docs/theming"
         eyebrow="Foundations"
         title="Theming"
         description="Components never use a raw colour. They read semantic roles from CSS variables, so the whole interface follows light, dark, and your overrides from one file."

@@ -14,13 +14,9 @@ import { DocsPage, DocsPageHeader, type TocItem } from "@/components/docs-page";
 import { GuidePager } from "@/components/docs-ui";
 import { componentDocs } from "@/data/component-docs";
 import { components } from "@/data/component-catalog";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Accessibility",
-  description:
-    "The Aback UI accessibility contract, keyboard behavior by component, automated checks, and what has not been verified.",
-  alternates: { canonical: "/docs/accessibility" },
-};
+export const metadata: Metadata = pageMetadata("/docs/accessibility");
 
 const keyboardRows = components.flatMap((component) => {
   const rows = componentDocs[component.name]?.keyboard ?? [];
@@ -43,6 +39,7 @@ export default function AccessibilityPage() {
   return (
     <DocsPage toc={toc} className="flex flex-col gap-10">
       <DocsPageHeader
+        path="/docs/accessibility"
         eyebrow="Foundations"
         title="Accessibility"
         description="Accessibility is part of correctness. This page states the contract and separates what has been tested from what has not."

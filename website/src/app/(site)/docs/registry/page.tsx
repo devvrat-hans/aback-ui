@@ -8,13 +8,9 @@ import { DocsPage, DocsPageHeader, DocsSection, type TocItem } from "@/component
 import { Callout, GuidePager } from "@/components/docs-ui";
 import { blocks } from "@/data/blocks";
 import { components } from "@/data/component-catalog";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Registry format",
-  description:
-    "The item JSON the aback-ui CLI installs, its schema, the supporting theme and utils items, and how to host a mirror.",
-  alternates: { canonical: "/docs/registry" },
-};
+export const metadata: Metadata = pageMetadata("/docs/registry");
 
 const toc: TocItem[] = [
   { id: "what-it-is", title: "What the registry is" },
@@ -30,6 +26,7 @@ export default function RegistryPage() {
   return (
     <DocsPage toc={toc}>
       <DocsPageHeader
+        path="/docs/registry"
         eyebrow="Resources"
         title="Registry format"
         description="Behind aback-ui add is a set of static JSON files, one per component or block, with the source inlined. You only need this page to inspect items or host your own copy."

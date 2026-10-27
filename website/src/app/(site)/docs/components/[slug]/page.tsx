@@ -32,6 +32,7 @@ import { site } from "@/data/site";
 import { exampleMap } from "@/examples";
 import { formatImport, readComponentExports, readExampleSource } from "@/lib/example-source";
 import { componentMarkdown } from "@/lib/llms";
+import { pageMetadata } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -45,31 +46,7 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const item = getComponent(slug);
-  if (!item) return {};
-
-  const title = `${item.title} component`;
-  const url = `/docs/components/${item.name}`;
-
-  return {
-    title,
-    description: item.description,
-    alternates: { canonical: url },
-    openGraph: {
-      title,
-      description: item.description,
-      url,
-      type: "article",
-      images: [
-        {
-          url: "/og.png",
-          width: 1200,
-          height: 630,
-          alt: `${item.title} component in Aback UI`,
-        },
-      ],
-    },
-  };
+  return getComponent(slug) ? pageMetadata(`/docs/components/${slug}`) : {};
 }
 
 export default async function ComponentPage({ params }: PageProps) {
@@ -107,6 +84,7 @@ export default async function ComponentPage({ params }: PageProps) {
   return (
     <DocsPage toc={toc}>
       <DocsPageHeader
+        path={`/docs/components/${item.name}`}
         eyebrow={item.categories?.[0] ?? "Component"}
         title={item.title}
         description={item.description}

@@ -24,3 +24,11 @@
 # Hashed build output never changes.
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
+
+/blog/rss.xml
+  Content-Type: application/rss+xml; charset=utf-8
+
+# Social cards are regenerated only when their page changes.
+/og/*
+  Content-Type: image/png
+  Cache-Control: public, max-age=86400

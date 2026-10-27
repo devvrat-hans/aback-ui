@@ -4,7 +4,9 @@ import { GeistSans } from "geist/font/sans";
 
 import { ThemeScript } from "@aback-ui/ui";
 
+import { JsonLd } from "@/components/json-ld";
 import { site } from "@/data/site";
+import { organizationSchema, websiteSchema } from "@/lib/schema";
 
 import "./globals.css";
 
@@ -27,9 +29,6 @@ export const metadata: Metadata = {
     "React component CLI",
     "accessible components",
   ],
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     type: "website",
     url: "/",
@@ -80,18 +79,6 @@ export const viewport: Viewport = {
   themeColor: "#009bf9",
 };
 
-const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: site.name,
-  url: site.url,
-  description: site.description,
-  publisher: {
-    "@type": "Organization",
-    name: "Aback Group",
-  },
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -103,12 +90,7 @@ export default function RootLayout({
     >
       <head>
         <ThemeScript />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteSchema).replace(/</g, "\\u003c"),
-          }}
-        />
+        <JsonLd data={[organizationSchema(), websiteSchema()]} />
       </head>
       <body className="min-h-dvh bg-background font-sans text-foreground antialiased">
         {children}

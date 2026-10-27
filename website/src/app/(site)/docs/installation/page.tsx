@@ -7,13 +7,9 @@ import { DocsPage, DocsPageHeader, DocsSection, type TocItem } from "@/component
 import { Callout, DocsStep, DocsSteps, GuidePager, LinkCards, PreReleaseNotice } from "@/components/docs-ui";
 import { PackageCommand } from "@/components/package-command";
 import { site } from "@/data/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Installation",
-  description:
-    "Set up Aback UI in a React project and add your first component with the aback-ui CLI.",
-  alternates: { canonical: "/docs/installation" },
-};
+export const metadata: Metadata = pageMetadata("/docs/installation");
 
 const toc: TocItem[] = [
   { id: "requirements", title: "Requirements" },
@@ -31,6 +27,7 @@ export default function InstallationPage() {
   return (
     <DocsPage toc={toc}>
       <DocsPageHeader
+        path="/docs/installation"
         eyebrow="Get started"
         title="Installation"
         description="Two commands: init sets up the theme once, add copies a component into your project. The files are yours to edit."
@@ -55,7 +52,15 @@ export default function InstallationPage() {
           </ul>
           <p className="max-w-[68ch] text-sm leading-relaxed text-muted-foreground">
             Any React framework works. The CLI recognizes Next.js, Vite, Remix, and Astro and picks
-            sensible defaults for each.
+            sensible defaults for each. Step-by-step guides:{" "}
+            <Link href="/docs/installation/next" className="font-medium text-link underline underline-offset-4">
+              Next.js
+            </Link>{" "}
+            and{" "}
+            <Link href="/docs/installation/vite" className="font-medium text-link underline underline-offset-4">
+              Vite
+            </Link>
+            .
           </p>
         </DocsSection>
 

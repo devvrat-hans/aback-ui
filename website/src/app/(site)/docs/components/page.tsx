@@ -8,18 +8,19 @@ import { ComponentCatalog } from "@/components/component-catalog";
 import { DocsPage, DocsPageHeader } from "@/components/docs-page";
 import { componentGroups, components } from "@/data/component-catalog";
 import { productName } from "@/data/products";
+import { itemListSchema } from "@/lib/schema";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Components",
-  description:
-    "Every Aback UI component, grouped by layer, with live previews, API references, and accessibility notes.",
-  alternates: { canonical: "/docs/components" },
-};
+export const metadata: Metadata = pageMetadata("/docs/components");
 
 export default function ComponentsPage() {
   return (
     <DocsPage>
       <DocsPageHeader
+        path="/docs/components"
+        schema={[
+          itemListSchema(components.map((item) => ({ name: item.title, path: `/docs/components/${item.name}` }))),
+        ]}
         eyebrow="Catalogue"
         title="Components"
         description="Small, composable pieces with real keyboard behavior, documented APIs, and no product logic. Install the source and own it."

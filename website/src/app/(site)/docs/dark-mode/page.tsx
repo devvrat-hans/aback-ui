@@ -8,13 +8,9 @@ import { DocsPage, DocsPageHeader, DocsSection, type TocItem } from "@/component
 import { Callout, DocsStep, DocsSteps, GuidePager } from "@/components/docs-ui";
 import { PackageCommand } from "@/components/package-command";
 import { site } from "@/data/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Dark mode",
-  description:
-    "Add light, dark, and system themes to an Aback UI project with ThemeScript, ThemeToggle, and useTheme, without a flash on load.",
-  alternates: { canonical: "/docs/dark-mode" },
-};
+export const metadata: Metadata = pageMetadata("/docs/dark-mode");
 
 const toc: TocItem[] = [
   { id: "how-it-works", title: "How it works" },
@@ -30,6 +26,7 @@ export default function DarkModePage() {
   return (
     <DocsPage toc={toc}>
       <DocsPageHeader
+        path="/docs/dark-mode"
         eyebrow="Foundations"
         title="Dark mode"
         description="A dark class on the html element switches every component. Three pieces make it production quality: apply the stored choice before paint, offer a toggle, and follow the system setting by default."

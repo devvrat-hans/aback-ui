@@ -1003,7 +1003,7 @@ export const componentDocs: Record<string, ComponentDoc> = {
       },
     ],
     accessibility: [
-      "Radix traps focus, sets aria-modal, locks page scroll, closes on Escape, and returns focus to the trigger.",
+      "Radix traps focus, hides the rest of the page from assistive technology with aria-hidden, locks page scroll, closes on Escape, and returns focus to the trigger.",
       "Always render DialogTitle. Hide it visually if the design has no title, but never omit the accessible name.",
       "The overlay click closes the dialog. Destructive flows should still require an explicit action in the footer.",
       "The close button is 32px with a visible focus ring and a screen-reader label.",

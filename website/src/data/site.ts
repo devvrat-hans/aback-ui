@@ -37,8 +37,9 @@ export const mainNav: { title: string; href: string; exact: boolean }[] = [
   { title: "Docs", href: "/docs", exact: true },
   { title: "Components", href: "/docs/components", exact: false },
   { title: "Blocks", href: "/docs/blocks", exact: false },
-  { title: "Theming", href: "/docs/theming", exact: true },
-  { title: "Changelog", href: "/docs/changelog", exact: true },
+  { title: "Themes", href: "/themes", exact: true },
+  { title: "Tools", href: "/tools", exact: false },
+  { title: "Blog", href: "/blog", exact: false },
 ];
 
 /**
@@ -59,6 +60,16 @@ export const guideNav: NavSection[] = [
         title: "Installation",
         href: "/docs/installation",
         description: "Set up a project and add your first component with the aback-ui CLI.",
+      },
+      {
+        title: "Next.js",
+        href: "/docs/installation/next",
+        description: "Step-by-step setup for a Next.js App Router project.",
+      },
+      {
+        title: "Vite",
+        href: "/docs/installation/vite",
+        description: "Tailwind CSS v4, the @/ alias, and init in a Vite React app.",
       },
       {
         title: "npm package",
@@ -120,6 +131,11 @@ export const guideNav: NavSection[] = [
         href: "/built-with",
         description: "The Aback products whose interfaces shaped the system.",
       },
+      {
+        title: "FAQ",
+        href: "/faq",
+        description: "Licensing, requirements, install paths, theming, and accessibility.",
+      },
     ],
   },
 ];
@@ -148,11 +164,26 @@ export const footerNav: NavSection[] = [
     ],
   },
   {
+    title: "Resources",
+    items: [
+      { title: "Blog", href: "/blog" },
+      { title: "Colors", href: "/colors" },
+      { title: "Theme generator", href: "/themes" },
+      { title: "Contrast checker", href: "/tools/contrast-checker" },
+      { title: "Colour converter", href: "/tools/color-converter" },
+      { title: "Tailwind colour generator", href: "/tools/tailwind-color-generator" },
+      { title: "FAQ", href: "/faq" },
+      { title: "About", href: "/about" },
+      { title: "Changelog", href: "/docs/changelog" },
+    ],
+  },
+  {
     title: "For AI agents",
     items: [
       { title: "llms.txt", href: "/llms.txt", file: true },
       { title: "llms-full.txt", href: "/llms-full.txt", file: true },
       { title: "Registry index", href: "/r/index.json", file: true },
+      { title: "Blog RSS", href: "/blog/rss.xml", file: true },
     ],
   },
   {

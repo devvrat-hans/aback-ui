@@ -3,6 +3,9 @@ import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
 import { Breadcrumbs, TableOfContents, cn, type TableOfContentsItem } from "@aback-ui/ui";
 
+import { JsonLd } from "@/components/json-ld";
+import { routeGraph } from "@/lib/schema";
+
 export type TocItem = TableOfContentsItem;
 
 /**
@@ -40,16 +43,24 @@ export interface Crumb {
 
 /**
  * The page title block every docs page shares: eyebrow, the page's one h1,
- * the lead, breadcrumbs directly below it, and an optional meta row.
+ * the lead, breadcrumbs directly below it, and an optional meta row. It also
+ * writes the page's structured data (WebPage, BreadcrumbList, and TechArticle
+ * for guides) from the same crumbs, so the markup and the visible trail agree.
  */
 export function DocsPageHeader({
+  path,
   eyebrow,
   title,
   description,
   crumbs,
+  schema,
   children,
   className,
 }: {
+  /** The page's route in src/data/routes.ts. */
+  path: string;
+  /** Extra schema.org nodes for this page, such as an ItemList or FAQPage. */
+  schema?: Record<string, unknown>[];
   eyebrow?: React.ReactNode;
   title: React.ReactNode;
   description?: React.ReactNode;
@@ -60,6 +71,7 @@ export function DocsPageHeader({
 }) {
   return (
     <header className={cn("flex flex-col gap-3 border-b border-border pb-8", className)}>
+      <JsonLd data={routeGraph(path, crumbs, schema)} />
       {eyebrow ? (
         <p className="text-xs font-medium uppercase tracking-wide text-link">{eyebrow}</p>
       ) : null}
