@@ -161,7 +161,7 @@ export function ThemeGenerator({ light, dark }: { light: TokenValue[]; dark: Tok
             <h2 id="theme-ramp" className="text-lg font-semibold text-foreground">
               Ramp
             </h2>
-            <ol className="grid grid-cols-4 gap-px border border-border bg-border sm:grid-cols-11">
+            <ol className="hairline-grid grid grid-cols-4 sm:grid-cols-11">
               {theme.scale.map((item) => (
                 <li key={item.step} className="flex flex-col bg-card">
                   <span aria-hidden="true" className="h-12" style={{ backgroundColor: item.hex }} />

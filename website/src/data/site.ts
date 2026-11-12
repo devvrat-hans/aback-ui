@@ -10,6 +10,7 @@ export const site = {
   cli: "aback-ui@latest",
   author: "Aback Group",
   repository: "https://github.com/devvrat-hans/aback-ui",
+  npm: "https://www.npmjs.com/package/@aback-ui/ui",
   /**
    * Whether aback-ui, @aback-ui/ui, and @aback-ui/tokens are on npm. While
    * false, install pages say the packages are not on npm yet, so nobody
@@ -164,17 +165,23 @@ export const footerNav: NavSection[] = [
     ],
   },
   {
-    title: "Resources",
+    title: "Tools",
     items: [
-      { title: "Blog", href: "/blog" },
-      { title: "Colors", href: "/colors" },
       { title: "Theme generator", href: "/themes" },
       { title: "Contrast checker", href: "/tools/contrast-checker" },
       { title: "Colour converter", href: "/tools/color-converter" },
       { title: "Tailwind colour generator", href: "/tools/tailwind-color-generator" },
+      { title: "Colors", href: "/colors" },
+    ],
+  },
+  {
+    title: "Resources",
+    items: [
+      { title: "Blog", href: "/blog" },
+      { title: "Changelog", href: "/docs/changelog" },
       { title: "FAQ", href: "/faq" },
       { title: "About", href: "/about" },
-      { title: "Changelog", href: "/docs/changelog" },
+      { title: "Built with Aback UI", href: "/built-with" },
     ],
   },
   {

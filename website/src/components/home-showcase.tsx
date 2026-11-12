@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   IconCircleCheck,
@@ -21,11 +21,25 @@ import {
   Badge,
   Button,
   Calendar,
+  Checkbox,
   CopyButton,
   Dropzone,
   Field,
   Input,
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemTitle,
   Label,
+  Listbox,
+  ListboxContent,
+  ListboxGroup,
+  ListboxItem,
+  ListboxLabel,
+  ListboxTrigger,
+  ListboxValue,
+  Meter,
   Rating,
   Separator,
   Stat,
@@ -35,6 +49,7 @@ import {
   Switch,
   ToggleGroup,
   ToggleGroupItem,
+  cn,
   formatCalendarDate,
   formatFileSize,
 } from "@aback-ui/ui";
@@ -50,7 +65,7 @@ function Card({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`mb-4 flex break-inside-avoid flex-col border border-border bg-card ${className ?? ""}`}>
+    <div className={cn("mb-4 flex break-inside-avoid flex-col border border-border bg-card", className)}>
       <div className="flex-1 p-5">{children}</div>
       <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 border-t border-border px-5 py-2.5 text-xs text-muted-foreground">
         {uses.map((item, index) => (
@@ -142,9 +157,9 @@ function SettingsCard() {
   );
 }
 
-function StatsCard() {
+function StatsCard({ className }: { className?: string }) {
   return (
-    <Card uses={[{ title: "Stat", slug: "stat" }]}>
+    <Card className={className} uses={[{ title: "Stat", slug: "stat" }]}>
       <div className="mb-4 flex items-center justify-between gap-3">
         <p className="text-base font-semibold text-foreground">This week</p>
         <Badge variant="muted">Example data</Badge>
@@ -175,7 +190,7 @@ function StatsCard() {
   );
 }
 
-function StepsCard() {
+function StepsCard({ className }: { className?: string }) {
   const [step, setStep] = useState(1);
   const titles = ["Create a workspace", "Invite your team", "Connect a domain"];
   const descriptions = [
@@ -185,7 +200,7 @@ function StepsCard() {
   ];
 
   return (
-    <Card uses={[{ title: "Steps", slug: "steps" }]}>
+    <Card className={className} uses={[{ title: "Steps", slug: "steps" }]}>
       <p className="mb-4 text-base font-semibold text-foreground">Get set up</p>
       <Steps aria-label="Workspace setup">
         {titles.map((title, index) => (
@@ -217,10 +232,10 @@ function StepsCard() {
   );
 }
 
-function RatingCard() {
+function RatingCard({ className }: { className?: string }) {
   const [value, setValue] = useState(0);
   return (
-    <Card
+    <Card className={className}
       uses={[
         { title: "Rating", slug: "rating" },
         { title: "Avatar", slug: "avatar" },
@@ -301,10 +316,10 @@ function PricingCard() {
   );
 }
 
-function CopyCard() {
+function CopyCard({ className }: { className?: string }) {
   const token = "abk_test_4f9c2e1a7b";
   return (
-    <Card uses={[{ title: "Copy Button", slug: "copy-button" }]}>
+    <Card className={className} uses={[{ title: "Copy Button", slug: "copy-button" }]}>
       <p className="text-base font-semibold text-foreground">API key</p>
       <p className="mt-1 text-sm text-muted-foreground">Example value, not a real credential.</p>
       <div className="mt-4 flex items-center gap-2">
@@ -380,9 +395,9 @@ function CalendarCard() {
   );
 }
 
-function StatusCard() {
+function StatusCard({ className }: { className?: string }) {
   return (
-    <Card
+    <Card className={className}
       uses={[
         { title: "Alert", slug: "alert" },
         { title: "Badge", slug: "badge" },
@@ -413,6 +428,197 @@ function StatusCard() {
   );
 }
 
+const regions = [
+  {
+    group: "Europe",
+    items: [
+      { value: "fra", label: "Frankfurt" },
+      { value: "lhr", label: "London" },
+    ],
+  },
+  {
+    group: "Americas",
+    items: [
+      { value: "iad", label: "Virginia" },
+      { value: "gru", label: "São Paulo" },
+    ],
+  },
+];
+
+/**
+ * The form beside the homepage headline. It is the shipped Field, Input,
+ * Listbox, Meter, Checkbox, and Button with working state. The save is a
+ * short timer, and the card says nothing is sent.
+ */
+export function HomeHeroPreview({ className }: { className?: string }) {
+  const [phase, setPhase] = useState<"idle" | "saving" | "saved">("idle");
+  const [protect, setProtect] = useState(true);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
+
+  function edited() {
+    setPhase((current) => (current === "saved" ? "idle" : current));
+  }
+
+  return (
+    <Card
+      className={cn("mb-0 shadow-sm", className)}
+      uses={[
+        { title: "Field", slug: "field" },
+        { title: "Listbox", slug: "listbox" },
+        { title: "Meter", slug: "meter" },
+        { title: "Checkbox", slug: "checkbox" },
+        { title: "Button", slug: "button" },
+      ]}
+    >
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (phase === "saving") return;
+          setPhase("saving");
+          timer.current = setTimeout(() => setPhase("saved"), 1400);
+        }}
+        onChange={edited}
+        className="flex flex-col gap-5"
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="text-base font-semibold text-foreground">New project</p>
+            <p className="text-sm text-muted-foreground">A working form. Nothing is sent.</p>
+          </div>
+          <Badge variant="muted">Example</Badge>
+        </div>
+
+        <Field label="Project name" required>
+          <Input name="project" defaultValue="Northwind docs" autoComplete="off" required />
+        </Field>
+
+        <Field label="Region" description="Where builds run.">
+          <Listbox name="region" defaultValue="fra" onValueChange={edited}>
+            <ListboxTrigger>
+              <ListboxValue />
+            </ListboxTrigger>
+            <ListboxContent>
+              {regions.map((region) => (
+                <ListboxGroup key={region.group}>
+                  <ListboxLabel>{region.group}</ListboxLabel>
+                  {region.items.map((item) => (
+                    <ListboxItem key={item.value} value={item.value}>
+                      {item.label}
+                    </ListboxItem>
+                  ))}
+                </ListboxGroup>
+              ))}
+            </ListboxContent>
+          </Listbox>
+        </Field>
+
+        <Meter label="Projects on this plan" value={7} max={10} valueLabel="7 of 10" />
+
+        <Field
+          orientation="horizontal"
+          label="Protect the main branch"
+          description="Require a review before each deploy."
+        >
+          <Checkbox
+            checked={protect}
+            onCheckedChange={(value) => {
+              setProtect(value === true);
+              edited();
+            }}
+          />
+        </Field>
+
+        <div className="flex items-center justify-end gap-3 border-t border-border pt-4">
+          <span role="status" className="mr-auto flex items-center gap-1.5 text-xs text-success-strong">
+            {phase === "saved" ? (
+              <>
+                <IconCircleCheck aria-hidden="true" className="size-4" />
+                Created in this preview
+              </>
+            ) : null}
+          </span>
+          <Button type="submit" loading={phase === "saving"} loadingText="Creating">
+            Create project
+          </Button>
+        </div>
+      </form>
+    </Card>
+  );
+}
+
+const quotas = [
+  { label: "Build minutes", value: 412, max: 500, valueLabel: "412 of 500", tone: "warning" },
+  { label: "Storage", value: 3.1, max: 10, valueLabel: "3.1 of 10 GB", tone: "brand" },
+  { label: "Seats", value: 4, max: 5, valueLabel: "4 of 5", tone: "neutral" },
+] as const;
+
+function UsageCard() {
+  return (
+    <Card uses={[{ title: "Meter", slug: "meter" }]}>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <p className="text-base font-semibold text-foreground">Plan usage</p>
+        <Badge variant="muted">Example data</Badge>
+      </div>
+      <div className="flex flex-col gap-4">
+        {quotas.map((quota) => (
+          <Meter key={quota.label} {...quota} />
+        ))}
+      </div>
+      <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+        Build minutes are above 80 percent, so that meter uses the warning tone.
+      </p>
+    </Card>
+  );
+}
+
+const members = [
+  { initials: "AR", name: "Amara Reyes", email: "amara@example.com", role: "Owner" },
+  { initials: "BK", name: "Bao Kim", email: "bao@example.com", role: "Editor" },
+  { initials: "CW", name: "Cleo Wright", email: "cleo@example.com", role: "Viewer" },
+];
+
+function TeamCard() {
+  return (
+    <Card
+      uses={[
+        { title: "Item", slug: "item" },
+        { title: "Avatar", slug: "avatar" },
+        { title: "Badge", slug: "badge" },
+      ]}
+    >
+      <p className="mb-3 text-base font-semibold text-foreground">Team</p>
+      <ul className="flex flex-col divide-y divide-border border-y border-border">
+        {members.map((member) => (
+          <Item key={member.email} align="center" className="py-2.5" asChild>
+            <li>
+              <Avatar size="sm">
+                <AvatarFallback>{member.initials}</AvatarFallback>
+              </Avatar>
+              <ItemContent className="gap-0">
+                <ItemTitle className="truncate">{member.name}</ItemTitle>
+                <ItemDescription className="truncate text-xs">{member.email}</ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Badge variant={member.role === "Owner" ? "brand" : "outline"}>{member.role}</Badge>
+              </ItemActions>
+            </li>
+          </Item>
+        ))}
+      </ul>
+    </Card>
+  );
+}
+
+// A phone shows six cards, so the page stays a reasonable length there.
+const wideOnly = "hidden md:flex";
+
 /**
  * The homepage component wall. Every card is the shipped component with
  * working state, and its footer links to the documentation it came from.
@@ -420,14 +626,17 @@ function StatusCard() {
 export function HomeShowcase() {
   return (
     <div className="columns-1 gap-4 md:columns-2 xl:columns-3">
+      {/* Ordered so the columns end near the same height at two and three columns. */}
       <SettingsCard />
-      <StatusCard />
-      <CopyCard />
-      <StatsCard />
-      <StepsCard />
+      <UsageCard />
+      <StatsCard className={wideOnly} />
+      <StepsCard className={wideOnly} />
+      <CopyCard className={wideOnly} />
       <CalendarCard />
+      <StatusCard className={wideOnly} />
       <PricingCard />
-      <RatingCard />
+      <TeamCard />
+      <RatingCard className={wideOnly} />
       <UploadCard />
     </div>
   );

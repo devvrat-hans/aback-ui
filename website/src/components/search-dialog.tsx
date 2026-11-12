@@ -15,6 +15,12 @@ import {
 } from "@/components/ui/command";
 import { Kbd } from "@/components/ui/kbd";
 import type { SearchItem } from "@/data/search";
+import { rankSearch } from "@/lib/search-rank";
+
+// Each item's keywords are its title, description, and group, in that order.
+function filterItem(_value: string, search: string, keywords: string[] = []) {
+  return rankSearch(search, keywords[0] ?? "", keywords[1], keywords[2]);
+}
 
 const GROUP_ICONS = {
   Blocks: IconLayoutGrid,
@@ -95,6 +101,7 @@ export function SearchDialog({ items }: { items: SearchItem[] }) {
         title="Search documentation"
         description="Search components, blocks, tokens, and guides."
         showCloseButton={false}
+        commandProps={{ filter: filterItem }}
         className="top-[10%] max-w-[660px] translate-y-0 sm:top-[14%]"
       >
         <CommandInput
@@ -131,7 +138,8 @@ export function SearchDialog({ items }: { items: SearchItem[] }) {
               {groupItems.map((item) => (
                 <CommandItem
                   key={item.href}
-                  value={`${item.title} ${item.description} ${item.group}`}
+                  value={item.href}
+                  keywords={[item.title, item.description, item.group]}
                   onSelect={() => navigate(item.href)}
                   className="gap-3 px-2.5 py-2.5"
                 >

@@ -55,7 +55,7 @@ export default function BlogPage() {
         </a>
       </header>
 
-      <ul className="mt-10 grid gap-px border border-border bg-border md:grid-cols-2">
+      <ul className="hairline-grid mt-10 grid md:grid-cols-2">
         {posts.map((post) => (
           <li key={post.slug} className="bg-background">
             <article className="group relative flex h-full flex-col gap-3 p-6 transition-colors duration-200 hover:bg-muted/40">

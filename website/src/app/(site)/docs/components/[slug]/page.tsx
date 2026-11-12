@@ -20,6 +20,7 @@ import {
   TabsTrigger,
 } from "@aback-ui/ui";
 
+import { ApiTable } from "@/components/api-table";
 import { Code } from "@/components/code";
 import { ComponentPreview } from "@/components/component-preview";
 import { DocsPage, DocsPageHeader, DocsPager, DocsSection } from "@/components/docs-page";
@@ -102,7 +103,7 @@ export default async function ComponentPage({ params }: PageProps) {
             ? `Used in ${usedIn.map((product) => productName(product)).join(", ")}`
             : "New shared pattern"}
         </Badge>
-        <span className="flex flex-wrap items-center gap-2 sm:ml-auto">
+        <span className="flex flex-wrap items-center gap-2 lg:ml-auto">
           <CopyButton
             value={componentMarkdown(item.name)}
             variant="outline"
@@ -228,34 +229,7 @@ export default async function ComponentPage({ params }: PageProps) {
           title="API reference"
           description={`Props and composition points for ${item.title}. Native element props pass through.`}
         >
-          <Table containerProps={{ "aria-label": `${item.title} API reference` }}>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Prop</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Default</TableHead>
-                <TableHead>Description</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {doc.api.map((row) => (
-                <TableRow key={row.prop}>
-                  <TableCell className="whitespace-nowrap align-top">
-                    <code className="font-mono text-xs font-semibold text-link">{row.prop}</code>
-                  </TableCell>
-                  <TableCell className="align-top">
-                    <code className="font-mono text-xs text-foreground">{row.type}</code>
-                  </TableCell>
-                  <TableCell className="whitespace-nowrap align-top font-mono text-xs text-muted-foreground">
-                    {row.defaultValue ?? "None"}
-                  </TableCell>
-                  <TableCell className="min-w-[16rem] align-top text-sm leading-relaxed text-muted-foreground">
-                    <InlineText text={row.description} />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <ApiTable rows={doc.api} label={`${item.title} API reference`} />
           <p className="text-xs leading-relaxed text-muted-foreground">
             Dependencies:{" "}
             <code className="bg-muted px-1 font-mono text-foreground">
@@ -289,14 +263,14 @@ export default async function ComponentPage({ params }: PageProps) {
               <Table containerProps={{ "aria-label": `${item.title} keyboard interactions` }}>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-48">Key</TableHead>
+                    <TableHead className="w-32 sm:w-48">Key</TableHead>
                     <TableHead>Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {doc.keyboard.map((row) => (
-                    <TableRow key={row.key}>
-                      <TableCell className="whitespace-nowrap">
+                  {doc.keyboard.map((row, rowIndex) => (
+                    <TableRow key={`${rowIndex}-${row.key}`}>
+                      <TableCell className="align-top sm:whitespace-nowrap">
                         <span className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
                           {row.key.split(/\s*([+/])\s*/).map((part, partIndex) =>
                             part === "+" ? (
@@ -311,7 +285,7 @@ export default async function ComponentPage({ params }: PageProps) {
                           )}
                         </span>
                       </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
+                      <TableCell className="align-top text-sm leading-relaxed text-muted-foreground">
                         <InlineText text={row.action} />
                       </TableCell>
                     </TableRow>
