@@ -1,0 +1,29 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "panel",
+  "type": "registry:ui",
+  "title": "Panel",
+  "description": "A bordered zone inside a card for options and results, with a quiet heading row.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Layout"
+  ],
+  "docs": "https://abackui.com/docs/components/panel",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/panel.tsx",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst panelVariants = {\n  muted: \"bg-muted/20\",\n  card: \"bg-card\",\n} as const;\n\nconst panelSizes = {\n  sm: \"gap-3 p-3\",\n  default: \"gap-4 p-4\",\n} as const;\n\nexport interface PanelProps extends Omit<React.ComponentProps<\"div\">, \"title\"> {\n  /** The heading of the zone. It also names the group for assistive technology. */\n  title?: React.ReactNode;\n  /** A 16px icon before the title. Decorative. */\n  icon?: React.ReactNode;\n  /** Sits at the end of the heading row: a copy button, a badge, a reset link. */\n  actions?: React.ReactNode;\n  /** One line under the heading. */\n  description?: React.ReactNode;\n  /** Heading level. A panel sits inside a card whose title is one level up. */\n  as?: \"h2\" | \"h3\" | \"h4\" | \"h5\";\n  /** `muted` for options and results. `card` for a sub-panel nested inside a muted one. */\n  variant?: keyof typeof panelVariants;\n  size?: keyof typeof panelSizes;\n}\n\n/**\n * A bordered zone inside a card: the options of a tool, a result group, a\n * settings cluster. Use it instead of nesting one Card in another; a panel has\n * no shadow and a quieter heading, so the card stays the surface.\n */\nfunction Panel({\n  title,\n  icon,\n  actions,\n  description,\n  as: Heading = \"h3\",\n  variant = \"muted\",\n  size = \"default\",\n  className,\n  children,\n  \"aria-labelledby\": ariaLabelledBy,\n  ...props\n}: PanelProps) {\n  const titleId = React.useId();\n  const named = Boolean(title) || Boolean(ariaLabelledBy) || Boolean(props[\"aria-label\"]);\n\n  return (\n    <div\n      data-slot=\"panel\"\n      data-variant={variant}\n      role={named ? \"group\" : undefined}\n      aria-labelledby={ariaLabelledBy ?? (title && !props[\"aria-label\"] ? titleId : undefined)}\n      className={cn(\n        \"flex min-w-0 flex-col border border-border\",\n        panelVariants[variant],\n        panelSizes[size],\n        className,\n      )}\n      {...props}\n    >\n      {title || actions || description ? (\n        <div data-slot=\"panel-header\" className=\"flex flex-col gap-1\">\n          <div className=\"flex flex-wrap items-center justify-between gap-2\">\n            {title ? (\n              <Heading\n                id={titleId}\n                data-slot=\"panel-title\"\n                className=\"flex min-w-0 items-center gap-1.5 text-sm font-semibold text-muted-foreground [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0\"\n              >\n                {icon ? (\n                  <span aria-hidden=\"true\" className=\"inline-flex\">\n                    {icon}\n                  </span>\n                ) : null}\n                {title}\n              </Heading>\n            ) : (\n              <span />\n            )}\n            {actions ? (\n              <div data-slot=\"panel-actions\" className=\"flex flex-wrap items-center gap-2\">\n                {actions}\n              </div>\n            ) : null}\n          </div>\n          {description ? (\n            <p className=\"text-xs leading-relaxed text-muted-foreground\">{description}</p>\n          ) : null}\n        </div>\n      ) : null}\n      {children}\n    </div>\n  );\n}\n\nexport { Panel };\n",
+      "type": "registry:ui",
+      "target": "components/ui/panel.tsx"
+    }
+  ]
+}

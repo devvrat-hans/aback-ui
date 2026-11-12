@@ -45,6 +45,21 @@ describe("Tailwind v4 with the packed packages", () => {
     expect(css).toContain(".dark");
   });
 
+  it("keeps a keyboard focus outline on plain elements", async () => {
+    const css = await compile(documented);
+    // Components replace this with their own ring. A plain link or button has
+    // nothing else, so the theme must not strip the outline from it.
+    expect(css).toContain("outline: 2px solid var(--focus-ring)");
+    expect(css).not.toContain(":-webkit-any(");
+  });
+
+  it("compiles Prose's element rules with no specificity", async () => {
+    const css = await compile(documented);
+    // `:where(...)` is what lets a class on a nested element win over Prose.
+    expect(css).toMatch(/:where\(\.[^{]*h2\)\s*\{[^}]*font-size/);
+    expect(css).toMatch(/:where\(\.[^{]*a:focus-visible\)\s*\{[^}]*outline-color: var\(--focus-ring\)/);
+  });
+
   it("misses component classes without the @source line", async () => {
     const css = await compile(`@import "tailwindcss";
 @import "@aback-ui/tokens/tokens.css";`);

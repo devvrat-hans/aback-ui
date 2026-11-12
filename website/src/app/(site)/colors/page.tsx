@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
-import { Breadcrumbs } from "@aback-ui/ui";
+import { Breadcrumbs, Prose } from "@aback-ui/ui";
 
 import { JsonLd } from "@/components/json-ld";
-import { A, Prose } from "@/components/prose";
+import { A } from "@/components/prose";
 import { PaletteSwatches, type SwatchGroup } from "@/components/tools/palette-swatches";
 import { readPalette } from "@/lib/palette";
 import { routeGraph } from "@/lib/schema";
@@ -91,7 +91,7 @@ export default function ColorsPage() {
         <PaletteSwatches groups={groups} />
       </div>
 
-      <Prose className="mt-20">
+      <Prose size="lg" className="mt-20">
         <h2 id="use-roles">Use the role, not the swatch</h2>
         <p>
           In components, reach for the semantic role, such as <code>text-link</code> or{" "}

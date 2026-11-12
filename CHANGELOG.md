@@ -4,10 +4,18 @@ All notable changes are recorded here. The project is pre-1.0; minor versions ma
 
 ## Unreleased
 
-Website only; no package changes.
+Five new components and two component upgrades, chosen by reading how Aback Tools, Aback Launch, and Aback Audit build their interfaces and what each one still writes by hand. Every change is additive: no prop, export, token, or registry name was removed or renamed. See `docs/provenance.md` for the source patterns.
 
 ### Added
 
+- `Meter`, a measurement in a known range (a score, a quota, a password strength) with a label, a visible value, five tones, and three sizes. It renders `role="meter"`, reads `valueLabel` instead of a bare percentage, and needs no client JavaScript. Use `Progress` for a task that is running.
+- `Item`, a row of media, title, description, and actions with `ItemMedia`, `ItemContent`, `ItemTitle`, `ItemDescription`, and `ItemActions`. It covers feature lists, link cards, and file rows, and only shows hover and focus styles when it renders as a link or a button.
+- `Panel`, a bordered zone inside a card for options and results, with a title, icon, description, and actions. A titled panel is a named group, not a landmark.
+- `Prose`, typography for long-form content and HTML rendered from Markdown, in a 14px and a 17px size. Every rule has zero specificity, so a class on an element inside it wins without `!important`.
+- `Listbox`, a styled single-select on the Radix Select primitive with groups, labels, separators, typeahead, and a hidden native select for form submits. The native `Select` is unchanged.
+- `Button` gained `loading` and `loadingText`. A loading button shows a spinner in place of its icon, sets `aria-busy`, ignores clicks and form submits, and stays focusable.
+- `Field` now wires its control. Give it one control and it sets `id`, `aria-describedby`, `aria-invalid`, and `aria-required`; pass a function to reach a wrapped control. It also gained `orientation="horizontal"` for a checkbox or switch beside its label, and `action` for a control at the end of the label row. `htmlFor` is now optional.
+- Each of the above has behaviour tests, an axe check, a live example, API and accessibility notes, and a registry item. The consumer test renders them from the packed tarball.
 - Installation guides for Next.js and Vite, each verified against a freshly created app.
 - `/themes`, a theme generator that builds a contrast-checked Aback theme from one brand colour and previews it on real components.
 - `/colors`, every theme colour as HEX, RGB, HSL, and OKLCH, read from the tokens package.
@@ -15,8 +23,16 @@ Website only; no package changes.
 - A blog with seven guides and an RSS feed, an FAQ page, and an About page.
 - Structured data on every page, a generated social card per page, and sitemap dates taken from git history. See `docs/seo.md`.
 
+### Changed
+
+- The `button` registry item now depends on `@tabler/icons-react`, for the loading spinner. The npm package already depended on it.
+- When `Field` receives `htmlFor` and a control with the same `id`, it now adds the description and error links the control is missing. A control with a different `id` is left untouched, as before.
+- The documentation site's blog, About, colour, and tool pages use the library's `Prose` instead of a private copy.
+
 ### Fixed
 
+- The theme removed the keyboard focus outline from every plain link, button, input, and summary in Chrome and Safari and put nothing back, so an element without a ring utility had no focus indicator. Every focusable element now gets a 2px outline in the focus-ring colour, and components still replace it with their own ring. Elements with `tabindex="-1"` stay quiet. Projects that copied the theme can see the change with `aback-ui diff theme` and take it with `aback-ui add theme --overwrite`.
+- The Field example had a hint that was never linked to its input. Field now makes that link itself.
 - Guide pages shared the home page's `og:url` and social title, and every page shared its Twitter title.
 - The Dialog accessibility notes said Radix sets `aria-modal`; it hides the rest of the page with `aria-hidden` instead.
 - The home page badge showed v0.1; it now reads the package version.

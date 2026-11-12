@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { IconArrowRight } from "@tabler/icons-react";
 
-import { Badge, Breadcrumbs } from "@aback-ui/ui";
+import { Badge, Breadcrumbs, Prose } from "@aback-ui/ui";
 
 import { JsonLd } from "@/components/json-ld";
-import { Prose } from "@/components/prose";
 import { getRoute } from "@/data/routes";
 import { tools } from "@/data/tools";
 import { faqSchema, routeGraph, webApplicationSchema } from "@/lib/schema";
@@ -57,7 +56,7 @@ export function ToolPage({
 
       <div className="mt-20 grid gap-16 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <div className="min-w-0">
-          <Prose>{children}</Prose>
+          <Prose size="lg">{children}</Prose>
 
           <section aria-labelledby="faq" className="mt-16 max-w-[70ch]">
             <h2 id="faq" className="text-2xl font-semibold tracking-tight text-foreground">

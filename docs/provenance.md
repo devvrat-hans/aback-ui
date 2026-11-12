@@ -17,7 +17,7 @@ No Aback product's API clients, internal endpoints, tenant or account assumption
 | Dependency | License | Use |
 | --- | --- | --- |
 | React | MIT | Component runtime |
-| Radix UI (`radix-ui`) | MIT | Accessible dialog, menu, tooltip, tabs, accordion, checkbox, switch, label, separator, slot primitives |
+| Radix UI (`radix-ui`) | MIT | Accessible dialog, menu, select, tooltip, tabs, accordion, checkbox, switch, label, separator, slot primitives |
 | Tabler Icons | MIT | Interface icons |
 | Tailwind CSS | MIT | Styling primitives |
 | class-variance-authority | Apache-2.0 | Variant APIs |
@@ -66,6 +66,23 @@ Reviewed at Aback Tools `ba7a6e621`, Aback Launch `837a71a`, and Aback Group `df
 | Not found | Tools 404 page, Launch `common/NotFoundContent.tsx` | Product links |
 | Contact form | Launch `contact/ContactForm.tsx` | Server action, rate limiting |
 | Article layout | Tools `blog/BlogPostLayout.tsx`, `guides/GuidePostLayout.tsx`; Launch `blog/BlogPostView.tsx` | Ad slots, CMS loading, related posts |
+
+### November 2026: gaps found in Aback Tools, Aback Launch, and Aback Audit
+
+Reviewed at Aback Tools `f1e8241af`, Aback Launch `da02873`, and Aback Audit `a9ac6f5` (all read on 2026-11-11). The three repositories carry no license file and are owned by Aback Group. Nothing below was copied: each item was **independently reimplemented** from the pattern for a general API, at the owner's request. Aback Audit already imports the published packages, so its source was read for what it had to write by hand.
+
+| Aback UI item | Source pattern | Excluded from the source |
+| --- | --- | --- |
+| Button `loading`, `loadingText` | Tools `common/ActionButton.tsx` (DESIGN.md 11.1); Launch `contact/components/ContactSubmitButton.tsx`; Audit's inline spinner buttons | i18n hooks, agent markers (`data-agent-action`), the `icon` prop (the spinner replaces the button's own icon instead) |
+| Field wiring, `orientation`, `action` | Tools `common/LabeledInput.tsx`, `LabeledNumberInput.tsx`, `LabeledSelect.tsx`, `CheckboxGroup.tsx`, `TextOutputBox.tsx`; Launch `contact/components/FormFieldWrapper.tsx`, `ui/field-error.tsx` | Agent field keys, the value and onChange wrappers (the control keeps its own props), focus helpers |
+| Meter | Tools' hand-written score and usage bars (844 `role="progressbar"` elements used as readings); Launch `karma/KarmaSummary.tsx`; Audit `report/ReportPage.tsx` score bars | Score thresholds and rating words, which stay in the product |
+| Item | Tools `common/FeatureItem.tsx`, `UseCaseItem.tsx`, `InfoBlock.tsx` (icon mode), `RelatedToolCard.tsx`, `FileInfo.tsx` (DESIGN.md 9.3, 11.7); Audit's link cards | The icon-prop resolver, bold-marker text parsing, tool registry lookups |
+| Panel | Tools `common/Panel.tsx` (DESIGN.md 11.6 options panel) | Tool text provider |
+| Prose | Aback UI website `components/prose.tsx` (original to this repository, now removed in favour of the component); Audit `web/styles/globals.css` `.prose-aback`; DESIGN.md 11.8 | The `display: block` table rule from Audit, which can drop table semantics in some browsers |
+| Listbox | Launch `ui/select.tsx`, a Radix Select wrapper; Audit `scripts/lib/select.ts`, a hand-written listbox | Launch's rounded and item-aligned defaults |
+| Theme focus outline | Audit `web/styles/globals.css`, which restores the outline the theme removed | None |
+
+Listbox is built on the Radix UI Select primitive from the `radix-ui` package already listed above (MIT). No dependency was added.
 
 ### Brand assets
 

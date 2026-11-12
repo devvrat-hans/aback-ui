@@ -1,0 +1,33 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "item",
+  "type": "registry:ui",
+  "title": "Item",
+  "description": "A row of media, title, description, and actions for feature lists, link cards, and file rows.",
+  "dependencies": [
+    "class-variance-authority",
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Data Display"
+  ],
+  "docs": "https://abackui.com/docs/components/item",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/item.tsx",
+      "content": "import * as React from \"react\";\nimport { Slot } from \"radix-ui\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst itemVariants = cva(\n  [\n    \"group/item flex min-w-0 text-left outline-none\",\n    // Only a link or a button gets hover and focus treatment, so a static row\n    // never looks clickable.\n    \"[&:is(a,button)]:transition-colors [&:is(a,button)]:duration-200\",\n    \"[&:is(a,button)]:focus-visible:ring-2 [&:is(a,button)]:focus-visible:ring-focus-ring\",\n    \"[&:is(a,button)]:focus-visible:ring-offset-2 [&:is(a,button)]:focus-visible:ring-offset-background\",\n  ],\n  {\n    variants: {\n      variant: {\n        default: \"[&:is(a,button)]:hover:bg-muted/50\",\n        outline: [\n          \"border border-border bg-card\",\n          \"[&:is(a,button)]:hover:border-primary-300 [&:is(a,button)]:hover:bg-muted/50\",\n          \"dark:[&:is(a,button)]:hover:border-primary-700\",\n        ],\n        muted: \"border border-border bg-muted/30 [&:is(a,button)]:hover:bg-muted/60\",\n      },\n      size: {\n        sm: \"gap-2.5\",\n        default: \"gap-3\",\n      },\n      align: {\n        start: \"items-start\",\n        center: \"items-center\",\n      },\n    },\n    compoundVariants: [\n      { variant: \"outline\", size: \"default\", className: \"p-4\" },\n      { variant: \"outline\", size: \"sm\", className: \"p-3\" },\n      { variant: \"muted\", size: \"default\", className: \"p-4\" },\n      { variant: \"muted\", size: \"sm\", className: \"p-3\" },\n    ],\n    defaultVariants: {\n      variant: \"default\",\n      size: \"default\",\n      align: \"start\",\n    },\n  },\n);\n\nexport interface ItemProps\n  extends React.ComponentProps<\"div\">,\n    VariantProps<typeof itemVariants> {\n  /** Render the child instead of a div: a link, a button, or a list item. */\n  asChild?: boolean;\n}\n\n/**\n * A row of media, text, and actions: a feature in a list, a link card, a file\n * in a queue, a setting. Compose it from ItemMedia, ItemContent, ItemTitle,\n * ItemDescription, and ItemActions.\n */\nfunction Item({\n  variant = \"default\",\n  size = \"default\",\n  align = \"start\",\n  asChild = false,\n  className,\n  ...props\n}: ItemProps) {\n  const Comp = asChild ? Slot.Root : \"div\";\n  return (\n    <Comp\n      data-slot=\"item\"\n      data-variant={variant}\n      data-size={size}\n      className={cn(itemVariants({ variant, size, align }), className)}\n      {...props}\n    />\n  );\n}\n\nconst itemMediaVariants = cva(\"flex shrink-0 items-center justify-center\", {\n  variants: {\n    variant: {\n      /** The 40px brand chip with a 20px icon. */\n      chip: \"size-10 bg-brand-chip text-brand-icon [&_svg:not([class*='size-'])]:size-5\",\n      /** A bare brand-coloured icon, one text line tall so it sits on the title. */\n      icon: \"h-6 text-brand-icon [&_svg:not([class*='size-'])]:size-5\",\n      /** A square thumbnail, logo, or avatar. */\n      image: \"size-10 overflow-hidden bg-muted [&_img]:size-full [&_img]:object-cover\",\n    },\n  },\n  defaultVariants: {\n    variant: \"chip\",\n  },\n});\n\nexport interface ItemMediaProps\n  extends React.ComponentProps<\"div\">,\n    VariantProps<typeof itemMediaVariants> {}\n\n/**\n * The leading visual. An icon here is decoration next to the title, so give it\n * `aria-hidden`. An image that carries meaning keeps its `alt` text.\n */\nfunction ItemMedia({ variant = \"chip\", className, ...props }: ItemMediaProps) {\n  return (\n    <div\n      data-slot=\"item-media\"\n      data-variant={variant}\n      className={cn(itemMediaVariants({ variant }), className)}\n      {...props}\n    />\n  );\n}\n\nfunction ItemContent({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"item-content\"\n      className={cn(\"flex min-w-0 flex-1 flex-col gap-1\", className)}\n      {...props}\n    />\n  );\n}\n\nexport interface ItemTitleProps extends React.ComponentProps<\"div\"> {\n  /** The element to render. Use a heading when the item introduces a section of the page. */\n  as?: \"div\" | \"p\" | \"span\" | \"h2\" | \"h3\" | \"h4\" | \"h5\";\n}\n\nfunction ItemTitle({ as: Comp = \"div\", className, ...props }: ItemTitleProps) {\n  return (\n    <Comp\n      data-slot=\"item-title\"\n      className={cn(\n        \"text-sm font-medium leading-6 text-foreground\",\n        // Inside a link or button the title picks up the link colour on hover.\n        \"group-[:is(a,button)]/item:transition-colors group-[:is(a,button)]/item:duration-200\",\n        \"group-[:is(a,button):hover]/item:text-link\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction ItemDescription({ className, ...props }: React.ComponentProps<\"p\">) {\n  return (\n    <p\n      data-slot=\"item-description\"\n      className={cn(\"text-sm leading-relaxed text-muted-foreground\", className)}\n      {...props}\n    />\n  );\n}\n\n/** Trailing controls or a chevron. Stays on the first line next to the title. */\nfunction ItemActions({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"item-actions\"\n      className={cn(\n        \"flex shrink-0 items-center gap-2 self-center text-muted-foreground [&_svg:not([class*='size-'])]:size-4\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport {\n  Item,\n  ItemActions,\n  ItemContent,\n  ItemDescription,\n  ItemMedia,\n  ItemTitle,\n  itemMediaVariants,\n  itemVariants,\n};\n",
+      "type": "registry:ui",
+      "target": "components/ui/item.tsx"
+    }
+  ]
+}

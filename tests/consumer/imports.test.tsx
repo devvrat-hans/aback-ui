@@ -25,7 +25,20 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+  Listbox,
+  ListboxContent,
+  ListboxItem,
+  ListboxTrigger,
+  ListboxValue,
+  Meter,
   PageHeader,
+  Panel,
+  Prose,
   Rating,
   RelativeTime,
   Spinner,
@@ -154,5 +167,67 @@ describe("packed @aback-ui/ui", () => {
     expect(screen.getByRole("textbox", { name: "Price" })).toBeInTheDocument();
     expect(screen.getByText("1 hour ago")).toBeInTheDocument();
     expect(formatRelativeTime(0, 86_400_000, "en")).toBe("yesterday");
+  });
+
+  it("wires a Field to its control with no ids in the calling code", () => {
+    render(
+      <Field label="Workspace" description="Visible to your team." error="Enter a name.">
+        <Input />
+      </Field>,
+    );
+
+    const input = screen.getByRole("textbox", { name: "Workspace" });
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAccessibleDescription("Visible to your team. Enter a name.");
+  });
+
+  it("keeps a loading Button focusable and busy", () => {
+    render(
+      <Button loading loadingText="Saving">
+        Save
+      </Button>,
+    );
+
+    const button = screen.getByRole("button", { name: "Saving" });
+    expect(button).toHaveAttribute("aria-busy", "true");
+    expect(button).not.toBeDisabled();
+  });
+
+  it("renders Meter, Item, Panel, Prose, and Listbox from the published entry point", () => {
+    render(
+      <div>
+        <Meter label="Performance" value={82} tone="warning" valueLabel="82 / 100" />
+        <Item variant="outline">
+          <ItemMedia>
+            <svg aria-hidden="true" />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle as="h3">Private by default</ItemTitle>
+            <ItemDescription>Files stay on your device.</ItemDescription>
+          </ItemContent>
+        </Item>
+        <Panel title="Options">
+          <p>Quality</p>
+        </Panel>
+        <Prose>
+          <h2>Guide</h2>
+          <p>Body text.</p>
+        </Prose>
+        <Listbox aria-label="Plan" defaultValue="starter">
+          <ListboxTrigger>
+            <ListboxValue />
+          </ListboxTrigger>
+          <ListboxContent>
+            <ListboxItem value="starter">Starter</ListboxItem>
+          </ListboxContent>
+        </Listbox>
+      </div>,
+    );
+
+    expect(screen.getByRole("meter", { name: "Performance" })).toHaveAttribute("aria-valuetext", "82 / 100");
+    expect(screen.getByRole("heading", { level: 3, name: "Private by default" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Options" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Guide" })).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Plan" })).toHaveTextContent("Starter");
   });
 });
