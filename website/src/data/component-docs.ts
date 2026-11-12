@@ -368,10 +368,16 @@ export const componentDocs: Record<string, ComponentDoc> = {
           "Renders the palette in a modal Dialog. The dialog title and description are visually hidden but announced.",
       },
       {
-        prop: "CommandItem value / onSelect",
-        type: "string / (value: string) => void",
+        prop: "CommandDialog commandProps",
+        type: "CommandProps",
         description:
-          "The value used for filtering and the callback that runs on click or Enter.",
+          "Props for the Command inside the dialog, such as `filter` for your own ranking, `shouldFilter` for server results, or `loop`.",
+      },
+      {
+        prop: "CommandItem value / keywords / onSelect",
+        type: "string / string[] / (value: string) => void",
+        description:
+          "The value and extra keywords used for filtering, and the callback that runs on click or Enter.",
       },
       {
         prop: "CommandShortcut",
