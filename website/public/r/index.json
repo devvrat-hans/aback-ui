@@ -24,12 +24,13 @@
       "name": "button",
       "type": "registry:ui",
       "title": "Button",
-      "description": "The primary action, with ink, brand, outline, ghost, and destructive variants.",
+      "description": "The primary action, with ink, brand, outline, ghost, and destructive variants and a loading state.",
       "categories": [
         "Foundation"
       ],
       "docs": "https://abackui.com/docs/components/button",
       "dependencies": [
+        "@tabler/icons-react",
         "class-variance-authority",
         "radix-ui"
       ],
@@ -109,7 +110,7 @@
       "name": "field",
       "type": "registry:ui",
       "title": "Field",
-      "description": "A form field frame that wires labels, help text, and errors.",
+      "description": "A label, hint, and error for one control, wired to it automatically, stacked or side by side.",
       "categories": [
         "Forms"
       ],
@@ -122,7 +123,10 @@
       ],
       "meta": {
         "status": "stable",
-        "usedIn": []
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
       }
     },
     {
@@ -1332,6 +1336,117 @@
       ],
       "meta": {
         "status": "beta"
+      }
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "A row of media, title, description, and actions for feature lists, link cards, and file rows.",
+      "categories": [
+        "Data Display"
+      ],
+      "docs": "https://abackui.com/docs/components/item",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "beta",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      }
+    },
+    {
+      "name": "meter",
+      "type": "registry:ui",
+      "title": "Meter",
+      "description": "A measurement in a known range, such as a score or a quota, with a label, value, and tone.",
+      "categories": [
+        "Data Display"
+      ],
+      "docs": "https://abackui.com/docs/components/meter",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "beta",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      }
+    },
+    {
+      "name": "panel",
+      "type": "registry:ui",
+      "title": "Panel",
+      "description": "A bordered zone inside a card for options and results, with a quiet heading row.",
+      "categories": [
+        "Layout"
+      ],
+      "docs": "https://abackui.com/docs/components/panel",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "beta",
+        "usedIn": [
+          "aback-tools"
+        ]
+      }
+    },
+    {
+      "name": "prose",
+      "type": "registry:ui",
+      "title": "Prose",
+      "description": "Typography for long-form content and HTML rendered from Markdown, styled from the theme.",
+      "categories": [
+        "Foundation"
+      ],
+      "docs": "https://abackui.com/docs/components/prose",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "beta",
+        "usedIn": [
+          "aback-tools",
+          "aback-launch"
+        ]
+      }
+    },
+    {
+      "name": "listbox",
+      "type": "registry:ui",
+      "title": "Listbox",
+      "description": "A styled single-select with groups, keyboard navigation, and native form support.",
+      "categories": [
+        "Forms"
+      ],
+      "docs": "https://abackui.com/docs/components/listbox",
+      "dependencies": [
+        "@tabler/icons-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "https://abackui.com/r/utils.json"
+      ],
+      "meta": {
+        "status": "beta",
+        "usedIn": [
+          "aback-launch"
+        ]
       }
     },
     {

@@ -1,6 +1,6 @@
 # Component status
 
-Last reviewed: October 2026.
+Last reviewed: November 2026.
 
 | Component | Layer | Status | Used in |
 | --- | --- | --- | --- |
@@ -25,17 +25,22 @@ Last reviewed: October 2026.
 | Dropdown Menu | Overlay | Stable | Aback Launch, Aback Group |
 | Dropzone | Forms | Beta | Aback Tools |
 | Empty State | Application | Stable | Aback Tools, Aback Launch |
-| Field | Forms | Stable | New shared pattern |
+| Field | Forms | Stable | Aback Tools, Aback Launch |
 | Hover Card | Overlay | Beta | New shared pattern |
 | Input | Forms | Stable | Aback Tools, Aback Launch |
 | Input Group | Forms | Beta | Aback Tools, Aback Launch |
+| Item | Data display | Beta | Aback Tools, Aback Launch |
 | Kbd | Foundation | Stable | Aback Tools, Aback Launch |
 | Label | Forms | Stable | Aback Tools, Aback Launch |
 | Layout | Layout | Beta | Aback Tools, Aback Launch |
+| Listbox | Forms | Beta | Aback Launch |
+| Meter | Data display | Beta | Aback Tools, Aback Launch |
 | Page Header | Application | Stable | Aback Tools, Aback Launch |
 | Pagination | Navigation | Beta | New shared pattern |
+| Panel | Layout | Beta | Aback Tools |
 | Popover | Overlay | Beta | New shared pattern |
 | Progress | Feedback | Beta | New shared pattern |
+| Prose | Foundation | Beta | Aback Tools, Aback Launch |
 | Radio Group | Forms | Beta | New shared pattern |
 | Rating | Forms | Beta | Aback Tools, Aback Launch |
 | Reading Progress | Feedback | Beta | Aback Tools, Aback Launch |
@@ -95,6 +100,10 @@ Stable does not mean "audited for every assistive technology." See [`accessibili
 
 ## Not yet shipped
 
-No placeholder routes or fake catalogue entries are published. Candidate work that has not shipped is tracked in the changelog and repository issues rather than listed as a component: form helpers for schema-validated forms, a data-table block with column visibility, a toast-free page-level error pattern, and primitives no Aback product uses yet (context menu, menubar, navigation menu, resizable panels, carousel, chart, input OTP).
+No placeholder routes or fake catalogue entries are published. Candidate work that has not shipped is tracked in the changelog and repository issues rather than listed as a component: form helpers for schema-validated forms, a data-table block with column visibility, a toast-free page-level error pattern, and primitives no Aback product uses yet (context menu, menubar, navigation menu, resizable panels, carousel, input OTP).
+
+Charts are the largest pattern the products use that Aback UI does not ship. Aback Launch has hand-written bar, line, donut, and horizontal bar charts in its admin area, and Aback Audit draws its own line chart and defines five chart colours locally. A chart set needs chart colour tokens in the theme first, so it is a design decision for the owner rather than a drop-in component.
 
 "Used in" means the pattern exists in that product's source today. It does not mean the product imports Aback UI yet; migrating the products onto these components is the next integration step.
+
+Aback Audit is the first product that imports the published packages (`@aback-ui/ui` and `@aback-ui/tokens` 0.2.2). In November 2026 it imported only Card, Breadcrumbs, and Badge and wrote the rest as class strings, including buttons, alerts, tables, and score bars that the library already covers or now covers with Meter. It is not listed in the "Used in" column or on the Built with page yet.

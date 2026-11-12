@@ -1,0 +1,32 @@
+{
+  "$schema": "https://abackui.com/schema/registry-item.json",
+  "name": "prose",
+  "type": "registry:ui",
+  "title": "Prose",
+  "description": "Typography for long-form content and HTML rendered from Markdown, styled from the theme.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "https://abackui.com/r/utils.json"
+  ],
+  "categories": [
+    "Foundation"
+  ],
+  "docs": "https://abackui.com/docs/components/prose",
+  "meta": {
+    "status": "beta",
+    "usedIn": [
+      "aback-tools",
+      "aback-launch"
+    ]
+  },
+  "files": [
+    {
+      "path": "components/ui/prose.tsx",
+      "content": "import * as React from \"react\";\nimport { Slot } from \"radix-ui\";\n\nimport { cn } from \"@/lib/utils\";\n\n/*\n * Every element rule is written as `[:where(& el)]`, which compiles to\n * `:where(.class el)` and so carries no specificity. Any class on an element\n * inside the prose, including the classes of another component, wins without\n * `!important`. The few spacing rules that must beat the flow rule use\n * `[:where(&) el]` instead, which adds exactly one element of specificity.\n */\nconst proseElements = [\n  // Headings. scroll-mt keeps an anchored heading clear of a sticky header.\n  \"[:where(&)_h2]:mt-10 [:where(&_h2)]:scroll-mt-24 [:where(&_h2)]:text-2xl [:where(&_h2)]:font-bold [:where(&_h2)]:tracking-tight [:where(&_h2)]:text-foreground [:where(&_h2)]:text-balance\",\n  \"[:where(&)_h3]:mt-7 [:where(&_h3)]:scroll-mt-24 [:where(&_h3)]:text-lg [:where(&_h3)]:font-semibold [:where(&_h3)]:text-foreground\",\n  \"[:where(&)_h4]:mt-6 [:where(&_h4)]:scroll-mt-24 [:where(&_h4)]:text-base [:where(&_h4)]:font-semibold [:where(&_h4)]:text-foreground\",\n  // Inline text.\n  \"[:where(&_:is(strong,b))]:font-semibold [:where(&_:is(strong,b))]:text-foreground\",\n  // Underlined at rest: the link colour alone is too close to body text to tell them apart.\n  \"[:where(&_a)]:font-medium [:where(&_a)]:text-link [:where(&_a)]:underline [:where(&_a)]:underline-offset-4 [:where(&_a:hover)]:text-link-hover\",\n  \"[:where(&_a:focus-visible)]:outline-2 [:where(&_a:focus-visible)]:outline-offset-2 [:where(&_a:focus-visible)]:outline-focus-ring\",\n  \"[:where(&_:not(pre)>code)]:bg-muted [:where(&_:not(pre)>code)]:px-1 [:where(&_:not(pre)>code)]:font-mono [:where(&_:not(pre)>code)]:text-[0.9em] [:where(&_:not(pre)>code)]:text-foreground\",\n  // Lists.\n  \"[:where(&_ul)]:list-disc [:where(&_ol)]:list-decimal [:where(&_:is(ul,ol))]:pl-6\",\n  \"[:where(&_li+li)]:mt-1.5 [:where(&_li)]:pl-1 [:where(&_li)]:marker:text-muted-foreground/60\",\n  \"[:where(&)_li>:where(:first-child)]:mt-0 [:where(&)_li>:where(ul,ol)]:mt-1.5\",\n  // Quotes, code, rules, media.\n  \"[:where(&_blockquote)]:border-l-4 [:where(&_blockquote)]:border-primary-300 [:where(&_blockquote)]:py-1 [:where(&_blockquote)]:pl-4 [:where(&_blockquote)]:italic dark:[&_blockquote]:border-primary-500\",\n  \"[:where(&_pre)]:overflow-x-auto [:where(&_pre)]:border [:where(&_pre)]:border-border [:where(&_pre)]:bg-muted/40 [:where(&_pre)]:p-4 [:where(&_pre)]:font-mono [:where(&_pre)]:text-[13px] [:where(&_pre)]:leading-relaxed [:where(&_pre)]:text-foreground\",\n  \"[:where(&)_hr]:my-8 [:where(&_hr)]:border-border\",\n  \"[:where(&_img)]:h-auto [:where(&_img)]:max-w-full\",\n  \"[:where(&_figcaption)]:mt-2 [:where(&_figcaption)]:text-center [:where(&_figcaption)]:text-xs [:where(&_figcaption)]:text-muted-foreground\",\n  // Tables stay real tables, so their headers still label their cells.\n  \"[:where(&_table)]:w-full [:where(&_table)]:border-collapse [:where(&_table)]:border [:where(&_table)]:border-border [:where(&_table)]:text-left [:where(&_table)]:text-[13px] [:where(&_table)]:leading-normal\",\n  \"[:where(&_thead)]:bg-muted/60\",\n  \"[:where(&_th)]:px-4 [:where(&_th)]:py-3 [:where(&_th)]:align-bottom [:where(&_th)]:text-xs [:where(&_th)]:font-semibold [:where(&_th)]:uppercase [:where(&_th)]:tracking-wide [:where(&_th)]:text-foreground\",\n  \"[:where(&_td)]:border-t [:where(&_td)]:border-border [:where(&_td)]:px-4 [:where(&_td)]:py-2.5 [:where(&_td)]:align-top\",\n  \"[:where(&_td:first-child)]:font-medium [:where(&_td:first-child)]:text-foreground\",\n  \"[:where(&_tbody_tr:nth-child(even))]:bg-muted/20\",\n  // The first and last child sit flush with the container.\n  \"[&>:where(:first-child)]:mt-0 [&>:where(:last-child)]:mb-0\",\n].join(\" \");\n\nconst proseSizes = {\n  /** Product articles, guides, and legal pages: 14px muted body text. */\n  default: [\n    \"max-w-[72ch] text-sm leading-relaxed text-muted-foreground\",\n    \"[:where(&>*+*)]:mt-4 [:where(&_:is(p,ul,ol,pre,blockquote,table,figure))]:mt-4\",\n  ].join(\" \"),\n  /** Long reading, such as a blog post: 17px body text in near-ink. */\n  lg: [\n    \"max-w-[70ch] text-[17px] leading-[1.75] text-foreground/90\",\n    \"[:where(&>*+*)]:mt-5 [:where(&_:is(p,ul,ol,pre,blockquote,table,figure))]:mt-5\",\n  ].join(\" \"),\n} as const;\n\nexport interface ProseProps extends React.ComponentProps<\"div\"> {\n  size?: keyof typeof proseSizes;\n  /** Render the child instead of a div, such as an `<article>`. */\n  asChild?: boolean;\n}\n\n/**\n * Typography for long-form content: a blog post, a guide, a legal page, or\n * HTML rendered from Markdown. Write plain h2, h3, p, ul, ol, blockquote, pre,\n * table, and code elements inside it and they pick up the theme. Start at h2;\n * the page title belongs to the page, not the prose.\n */\nfunction Prose({ size = \"default\", asChild = false, className, ...props }: ProseProps) {\n  const Comp = asChild ? Slot.Root : \"div\";\n  return (\n    <Comp\n      data-slot=\"prose\"\n      data-size={size}\n      className={cn(\"min-w-0 break-words\", proseSizes[size], proseElements, className)}\n      {...props}\n    />\n  );\n}\n\nexport { Prose };\n",
+      "type": "registry:ui",
+      "target": "components/ui/prose.tsx"
+    }
+  ]
+}

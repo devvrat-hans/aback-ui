@@ -1,6 +1,6 @@
 # @aback-ui/ui
 
-Accessible, square-cornered React components for the Aback design system: 57 components, from Button and Dialog to Dropzone, Rating, Stat, Steps, and Table of Contents.
+Accessible, square-cornered React components for the Aback design system: 62 components, from Button and Dialog to Dropzone, Meter, Prose, Stat, Steps, and Table of Contents.
 
 - Documentation and live previews: [abackui.com](https://abackui.com)
 - Status: pre-1.0. APIs may change before the first stable release.

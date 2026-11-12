@@ -1,3 +1,4 @@
+import type * as React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
@@ -59,12 +60,86 @@ describe("Button", () => {
     expect(onClick).not.toHaveBeenCalled();
   });
 
+  it("shows a spinner, reports busy, and ignores clicks while loading", async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+
+    const { container, rerender } = render(
+      <Button loading onClick={onClick}>
+        Save changes
+      </Button>,
+    );
+
+    const button = screen.getByRole("button", { name: "Save changes" });
+    expect(button).toHaveAttribute("aria-busy", "true");
+    expect(button).toHaveAttribute("aria-disabled", "true");
+    expect(button).not.toBeDisabled();
+    expect(container.querySelector("[data-slot='button-spinner']")).toBeInTheDocument();
+
+    await user.click(button);
+    expect(onClick).not.toHaveBeenCalled();
+
+    rerender(<Button onClick={onClick}>Save changes</Button>);
+    expect(button).not.toHaveAttribute("aria-busy");
+    expect(container.querySelector("[data-slot='button-spinner']")).not.toBeInTheDocument();
+
+    await user.click(button);
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("swaps the label for loadingText and keeps focus", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<Button loadingText="Saving">Save changes</Button>);
+
+    await user.tab();
+    const button = screen.getByRole("button", { name: "Save changes" });
+    expect(button).toHaveFocus();
+
+    rerender(
+      <Button loading loadingText="Saving">
+        Save changes
+      </Button>,
+    );
+    expect(screen.getByRole("button", { name: "Saving" })).toHaveFocus();
+  });
+
+  it("does not submit a form while loading", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn((event: React.FormEvent) => event.preventDefault());
+
+    render(
+      <form onSubmit={onSubmit}>
+        <Button type="submit" loading>
+          Send
+        </Button>
+      </form>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Send" }));
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
+
+  it("puts the spinner inside the child when asChild is set", () => {
+    render(
+      <Button asChild loading>
+        <a href="/export">Export</a>
+      </Button>,
+    );
+
+    const link = screen.getByRole("link", { name: "Export" });
+    expect(link).toHaveAttribute("aria-busy", "true");
+    expect(link.querySelector("[data-slot='button-spinner']")).toBeInTheDocument();
+  });
+
   it("has no detectable accessibility violations", async () => {
     const { container } = render(
       <div>
         <Button>Primary action</Button>
         <Button variant="outline" size="icon" aria-label="Open settings">
           <svg aria-hidden="true" />
+        </Button>
+        <Button loading loadingText="Saving">
+          Save
         </Button>
       </div>,
     );

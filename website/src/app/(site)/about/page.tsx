@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Breadcrumbs, Button } from "@aback-ui/ui";
+import { Breadcrumbs, Button, Prose } from "@aback-ui/ui";
 
 import { JsonLd } from "@/components/json-ld";
-import { A, Prose } from "@/components/prose";
+import { A } from "@/components/prose";
 import { blocks } from "@/data/blocks";
 import { components } from "@/data/component-catalog";
 import { products } from "@/data/products";
@@ -48,7 +48,7 @@ export default function AboutPage() {
       </header>
 
       <div className="mt-12 grid gap-16 lg:grid-cols-[minmax(0,1fr)_20rem]">
-        <Prose>
+        <Prose size="lg">
           <p>
             Aback UI is the interface foundation behind the products of Aback Group, published as an
             open-source React component library. It has {components.length} components and {blocks.length}{" "}

@@ -3,11 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { IconArrowRight } from "@tabler/icons-react";
 
-import { Badge, Breadcrumbs, Button, ShareButtons } from "@aback-ui/ui";
+import { Badge, Breadcrumbs, Button, Prose, ShareButtons } from "@aback-ui/ui";
 
 import { DocsPage } from "@/components/docs-page";
 import { JsonLd } from "@/components/json-ld";
-import { Prose } from "@/components/prose";
 import { postModules } from "@/content/blog";
 import { getPost, posts } from "@/data/posts";
 import { getRoute } from "@/data/routes";
@@ -96,7 +95,7 @@ export default async function PostPage({ params }: PageProps) {
           </div>
         </header>
 
-        <Prose className="mt-10">
+        <Prose size="lg" className="mt-10">
           <Body />
         </Prose>
 

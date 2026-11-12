@@ -233,7 +233,19 @@
     color: var(--foreground);
   }
 
-  :-webkit-any(button, a, input, textarea, select, summary, [tabindex]):focus-visible {
+  /*
+   * Keyboard focus is always visible. Components swap this outline for their
+   * own ring with `outline-none`, a utility that wins over this layer. A plain
+   * link, button, or summary keeps it, so no focusable element is left without
+   * an indicator. An element that only takes focus from script
+   * (tabindex="-1"), such as a skip-link target, stays quiet.
+   */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  [tabindex="-1"]:focus-visible {
     outline: none;
   }
 

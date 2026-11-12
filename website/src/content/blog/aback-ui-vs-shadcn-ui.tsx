@@ -139,7 +139,7 @@ export default function Post() {
           <tr>
             <td>Maturity</td>
             <td>Very widely used</td>
-            <td>Pre-1.0, 57 components</td>
+            <td>Pre-1.0, 62 components</td>
           </tr>
           <tr>
             <td>License</td>
@@ -298,7 +298,7 @@ npx aback-ui@latest add button`}
         very large user base and the third-party examples and answers that come with it.
       </p>
       <p>
-        Aback UI, at the time of writing, has 57 components and 16 blocks, from{" "}
+        Aback UI, at the time of writing, has 62 components and 16 blocks, from{" "}
         <A href="/docs/components/button">Button</A> and <A href="/docs/components/dialog">Dialog</A>{" "}
         to <A href="/docs/components/combobox">Combobox</A>,{" "}
         <A href="/docs/components/date-picker">Date Picker</A>, and blocks such as{" "}

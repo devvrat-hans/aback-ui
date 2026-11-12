@@ -6,7 +6,7 @@ Accessibility is part of correctness, not a polish phase. This document states w
 
 - Prefer semantic HTML: `button` for actions, `a` for navigation, native form controls where possible.
 - Every interactive element is reachable and operable by keyboard.
-- Focus is visible with at least 3:1 contrast against its background, using `focus-visible`.
+- Focus is visible with at least 3:1 contrast against its background, using `focus-visible`. The theme gives every focusable element a 2px outline in the focus-ring colour; components replace it with their own ring. Before November 2026 the theme removed the outline from plain links and buttons in Chrome and Safari and put nothing back.
 - Icon-only controls have an accessible name.
 - Decorative icons are hidden from assistive technology.
 - State is never communicated by color alone.
@@ -26,6 +26,9 @@ Accessibility is part of correctness, not a polish phase. This document states w
 | Accordion | Enter/Space toggles the focused header; arrows move between headers |
 | Tooltip | Focus or hover reveals; Escape dismisses |
 | Select | Native browser behavior (the component renders a real `select`) |
+| Listbox | Enter, Space, or an arrow opens; arrows move; Home/End jump; typing jumps to a match; Enter or Space chooses; Escape closes and focus returns to the trigger |
+| Loading button | Stays focusable with `aria-busy` and `aria-disabled`; Enter, Space, and clicks do nothing until loading ends |
+| Field | Clicking the label focuses the control, or toggles a checkbox or switch |
 | Rating | Native radio group: Tab enters, arrows change the rating, Space selects or clears |
 | Dropzone | Tab focuses the hidden file input (the frame shows the ring); Enter or Space opens the picker |
 | Copy Button | Enter or Space copies; the result is announced in a polite live region |

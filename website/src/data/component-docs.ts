@@ -902,9 +902,27 @@ export const componentDocs: Record<string, ComponentDoc> = {
         description: "Set submit explicitly on form actions. Native buttons submit inside a form.",
       },
       {
+        prop: "loading",
+        type: "boolean",
+        defaultValue: "false",
+        description:
+          "The action is running. A spinner takes the place of the button's icon, aria-busy is set, and clicks and form submits are ignored until it is false again.",
+      },
+      {
+        prop: "loadingText",
+        type: "ReactNode",
+        description: "Replaces the label while loading, such as Saving. Ignored with asChild, where the child owns its content.",
+      },
+      {
         prop: "disabled",
         type: "boolean",
         description: "Removes pointer events and reduces opacity. Prefer explaining why when possible.",
+      },
+      {
+        prop: "buttonVariants({ variant, size })",
+        type: "function",
+        description:
+          "The class string on its own, for a link in a template that cannot use asChild, such as an anchor in an Astro page.",
       },
     ],
     accessibility: [
@@ -912,6 +930,8 @@ export const componentDocs: Record<string, ComponentDoc> = {
       "Icon-only sizes require an aria-label; the icon itself is hidden from assistive technology.",
       "Focus uses a two-pixel brand ring with an offset on both themes.",
       "Disabled buttons are removed from interaction but remain readable. Do not use disabled as a validation message.",
+      "A loading button is not disabled. It keeps focus and uses aria-disabled, so a keyboard or screen reader user stays where they were while the work runs.",
+      "aria-busy is not announced everywhere. Give loadingText for the pending state, and announce the result in a status message when the work finishes.",
     ],
     related: ["input", "field", "dialog"],
   },
@@ -1088,38 +1108,60 @@ export const componentDocs: Record<string, ComponentDoc> = {
   field: {
     api: [
       {
-        prop: "htmlFor",
-        type: "string",
-        description: "The id of the control this field labels. Required.",
-      },
-      {
         prop: "label",
         type: "ReactNode",
         description: "Visible label text. Required.",
       },
       {
+        prop: "children",
+        type: "ReactNode | (control) => ReactNode",
+        description:
+          "The control. A single element is wired for you: Field sets its id, aria-describedby, aria-invalid, and aria-required. Pass a function when the control is wrapped, such as an input inside an InputGroup, and spread the argument onto the control.",
+      },
+      {
         prop: "description",
         type: "ReactNode",
-        description: "Rendered under the control with an id of `{htmlFor}-description`.",
+        description: "A hint under the control, linked to it with aria-describedby.",
       },
       {
         prop: "error",
         type: "ReactNode",
-        description: "Rendered under the control with role alert and an id of `{htmlFor}-error`.",
+        description: "An error under the control with role alert. It also marks the control aria-invalid.",
       },
       {
         prop: "required",
         type: "boolean",
-        description: "Adds a decorative asterisk. Also set required on the control.",
+        description:
+          "Adds a decorative asterisk and aria-required. Also set required on the control when the browser should block the submit.",
+      },
+      {
+        prop: "orientation",
+        type: '"vertical" | "horizontal"',
+        defaultValue: '"vertical"',
+        description: "horizontal puts the control beside its label, for a checkbox or a switch with a hint.",
+      },
+      {
+        prop: "action",
+        type: "ReactNode",
+        description: "Sits at the end of the label row: a copy button, a counter, or a Forgot password link.",
+      },
+      {
+        prop: "htmlFor",
+        type: "string",
+        description:
+          "Optional. Field uses the control's own id, or generates one. Pass htmlFor only to label a control Field cannot reach; a child with a different id is then left untouched.",
       },
     ],
     accessibility: [
-      "Field renders the label and associates it with htmlFor. It does not inject props into the control.",
-      "When a description or error is present, set aria-describedby on the control to the generated id.",
-      "Set aria-invalid on the control when error is present; the Input and Select components style it.",
+      "The label is a real label element tied to the control's id, so clicking it focuses the input or toggles the checkbox.",
+      "The hint and the error are linked with aria-describedby, so both are read when the control takes focus. Ids the control already lists are kept.",
+      "An error sets aria-invalid on the control and is announced when it appears. Anything the control sets itself wins over what Field would add.",
+      "Field wires one control. For a wrapped control use the function form, and for a group of radios use a fieldset with a legend instead.",
       "Use a visible label. A placeholder is an example, not a label.",
     ],
     related: ["input", "textarea", "select"],
+    note:
+      "Earlier versions needed the id, aria-describedby, and aria-invalid written by hand. That still works: when htmlFor matches the control's id, Field only fills in what is missing.",
   },
   input: {
     api: [
@@ -1865,5 +1907,107 @@ export const componentDocs: Record<string, ComponentDoc> = {
       "The native share button only renders where the browser supports it, so there is never a dead control.",
     ],
     related: ["copy-button", "button", "dropdown-menu"],
+  },
+  item: {
+    api: [
+      { prop: "Item variant", type: '"default" | "outline" | "muted"', defaultValue: '"default"', description: "default has no frame, for a feature in a list. outline is a bordered card row, for a link card. muted is a tinted row, for a file in a queue." },
+      { prop: "Item size / align", type: '"sm" | "default" / "start" | "center"', defaultValue: '"default" / "start"', description: "Padding and gap, and whether the media sits on the first line or centres against the text." },
+      { prop: "Item asChild", type: "boolean", defaultValue: "false", description: "Renders the child instead of a div. Use an anchor or a button to make the whole row one target, or an li inside a list." },
+      { prop: "ItemMedia variant", type: '"chip" | "icon" | "image"', defaultValue: '"chip"', description: "chip is the 40px brand square with a 20px icon. icon is a bare brand-coloured icon. image is a square thumbnail or logo." },
+      { prop: "ItemTitle as", type: '"div" | "p" | "span" | "h2" | "h3" | "h4" | "h5"', defaultValue: '"div"', description: "The element for the title. Use a heading only when the item introduces a section of the page." },
+      { prop: "ItemContent / ItemDescription / ItemActions", type: "components", description: "The text column, the muted second line, and trailing controls or a chevron." },
+    ],
+    accessibility: [
+      "An Item is a plain div until you make it something else. Hover and focus styles only apply when it renders as a link or a button, so a static row never looks clickable.",
+      "When the whole row is a link, keep other controls out of it. A button inside an anchor is invalid; put the action beside the link instead.",
+      "Icons in ItemMedia are decoration next to a title and take aria-hidden. An image that carries meaning keeps its alt text.",
+      "A list of items is still a list. Render the rows inside ul and li, or use asChild with an li, so the count is announced.",
+    ],
+    related: ["card", "stat", "empty-state"],
+  },
+  meter: {
+    api: [
+      { prop: "value", type: "number", description: "The measurement. Values outside min and max are clamped. Required." },
+      { prop: "min / max", type: "number / number", defaultValue: "0 / 100", description: "The range the value is measured against." },
+      { prop: "label", type: "ReactNode", description: "Visible caption and accessible name. Use aria-label when there is no room for one." },
+      { prop: "valueLabel", type: "ReactNode", description: "The visible value beside the label, such as 82 / 100 or 7.2 of 10 GB. A string is also read out as the value." },
+      { prop: "showValue", type: "boolean", defaultValue: "false", description: "Shows the rounded percentage beside the label when there is no valueLabel." },
+      { prop: "valueText", type: "string", description: "What assistive technology reads for the value when valueLabel is not a plain string." },
+      { prop: "tone", type: '"brand" | "neutral" | "success" | "warning" | "danger"', defaultValue: '"brand"', description: "Colours the fill. State what the colour means in the label or the value." },
+      { prop: "size", type: '"sm" | "default" | "lg"', defaultValue: '"default"', description: "Track height: 4, 8, or 12 pixels." },
+      { prop: "indicatorClassName", type: "string", description: "Restyles the fill. Prefer tone." },
+    ],
+    accessibility: [
+      "Renders role meter with aria-valuenow, aria-valuemin, and aria-valuemax. A meter is a reading; use Progress for a task moving toward completion.",
+      "The meter needs a name: a visible label, or aria-label when the layout has no room for one.",
+      "A percentage is often the wrong thing to hear. A string valueLabel, or valueText, replaces it, so 7.2 of 10 GB is not read as 72.",
+      "Tone is supplementary. Pair it with words such as Good, Fair, or Weak, since the fill colour is not announced.",
+      "Screen reader support for role meter is uneven. The visible label and value carry the same information for everyone.",
+    ],
+    related: ["progress", "stat", "badge"],
+  },
+  panel: {
+    api: [
+      { prop: "title", type: "ReactNode", description: "The heading of the zone. It also names the group for assistive technology." },
+      { prop: "icon", type: "ReactNode", description: "A decorative 16px icon before the title." },
+      { prop: "actions", type: "ReactNode", description: "Sits at the end of the heading row: a copy button, a badge, a reset link." },
+      { prop: "description", type: "ReactNode", description: "One line under the heading." },
+      { prop: "as", type: '"h2" | "h3" | "h4" | "h5"', defaultValue: '"h3"', description: "Heading level. A panel sits inside a card whose title is one level up." },
+      { prop: "variant", type: '"muted" | "card"', defaultValue: '"muted"', description: "muted for options and results. card for a sub-panel nested inside a muted one." },
+      { prop: "size", type: '"sm" | "default"', defaultValue: '"default"', description: "Padding and gap: 12 or 16 pixels." },
+    ],
+    accessibility: [
+      "A titled panel is a group named by its heading, so the controls inside are announced as part of it. It is not a landmark, so many panels do not crowd the landmark list.",
+      "Without a title the panel is a plain container with no role.",
+      "Set as to keep heading levels in order: h3 under a card titled with h2, h4 for a nested panel.",
+      "The icon is decorative and hidden from assistive technology.",
+    ],
+    related: ["card", "field", "description-list"],
+  },
+  prose: {
+    api: [
+      { prop: "size", type: '"default" | "lg"', defaultValue: '"default"', description: "default is 14px muted text for guides, legal pages, and product articles. lg is 17px near-ink text for long reading such as a blog post." },
+      { prop: "asChild", type: "boolean", defaultValue: "false", description: "Renders the child instead of a div, such as an article element." },
+      { prop: "className", type: "string", description: "Adjust the container. max-w-none removes the 72ch measure." },
+      { prop: "dangerouslySetInnerHTML", type: "{ __html: string }", description: "HTML rendered from Markdown elsewhere. Sanitize it first; Prose styles the markup and does not clean it." },
+    ],
+    accessibility: [
+      "Prose changes how elements look, never what they are. Headings, lists, tables, and links keep their native semantics.",
+      "Start at h2 inside it. The page title is the page's h1 and belongs outside the prose.",
+      "Links are underlined at rest. The link colour alone is too close to body text to tell them apart, and they show a focus outline.",
+      "Tables stay real tables so headers still label their cells. Give column headers scope=col, and wrap a wide table in a scrolling container of your own.",
+      "Body text is capped at about 72 characters per line.",
+    ],
+    related: ["code-block", "table-of-contents", "reading-progress"],
+    note:
+      "Every rule has zero specificity, so a class on an element inside the prose wins, including the classes of another component. Elements without classes are styled, so render app components that hold plain markup outside the Prose.",
+  },
+  listbox: {
+    api: [
+      { prop: "Listbox value / defaultValue / onValueChange", type: "string / string / (value: string) => void", description: "Controlled or uncontrolled selection." },
+      { prop: "Listbox name / required / disabled", type: "string / boolean / boolean", description: "name adds the value to a native form submit. required and disabled behave as on a native select." },
+      { prop: "Listbox id / aria-label / aria-describedby / aria-invalid", type: "string / string / string / boolean", description: "Labelling for the trigger, which is the control. Field sets these for you when Listbox is its child." },
+      { prop: "ListboxTrigger size", type: '"sm" | "default"', defaultValue: '"default"', description: "Trigger height: 32 or 36 pixels. It fills its container; set a width with className." },
+      { prop: "ListboxValue placeholder", type: "ReactNode", description: "Shown in muted text until a value is chosen." },
+      { prop: "ListboxContent position / align / side", type: '"popper" | "item-aligned" / "start" | "center" | "end" / "top" | "bottom"', defaultValue: '"popper"', description: "popper opens the list under the trigger at the trigger's width. item-aligned overlays the trigger with the chosen option in place." },
+      { prop: "ListboxItem value / disabled", type: "string / boolean", description: "One option. Its children are the option's text and are shown in the trigger once chosen." },
+      { prop: "ListboxGroup / ListboxLabel / ListboxSeparator", type: "components", description: "A named group of options and a divider between groups." },
+    ],
+    accessibility: [
+      "The trigger is a combobox button with aria-expanded, and the list is a listbox of options. The chosen option has aria-selected and a check mark, so selection is not shown by colour alone.",
+      "The trigger needs a name: a Field or label pointing at its id, or aria-label.",
+      "Focus moves into the list on open and returns to the trigger on close. The rest of the page is hidden from assistive technology while the list is open.",
+      "With name set, a hidden native select carries the value, so the choice is included in a native form submit.",
+      "Prefer the native Select for a long plain list, a phone-first form, or a page that must work without JavaScript.",
+    ],
+    keyboard: [
+      { key: "Enter / Space / Arrow Down / Arrow Up", action: "Open the list from the trigger." },
+      { key: "Arrow Down / Arrow Up", action: "Move through the options, skipping disabled ones." },
+      { key: "Home / End", action: "Jump to the first or last option." },
+      { key: "A to Z", action: "Jump to the next option that starts with the typed characters." },
+      { key: "Enter / Space", action: "Choose the focused option and close the list." },
+      { key: "Escape", action: "Close the list without changing the value." },
+    ],
+    related: ["select", "combobox", "dropdown-menu"],
   },
 };

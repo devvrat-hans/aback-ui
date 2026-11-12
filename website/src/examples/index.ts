@@ -25,13 +25,18 @@ import { FieldExample } from "./field";
 import { HoverCardExample } from "./hover-card";
 import { InputExample } from "./input";
 import { InputGroupExample } from "./input-group";
+import { ItemExample } from "./item";
 import { KbdExample } from "./kbd";
 import { LabelExample } from "./label";
 import { LayoutExample } from "./layout";
+import { ListboxExample } from "./listbox";
+import { MeterExample } from "./meter";
 import { PageHeaderExample } from "./page-header";
 import { PaginationExample } from "./pagination";
+import { PanelExample } from "./panel";
 import { PopoverExample } from "./popover";
 import { ProgressExample } from "./progress";
+import { ProseExample } from "./prose";
 import { RadioGroupExample } from "./radio-group";
 import { RatingExample } from "./rating";
 import { ReadingProgressExample } from "./reading-progress";
@@ -84,13 +89,18 @@ export const exampleMap: Record<string, ComponentType> = {
   "hover-card": HoverCardExample,
   input: InputExample,
   "input-group": InputGroupExample,
+  item: ItemExample,
   kbd: KbdExample,
   label: LabelExample,
   layout: LayoutExample,
+  listbox: ListboxExample,
+  meter: MeterExample,
   "page-header": PageHeaderExample,
   pagination: PaginationExample,
+  panel: PanelExample,
   popover: PopoverExample,
   progress: ProgressExample,
+  prose: ProseExample,
   "radio-group": RadioGroupExample,
   rating: RatingExample,
   "reading-progress": ReadingProgressExample,

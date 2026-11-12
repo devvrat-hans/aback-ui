@@ -2,7 +2,7 @@
 
 **The building blocks behind better applications.**
 
-Aback UI is the shared interface foundation for Aback Group products and an open-source React component library for everyone else: 57 accessible components, 16 page blocks, one set of design tokens, and its own CLI. Every component started as a pattern in a shipping Aback product: [Aback Tools](https://abacktools.com), [Aback Launch](https://abacklaunch.com), or [Aback Group](https://aback.group).
+Aback UI is the shared interface foundation for Aback Group products and an open-source React component library for everyone else: 62 accessible components, 16 page blocks, one set of design tokens, and its own CLI. Every component started as a pattern in a shipping Aback product: [Aback Tools](https://abacktools.com), [Aback Launch](https://abacklaunch.com), or [Aback Group](https://aback.group).
 
 - **Documentation:** [abackui.com](https://abackui.com)
 - **Status:** pre-1.0. APIs may change before the first stable release.
