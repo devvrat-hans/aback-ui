@@ -32,6 +32,11 @@ export interface CommandDialogProps extends React.ComponentProps<typeof Dialog> 
   className?: string;
   /** Show the dialog's close button. Defaults to `true`; a search surface usually sets it to `false`. */
   showCloseButton?: boolean;
+  /**
+   * Props for the Command inside the dialog, such as `filter` for your own
+   * ranking, `shouldFilter={false}` for server results, or `loop`.
+   */
+  commandProps?: Omit<React.ComponentProps<typeof CommandPrimitive>, "children">;
 }
 
 function CommandDialog({
@@ -40,6 +45,7 @@ function CommandDialog({
   children,
   className,
   showCloseButton = true,
+  commandProps,
   ...props
 }: CommandDialogProps) {
   return (
@@ -49,7 +55,9 @@ function CommandDialog({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <Command label={title}>{children}</Command>
+        <Command label={title} {...commandProps}>
+          {children}
+        </Command>
       </DialogContent>
     </Dialog>
   );

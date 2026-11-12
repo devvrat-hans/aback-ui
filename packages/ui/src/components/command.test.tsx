@@ -87,4 +87,26 @@ describe("CommandDialog", () => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
   });
+
+  it("passes commandProps to the command, such as a custom filter", async () => {
+    const user = userEvent.setup();
+    render(
+      <CommandDialog
+        defaultOpen
+        commandProps={{ filter: (value, search) => (value.startsWith(search) ? 1 : 0) }}
+      >
+        <CommandInput placeholder="Search" />
+        <CommandList>
+          <CommandItem value="deploy">Deploy</CommandItem>
+          <CommandItem value="redeploy">Redeploy</CommandItem>
+        </CommandList>
+      </CommandDialog>,
+    );
+
+    // The built-in fuzzy filter would keep "redeploy" for "dep"; this one does not.
+    await user.type(await screen.findByRole("combobox"), "dep");
+
+    expect(screen.getByRole("option", { name: "Deploy" })).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "Redeploy" })).not.toBeInTheDocument();
+  });
 });
