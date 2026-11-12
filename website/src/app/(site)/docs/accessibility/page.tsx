@@ -99,8 +99,8 @@ export default function AccessibilityPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {keyboardRows.map((row) => (
-            <TableRow key={`${row.name}-${row.key}`}>
+          {keyboardRows.map((row, index) => (
+            <TableRow key={`${row.name}-${index}`}>
               <TableCell>
                 <a
                   href={`/docs/components/${row.name}`}

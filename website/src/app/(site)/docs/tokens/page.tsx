@@ -133,7 +133,7 @@ export default function TokensPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-px overflow-hidden border border-border bg-border sm:grid-cols-4 lg:grid-cols-6">
+        <div className="hairline-grid grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6">
           {ramp.map((color) => (
             <div key={color.step} className="bg-card p-3">
               <div

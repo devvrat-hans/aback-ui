@@ -16,6 +16,7 @@ Five new components and two component upgrades, chosen by reading how Aback Tool
 - `Button` gained `loading` and `loadingText`. A loading button shows a spinner in place of its icon, sets `aria-busy`, ignores clicks and form submits, and stays focusable.
 - `Field` now wires its control. Give it one control and it sets `id`, `aria-describedby`, `aria-invalid`, and `aria-required`; pass a function to reach a wrapped control. It also gained `orientation="horizontal"` for a checkbox or switch beside its label, and `action` for a control at the end of the label row. `htmlFor` is now optional.
 - Each of the above has behaviour tests, an axe check, a live example, API and accessibility notes, and a registry item. The consumer test renders them from the packed tarball.
+- `CommandDialog` gained `commandProps`, which reaches the Command inside the dialog: pass `filter` for your own ranking, `shouldFilter={false}` for server results, or `loop`.
 - Installation guides for Next.js and Vite, each verified against a freshly created app.
 - `/themes`, a theme generator that builds a contrast-checked Aback theme from one brand colour and previews it on real components.
 - `/colors`, every theme colour as HEX, RGB, HSL, and OKLCH, read from the tokens package.
@@ -28,11 +29,18 @@ Five new components and two component upgrades, chosen by reading how Aback Tool
 - The `button` registry item now depends on `@tabler/icons-react`, for the loading spinner. The npm package already depended on it.
 - When `Field` receives `htmlFor` and a control with the same `id`, it now adds the description and error links the control is missing. A control with a different `id` is left untouched, as before.
 - The documentation site's blog, About, colour, and tool pages use the library's `Prose` instead of a private copy.
+- The home page opens with a working form built from Field, Listbox, Meter, Checkbox, and a loading Button beside the headline, in place of a text-only hero. The component wall gained Meter and Item cards, ends its columns at the same height, and shows six cards on a phone instead of nine.
+- The site footer is six even columns with GitHub and npm links, and the header links to the repository.
+- A component's API reference is a table in a wide column and one block per prop in a narrow one, so the type, default, and description are readable on a phone without scrolling sideways.
 
 ### Fixed
 
 - The theme removed the keyboard focus outline from every plain link, button, input, and summary in Chrome and Safari and put nothing back, so an element without a ring utility had no focus indicator. Every focusable element now gets a 2px outline in the focus-ring colour, and components still replace it with their own ring. Elements with `tabindex="-1"` stay quiet. Projects that copied the theme can see the change with `aback-ui diff theme` and take it with `aback-ui add theme --overwrite`.
 - The Field example had a hint that was never linked to its input. Field now makes that link itself.
+- The header search ranked unrelated pages above the one whose name was typed: "meter" listed Theming and Blocks first. It now matches whole words of the query and orders results by how well the title matches.
+- Grids with an uneven number of items (the colour ramps, the blog index, the home page questions) drew an empty filled cell at the end of the last row.
+- The accessibility page and the Date Picker page logged a duplicate React key for two keyboard rows.
+- The catalogue filter's placeholder suggested "upload", which matched nothing. It now suggests "file".
 - Guide pages shared the home page's `og:url` and social title, and every page shared its Twitter title.
 - The Dialog accessibility notes said Radix sets `aria-modal`; it hides the rest of the page with `aria-hidden` instead.
 - The home page badge showed v0.1; it now reads the package version.

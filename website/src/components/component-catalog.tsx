@@ -80,7 +80,7 @@ export function ComponentCatalog({
           <InputGroupInput
             id="catalog-search"
             type="search"
-            placeholder="Filter by name or purpose, such as date or upload"
+            placeholder="Filter by name or purpose, such as date or file"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             aria-describedby="catalog-count"

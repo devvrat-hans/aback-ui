@@ -25,6 +25,26 @@ export function BlockThumbnail({
   className?: string;
 }) {
   const box = useRef<HTMLDivElement>(null);
+  const frame = useRef<HTMLIFrameElement>(null);
+
+  // Stops the placeholder's pulse. It is written to the DOM, like the scale,
+  // so a thumbnail never re-renders for it.
+  function markLoaded() {
+    box.current?.setAttribute("data-loaded", "true");
+  }
+
+  // A frame near the viewport can finish loading before this component
+  // hydrates, and its load event is not replayed, so check once on mount.
+  useEffect(() => {
+    try {
+      const view = frame.current?.contentWindow;
+      if (view && view.location.href !== "about:blank" && view.document.readyState === "complete") {
+        box.current?.setAttribute("data-loaded", "true");
+      }
+    } catch {
+      // The frame is same-origin; if it ever is not, the load event still fires.
+    }
+  }, []);
 
   useEffect(() => {
     const element = box.current;
@@ -41,12 +61,14 @@ export function BlockThumbnail({
     <div
       ref={box}
       aria-hidden="true"
-      className={cn("relative w-full overflow-hidden bg-background [--thumb-scale:0.3]", className)}
+      className={cn("group/thumb relative w-full overflow-hidden bg-background [--thumb-scale:0.3]", className)}
       style={{ aspectRatio: `${width} / ${height}` }}
     >
-      {/* Shows until the frame paints its own background over it. */}
-      <div className="absolute inset-0 bg-muted/60" />
+      {/* Shows, pulsing, until the frame paints its own background over it. */}
+      <div className="absolute inset-0 animate-pulse bg-muted/60 group-data-[loaded=true]/thumb:animate-none motion-reduce:animate-none" />
       <iframe
+        ref={frame}
+        onLoad={markLoaded}
         src={`/view/blocks/${slug}`}
         title={`${title} thumbnail`}
         loading="lazy"

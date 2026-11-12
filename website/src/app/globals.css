@@ -22,6 +22,20 @@
   }
 }
 
+/* A grid ruled with one-pixel hairlines. The lines are borders on the cells,
+   so a last row that is not full ends where its cells end. Use this in place
+   of gap-px over a border-coloured background whenever the item count can
+   leave an empty cell. */
+@utility hairline-grid {
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+
+  & > * {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+}
+
 /* A code surface one step off the canvas, in both themes. */
 :root {
   --code: color-mix(in oklab, var(--muted) 45%, var(--background));

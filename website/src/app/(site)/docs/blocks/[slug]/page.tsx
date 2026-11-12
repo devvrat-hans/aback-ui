@@ -68,7 +68,7 @@ export default async function BlockPage({ params }: PageProps) {
         <Badge variant="outline">
           {componentCount} {componentCount === 1 ? "component" : "components"}
         </Badge>
-        <span className="flex flex-wrap items-center gap-2 sm:ml-auto">
+        <span className="flex flex-wrap items-center gap-2 lg:ml-auto">
           <CopyButton
             value={blockMarkdown(block.name)}
             variant="outline"

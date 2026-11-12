@@ -22,10 +22,17 @@ export function FaqList({
   const Heading = headingLevel;
   return (
     <div className={cn("grid gap-px border border-border bg-border md:grid-cols-2", className)}>
-      {items.map((item) => (
-        <div key={item.question} className="flex flex-col gap-2 bg-background p-5 sm:p-6">
+      {items.map((item, index) => (
+        <div
+          key={item.question}
+          className={cn(
+            "flex flex-col gap-2 bg-background p-5 sm:p-6",
+            // An odd count would leave an empty cell, so the last answer takes the row.
+            items.length % 2 === 1 && index === items.length - 1 && "md:col-span-2",
+          )}
+        >
           <Heading className="text-base font-semibold text-foreground">{item.question}</Heading>
-          <p className="text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
+          <p className="max-w-[80ch] text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
           {item.href ? (
             <Link
               href={item.href}

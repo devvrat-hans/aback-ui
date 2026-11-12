@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { ThemeToggle, cn } from "@aback-ui/ui";
+import { IconBrandGithub } from "@tabler/icons-react";
+
+import { Button, ThemeToggle, cn } from "@aback-ui/ui";
 
 import { Logo } from "@/components/logo";
 import { MobileNav } from "@/components/mobile-nav";
 import { SearchDialog } from "@/components/search-dialog";
-import { mainNav } from "@/data/site";
+import { mainNav, site } from "@/data/site";
 import { searchItems } from "@/data/search";
 
 export function SiteHeader() {
@@ -48,6 +50,16 @@ export function SiteHeader() {
         <div className="ml-auto flex items-center gap-1">
           <SearchDialog items={searchItems} />
           <span aria-hidden="true" className="mx-1.5 hidden h-5 w-px bg-border sm:block" />
+          <Button variant="ghost" size="icon" className="hidden sm:inline-flex" asChild>
+            <a
+              href={site.repository}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Aback UI on GitHub (opens in a new tab)"
+            >
+              <IconBrandGithub aria-hidden="true" />
+            </a>
+          </Button>
           <ThemeToggle />
         </div>
       </div>

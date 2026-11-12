@@ -75,7 +75,7 @@ export function PaletteSwatches({ groups }: { groups: SwatchGroup[] }) {
               </h2>
               <p className="mt-1 max-w-[68ch] text-sm leading-relaxed text-muted-foreground">{group.description}</p>
             </div>
-            <ul className="grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6">
+            <ul className="hairline-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6">
               {group.swatches.map((swatch) => {
                 const value = formatValue(swatch, format);
                 const key = `${group.title}:${swatch.name}`;

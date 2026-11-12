@@ -14,7 +14,7 @@ import { Badge, Button } from "@aback-ui/ui";
 import { BlockThumbnail } from "@/components/block-thumbnail";
 import { Code } from "@/components/code";
 import { FaqList } from "@/components/faq-list";
-import { HomeShowcase } from "@/components/home-showcase";
+import { HomeHeroPreview, HomeShowcase } from "@/components/home-showcase";
 import { JsonLd } from "@/components/json-ld";
 import { PackageCommand } from "@/components/package-command";
 import { blocks } from "@/data/blocks";
@@ -117,56 +117,57 @@ export default function HomePage() {
       />
       <section className="relative overflow-hidden border-b border-separator">
         <div aria-hidden="true" className="docs-grid-lines docs-grid-fade pointer-events-none absolute inset-0" />
-        <div className="container-page relative flex flex-col items-center pb-16 pt-16 text-center sm:pt-24 lg:pb-24 lg:pt-28">
-          <Link
-            href="/docs"
-            className="group inline-flex items-center gap-2 border border-border bg-background py-1 pl-1 pr-3 text-xs font-medium text-foreground transition-colors duration-200 hover:border-primary-300 dark:hover:border-primary-700"
-          >
-            <Badge variant="brand">v{uiPackage.version}</Badge>
-            {components.length} components and {blocks.length} blocks, open source
-            <IconArrowRight
-              aria-hidden="true"
-              className="size-3.5 text-muted-foreground transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none"
-            />
-          </Link>
+        <div className="container-page relative grid items-center gap-12 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,27rem)] lg:py-20 xl:grid-cols-[minmax(0,1fr)_30rem] xl:gap-20">
+          <div className="flex min-w-0 flex-col items-start">
+            <Link
+              href="/docs/changelog"
+              className="group inline-flex items-center gap-2 border border-border bg-background py-1 pl-1 pr-3 text-xs font-medium text-foreground outline-none transition-colors duration-200 hover:border-primary-300 focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:hover:border-primary-700"
+            >
+              <Badge variant="brand">v{uiPackage.version}</Badge>
+              {components.length} components and {blocks.length} blocks
+              <IconArrowRight
+                aria-hidden="true"
+                className="size-3.5 text-muted-foreground transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none"
+              />
+            </Link>
 
-          <h1 className="mt-7 max-w-4xl text-4xl font-bold leading-[1.05] tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
-            The building blocks behind better applications.
-          </h1>
+            <h1 className="mt-6 max-w-3xl text-4xl font-bold leading-[1.05] tracking-tight text-balance text-foreground sm:text-5xl xl:text-6xl">
+              The building blocks behind better applications.
+            </h1>
 
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-pretty text-muted-foreground sm:text-lg">
-            Accessible React components and design tokens, installed by your own CLI as source you
-            own, or imported from npm. Built for Aback products, engineered for reuse, released for
-            everyone.
-          </p>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-pretty text-muted-foreground sm:text-lg">
+              Accessible React components and design tokens, installed by your own CLI as source you
+              own, or imported from npm. Built for Aback products, engineered for reuse, released for
+              everyone.
+            </p>
 
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <Button size="lg" variant="brand" asChild>
-              <Link href="/docs/installation">
-                Get started
-                <IconArrowRight aria-hidden="true" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/docs/components">Browse components</Link>
-            </Button>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Button size="lg" variant="brand" asChild>
+                <Link href="/docs/installation">
+                  Get started
+                  <IconArrowRight aria-hidden="true" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="bg-background" asChild>
+                <Link href="/docs/components">Browse components</Link>
+              </Button>
+            </div>
+
+            <div className="mt-8 w-full max-w-xl">
+              <PackageCommand args={buttonCommand} className="bg-background" />
+            </div>
+
+            <ul className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+              {["React 19", "Tailwind CSS v4", "Radix UI", "MIT licensed"].map((fact) => (
+                <li key={fact} className="flex items-center gap-2">
+                  <span aria-hidden="true" className="size-1 bg-primary-500" />
+                  {fact}
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="mt-10 w-full max-w-xl text-left">
-            <PackageCommand args={buttonCommand} className="bg-background" />
-          </div>
-
-          <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
-            <li>React 19</li>
-            <li aria-hidden="true" className="hidden h-3 w-px bg-separator sm:block" />
-            <li>Tailwind CSS v4</li>
-            <li aria-hidden="true" className="hidden h-3 w-px bg-separator sm:block" />
-            <li>Radix UI</li>
-            <li aria-hidden="true" className="hidden h-3 w-px bg-separator sm:block" />
-            <li>Your own CLI: aback-ui</li>
-            <li aria-hidden="true" className="hidden h-3 w-px bg-separator sm:block" />
-            <li>MIT licensed</li>
-          </ul>
+          <HomeHeroPreview className="w-full max-w-lg lg:max-w-none" />
         </div>
       </section>
 
@@ -195,8 +196,8 @@ export default function HomePage() {
             link={{ href: "/docs/blocks", label: `Browse all ${blocks.length} blocks` }}
           />
           <ul className="mt-10 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-            {featuredBlocks.map((block) => (
-              <li key={block.name}>
+            {featuredBlocks.map((block, index) => (
+              <li key={block.name} className={index > 2 ? "hidden sm:block" : undefined}>
                 <Link
                   href={`/docs/blocks/${block.name}`}
                   className="group flex flex-col gap-3 outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"

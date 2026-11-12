@@ -72,7 +72,7 @@ export function TailwindColorGenerator() {
 
       {scale ? (
         <>
-          <ol className="grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4 lg:grid-cols-11" aria-label={`${name} scale`}>
+          <ol className="hairline-grid grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-11" aria-label={`${name} scale`}>
             {scale.map((item) => {
               const onWhite = contrastRatio(item.rgb, WHITE);
               const onBlack = contrastRatio(item.rgb, DARK_BACKGROUND);
