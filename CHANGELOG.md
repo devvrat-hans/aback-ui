@@ -2,7 +2,7 @@
 
 All notable changes are recorded here. The project is pre-1.0; minor versions may include API changes with migration notes.
 
-## Unreleased
+## 0.3.0 - November 2026
 
 Five new components and two component upgrades, chosen by reading how Aback Tools, Aback Launch, and Aback Audit build their interfaces and what each one still writes by hand. Every change is additive: no prop, export, token, or registry name was removed or renamed. See `docs/provenance.md` for the source patterns.
 

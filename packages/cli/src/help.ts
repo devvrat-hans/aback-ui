@@ -1,4 +1,4 @@
-export const CLI_VERSION = "0.2.2";
+export const CLI_VERSION = "0.3.0";
 
 export const HELP = `Aback UI — copy accessible React components into your project
 
