@@ -10,6 +10,8 @@ export default tseslint.config(
       "**/.next/**",
       "**/out/**",
       "**/dist/**",
+      // Written by `wrangler dev` (bun run preview:worker); already git-ignored.
+      "**/.wrangler/**",
       "website/public/r/**",
       "packages/cli/registry/**",
       "next-env.d.ts",
